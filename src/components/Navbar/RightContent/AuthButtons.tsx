@@ -1,8 +1,11 @@
+import { authModalState } from '@/atoms/authModalAtom';
 import { Box, Button } from '@chakra-ui/react';
 import React from 'react';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 
 
 const AuthButtons: React.FC = () => {
+    const setAuthModalState = useSetRecoilState(authModalState);
 
     return (
         <>
@@ -35,7 +38,8 @@ const AuthButtons: React.FC = () => {
                     width={{ base: "56px", sm: "106px" }}
                     _hover={{
                         color: "grey"
-                    }}>
+                    }}
+                    onClick={() => setAuthModalState({open:true, view: "login"})}>
                     Log In
                 </Box>
             </Box>
@@ -54,10 +58,11 @@ const AuthButtons: React.FC = () => {
                     bgGradient: 'linear(to-r, brand.100, brand.200)',
                     color: "grey"
                 }}
+                onClick={() =>setAuthModalState({open:true, view:"signup"})}
             >
                 Sign Up
             </Box>
         </>
-    )
+    );
 }
 export default AuthButtons;
