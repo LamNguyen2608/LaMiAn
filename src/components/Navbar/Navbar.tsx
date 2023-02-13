@@ -12,11 +12,10 @@ const Navbar: React.FC = () => {
         <Flex bg="black" height="50px" padding="6px 10px">
             <Flex align="center">
                 <Image src="images/logo-02.png" height="40px" />
-
             </Flex>
             <SearchInput />
             {/* <Directory />*/}
-            <RightContent  user={user}/>
+            <RightContent user={user} />
         </Flex>
     )
 }
