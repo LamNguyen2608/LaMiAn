@@ -121,7 +121,7 @@ const Login:React.FC<LoginProps> = () => {
             view: "resetPassword", 
             }))
           }>
-            Click here to resset
+            Click here to reset
           </Text>
           </Flex>
         </Flex>

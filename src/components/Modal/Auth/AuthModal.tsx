@@ -29,7 +29,7 @@ const AuthModal: React.FC = () => {
           <ModalOverlay />
           <ModalContent>
           <Flex direction="row" display="flex" borderEndRadius="15px">
-          <Flex flex="1"  bg="black" justifyContent="center" alignItems="center">
+          <Flex  flex="1"  bg="black" justifyContent="center" alignItems="center">
             <Image src="images/logo-02.png" height="70px"></Image>
           </Flex>
           <Flex width="70%">
