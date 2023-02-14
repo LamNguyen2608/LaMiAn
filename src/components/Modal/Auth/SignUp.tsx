@@ -2,7 +2,7 @@ import { authModalState } from "@/atoms/authModalAtom";
 import {useCreateUserWithEmailAndPassword} from 'react-firebase-hooks/auth'
 import {auth} from '../../../Firebase/clientApp'
 import {FIREBASE_ERROR} from '../../../Firebase/error'
-import { Input, Button, Flex, Text, position } from "@chakra-ui/react";
+import { Input, Button, Flex, Text, Select } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { useSetRecoilState } from "recoil";
 
@@ -42,14 +42,16 @@ const SignUp: React.FC = () => {
   const setAuthModalState = useSetRecoilState(authModalState);
   return(
       <form onSubmit={onSubmit}>
-       <Input
+         <Flex  direction="row">
+        <Input
         required
-        name="email"
-        placeholder="Email"
-        type="email"
+        name="firstname"
+        placeholder="First Name"
+        type="text"
         mb={2}
+        mr="3pt"
         onChange={onChange}
-        fontSize ="11pt"
+        fontSize ="10pt"
         height="35px"
         _hover={{
           bg: "white",
@@ -65,6 +67,124 @@ const SignUp: React.FC = () => {
         bg="gray.50"
         >
         </Input>
+
+        <Input
+        required
+        name="lastname"
+        placeholder="Last Name"
+        type="text"
+        mb={2}
+        onChange={onChange}
+        fontSize ="10pt"
+        height="35px"
+        _hover={{
+          bg: "white",
+          border:"2px solid", 
+          borderColor: "brand.500", 
+        }}
+        _focus ={{
+          outline: "none",
+          bg:"white",
+          border: "1px solid", 
+          borderColor: "brand.900"
+        }}
+        bg="gray.50"
+        >
+        </Input>
+        </Flex>
+        <Flex direction="row">
+        <Input
+        required
+        name="age"
+        placeholder="Age"
+        type="number"
+        mb={2}
+        mr={1}
+        flex={0.72}
+        onChange={onChange}
+        fontSize ="10pt"
+        height="35px"
+        _hover={{
+          bg: "white",
+          border:"2px solid", 
+          borderColor: "brand.500", 
+        }}
+        _focus ={{
+          outline: "none",
+          bg:"white",
+          border: "1px solid", 
+          borderColor: "brand.900"
+        }}
+        bg="gray.50"
+        >
+        </Input>
+        <Select 
+        placeholder='Pronoun'
+         mb={2}
+         flex={1}
+         fontSize ="10pt"
+         height="35px"
+         _hover={{
+           bg: "white",
+           border:"2px solid", 
+           borderColor: "brand.500", 
+         }}
+         _focus ={{
+           outline: "none",
+           bg:"white",
+           border: "1px solid", 
+           borderColor: "brand.900"
+         }}
+         bg="gray.50"
+         color="gray.500">
+  <option value='male'>He/Him</option>
+  <option value='female'>She/Her</option>
+  <option value='others'>They/Them</option>
+</Select>
+</Flex>
+       <Input
+        required
+        name="email"
+        placeholder="Email"
+        type="email"
+        mb={2}
+        onChange={onChange}
+        fontSize ="10pt"
+        height="35px"
+        _hover={{
+          bg: "white",
+          border:"2px solid", 
+          borderColor: "brand.500", 
+        }}
+        _focus ={{
+          outline: "none",
+          bg:"white",
+          border: "1px solid", 
+          borderColor: "brand.900"
+        }}
+        bg="gray.50"
+        >
+        </Input>
+        <Select 
+        placeholder='Select Department'
+         mb={2}
+         fontSize ="10pt"
+         height="35px"
+         _hover={{
+           bg: "white",
+           border:"2px solid", 
+           borderColor: "brand.500", 
+         }}
+         _focus ={{
+           outline: "none",
+           bg:"white",
+           border: "1px solid", 
+           borderColor: "brand.900"
+         }}
+         bg="gray.50"
+         color="gray.500">
+  <option value=''>Option 1</option>
+</Select>
         <Input
         required
         name="password"
@@ -73,7 +193,7 @@ const SignUp: React.FC = () => {
         mb={2}
         height="35px"
         onChange={onChange}
-        fontSize ="11pt"
+        fontSize ="10pt"
         _hover={{
           bg: "white",
           border:"2px solid", 
@@ -95,7 +215,7 @@ const SignUp: React.FC = () => {
         mb={2}
         height="35px"
         onChange={onChange}
-        fontSize ="11pt"
+        fontSize ="10pt"
         _hover={{
           bg: "white",
           border:"2px solid", 

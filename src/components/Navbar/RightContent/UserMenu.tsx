@@ -7,12 +7,16 @@ import {FiMenu} from "react-icons/fi";
 import {ImProfile} from "react-icons/im"
 import {BiUserPlus, BiLogIn, BiLogOut} from "react-icons/bi"
 import { auth } from "@/Firebase/clientApp";
+import { authModalState } from "@/atoms/authModalAtom";
+import { useSetRecoilState } from "recoil";
 
 
 type UserMenuProps = {
   user?: User | null;
 };
+
 const UserMenu: React.FC<UserMenuProps> = ({user}) =>{
+  const setAuthModalState = useSetRecoilState(authModalState);
   return (
     <Menu>
   <MenuButton >
@@ -26,6 +30,7 @@ const UserMenu: React.FC<UserMenuProps> = ({user}) =>{
           <ChevronDownIcon color="gray.200" _hover={{color:"brand.800"}}/>
         </Flex>
       </Flex>
+      
     ) : (
       <Flex display={{base: "block", md: "none"}} align="center">
       <Flex align="center">
@@ -36,7 +41,7 @@ const UserMenu: React.FC<UserMenuProps> = ({user}) =>{
       </Flex>
     )}
   </MenuButton>
-  <MenuList width={5}>
+  <MenuList width={3} mt="6px"  >
   {user ? (
     <>
    
@@ -71,9 +76,10 @@ const UserMenu: React.FC<UserMenuProps> = ({user}) =>{
     <><MenuItem
             fontSize="10pt"
             fontWeight={700}
-            _hover={{bg: "gray.200", color: "brand.800" }}>
+            _hover={{bg: "gray.200", color: "brand.800" }}
+            onClick={() => setAuthModalState({open: true, view:"login"})}>
             <Flex align="center">
-              <Icon fontSize={31} mr={2} as={BiLogIn} />
+              <Icon fontSize={31} mr={2} as={BiLogIn}/>
               Log In 
             </Flex>
           </MenuItem>
@@ -82,9 +88,12 @@ const UserMenu: React.FC<UserMenuProps> = ({user}) =>{
             fontSize="10pt"
             fontWeight={700}
             _hover={{ color: "brand.800" }}
+            onClick={() => setAuthModalState({open: true, view:"signup"})
+            }
             >
               <Flex align="center">
-                <Icon fontSize={32} mr={1} ml="5pt" as={BiUserPlus} />
+                <Icon fontSize={32} mr={1} ml="5pt" as={BiUserPlus}
+                 />
                 Sign Up
               </Flex>
             </MenuItem></>
@@ -94,3 +103,4 @@ const UserMenu: React.FC<UserMenuProps> = ({user}) =>{
   )
 };
 export default UserMenu;
+

@@ -28,11 +28,11 @@ const AuthModal: React.FC = () => {
         <Modal isOpen={modalState.open} onClose={handleClose}>
           <ModalOverlay />
           <ModalContent>
-          <Flex direction="row" display="flex" borderEndRadius="15px">
-          <Flex  flex="1"  bg="black" justifyContent="center" alignItems="center">
+          <Flex  direction="row"  borderEndRadius="15px">
+          <Flex display={{ base: "none", sm: "flex" }} flex="1"  bg="black" justifyContent="center" alignItems="center">
             <Image src="images/logo-02.png" height="70px"></Image>
           </Flex>
-          <Flex width="70%">
+          <Flex flex="2">
             <ModalCloseButton />
             <ModalBody 
               display="flex"
@@ -50,7 +50,7 @@ const AuthModal: React.FC = () => {
                 direction="column"
                 align="center"
                 justify="center"
-                width="75%"
+                width="95%"
                 mt="10px">
                   {modalState.view === "login" || modalState.view === "signup" ?(
                     <>

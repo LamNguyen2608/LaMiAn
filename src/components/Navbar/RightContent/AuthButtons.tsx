@@ -17,7 +17,7 @@ const AuthButtons: React.FC = () => {
                 fontWeight='bold'
                 fontSize={{ base: "11px", sm: "13px" }}
                 height="30px"
-                display={{ base: "none", sm: "block" }}
+                display={{ base: "none", sm: "none" , md:"block" }}
                 width={{ base: "60px", sm: "110px" }}
                 borderRadius='60px'
                 bgGradient='linear(to-r, brand.900, brand.800)'
@@ -44,7 +44,7 @@ const AuthButtons: React.FC = () => {
                 </Box>
             </Box>
             <Box
-                display={{ base: "none", sm: "block" }}
+                display={{ base: "none", sm: "none", md:"block" }}
                 alignItems="center"
                 as='button'
                 color='white'
