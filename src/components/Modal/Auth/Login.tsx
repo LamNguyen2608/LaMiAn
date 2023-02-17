@@ -39,7 +39,7 @@ const Login:React.FC<LoginProps> = () => {
         <Input
         required
         name="email"
-        placeholder="email"
+        placeholder="Email"
         type="email"
         mb={2}
         onChange={onChange}
@@ -62,7 +62,7 @@ const Login:React.FC<LoginProps> = () => {
         <Input
         required
         name="password"
-        placeholder="password"
+        placeholder="Password"
         type="password"
         mb={2}
         height="35px"
@@ -121,7 +121,7 @@ const Login:React.FC<LoginProps> = () => {
             view: "resetPassword", 
             }))
           }>
-            Click here to resset
+            Click here
           </Text>
           </Flex>
         </Flex>
