@@ -1,5 +1,5 @@
 import { Flex, Icon, Image, Stack, Text } from '@chakra-ui/react';
-import { TriangleDownIcon, TriangleUpIcon } from '@chakra-ui/icons'
+import { TriangleDownIcon, TriangleUpIcon, ChatIcon, StarIcon } from '@chakra-ui/icons'
 import React from 'react';
 import moment from 'moment';
 
@@ -74,8 +74,29 @@ const IdeaItem: React.FC<IdeaItemProps> = ({
                             maxHeight="460px" />
                     </Flex>
                 </Stack>
+                <Flex ml={1} mb={0.5} color="gray.500">
+                    <Flex
+                        align="center"
+                        p="8px 10px"
+                        borderRadius={4}
+                        _hover={{ bg: "gray.200" }}
+                        cursor="pointer">
+                        <ChatIcon mr={2} />
+                        <Text fontSize="9pt">2023</Text>
+                    </Flex>
+                    <Flex
+                        align="center"
+                        p="8px 10px"
+                        borderRadius={4}
+                        _hover={{ bg: "gray.200" }}
+                        cursor="pointer">
+                        <StarIcon mr={2} color="gray.300" />
+                        <Text fontSize="9pt">Save</Text>
+                    </Flex>
+                </Flex>
+
             </Flex>
-        </Flex>
+        </Flex >
     )
 }
 export default IdeaItem;
