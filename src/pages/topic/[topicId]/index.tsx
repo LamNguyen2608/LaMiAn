@@ -6,6 +6,8 @@ import axios from 'axios'
 import Header from '@/components/Topic/Header';
 import PageContent from '@/components/Layout/PageContent';
 import IdeaItem from '@/components/Ideas/IdeaItem';
+import CreatePostLink from '@/components/Ideas/CreatePostForm';
+import CreatePostForm from '@/components/Ideas/CreatePostForm';
 type Topic = {
 
 }
@@ -20,7 +22,10 @@ const TopicPage: React.FC<TopicPageProps> = ({ topicData }) => {
             <Header topicData={topicData.data} />
             <div>Topic Page:  {topicData.data[3].name}</div>
             <PageContent>
-                <><IdeaItem></IdeaItem></>
+                <>
+                <CreatePostForm />
+                </>
+                
                 <><div>RHS</div></>
             </PageContent>
         </>
