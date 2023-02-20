@@ -41,7 +41,7 @@ const TextInput:React.FC<textInputProps> = ({textInputs, onChange, handCreatePos
       <Textarea
       name="body"
       fontSize="10pt"
-      value={textInputs.title}
+      value={textInputs.body}
       onChange={onChange}
       placeholder="Text (optional)"
       bg="gray.50"

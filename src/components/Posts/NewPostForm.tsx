@@ -9,6 +9,7 @@ import { BiLinkAlt } from "react-icons/bi";
 import { BsFillFileImageFill } from "react-icons/bs";
 import {AiFillFileText} from "react-icons/ai"
 import { FaPollH } from "react-icons/fa";
+import ImageUpload from "./PostForm/ImageUpload";
   
 
 type NewPostForm = {};
@@ -46,7 +47,18 @@ const NewPostForm: React.FC = () => {
     const [loading, setLoading] = useState(false)
     const handleCreatePost = async () => {};
 
-    const onSelectImage = () => {};
+    const onSelectImage = (event: React.ChangeEvent<HTMLInputElement>) => {
+      const reader = new FileReader();
+
+      if (event.target.files?.[0]){
+        reader.readAsDataURL(event.target.files[0]);
+      }
+
+      reader.onload = (readerEvent) => {
+        setSelectedFile(readerEvent.target?.result as string);
+
+      }
+    };
 
     const onTextChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
       ) => {
@@ -63,7 +75,11 @@ const NewPostForm: React.FC = () => {
    <Flex direction="column" bg="white" borderRadius={4} mt={2} >
     <Flex width="100%">
       {formTabs.map((item) => (
-        <TabItems item={item} selected={item.title === selectTab} setSelectedTab = {setSelectTab}/>
+        <TabItems 
+        key={item.title}
+        item={item} 
+        selected={item.title === selectTab} 
+        setSelectedTab = {setSelectTab}/>
       ))}
     </Flex>
     <Flex p={3}>
@@ -73,6 +89,13 @@ const NewPostForm: React.FC = () => {
       handCreatePost={handleCreatePost} 
       onChange = {onTextChange}
       loading={loading}/>
+      )}
+      {selectTab === 'Images & Video' && (
+        <ImageUpload 
+        selectedFile={selectedFile}
+        onSelectImage={onSelectImage}
+        setSelectedTab={setSelectTab}
+        setSelectedFile ={setSelectedFile}/>
       )}
     </Flex>
    </Flex>
