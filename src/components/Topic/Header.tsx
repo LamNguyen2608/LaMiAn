@@ -28,7 +28,7 @@ const Header: React.FC<HeaderProps> = ({ topicData }) => {
                     )}
                     <Flex padding="10px 16px">
                         <Flex direction='column' mr={6}>
-                            <Text fontWeight={800} fontSize="15pt">{topicData.name ? "Yes" : "An's Lies"}</Text>
+                            <Text fontWeight={800} fontSize="15pt">{topicData.name ? topicData.name : "An's Lies"}</Text>
                             <Text fontWeight={500} color="brand.900" fontSize="9pt">60 ideas</Text>
                         </Flex>
                         <Button
