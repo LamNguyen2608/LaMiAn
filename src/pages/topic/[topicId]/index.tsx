@@ -7,7 +7,7 @@ import Header from '@/components/Topic/Header';
 import PageContent from '@/components/Layout/PageContent';
 import IdeaItem from '@/components/Ideas/IdeaItem';
 import { Topic } from '@/atoms/topicAtom';
-import CreateIdeaLink from '@/components/Topic/CreateIdeaLink';
+import CreatePostForm from '@/components/Ideas/CreatePostForm';
 
 
 type TopicPageProps = {
@@ -21,7 +21,7 @@ const TopicPage: React.FC<TopicPageProps> = ({ topicData }) => {
             <Header topicData={topicData} />
             <PageContent>
                 <>
-                    <CreateIdeaLink />
+                    <CreatePostForm />
                     {topicData.ideas.map((item) => {
                         <IdeaItem idea={item} />
                     })}

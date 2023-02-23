@@ -7,13 +7,13 @@ import { auth } from "@/Firebase/clientApp";
 
 const submit: React.FC = () => {
   const [user] = useAuthState(auth);
-  return(
+  return (
     <PageContent>
       <>
-      <Box p="14px 8px" borderBottom="2px solid" borderColor="white">
-        <Text fontSize={22} fontWeight={900} >Create a post</Text>
-      </Box>
-      {user && <NewPostForm user={user}/>}
+        <Box p="14px 8px" borderBottom="2px solid" borderColor="white">
+          <Text fontSize={22} fontWeight={900} >Create a post</Text>
+        </Box>
+        {user && <NewPostForm user={user} />}
       </>
       <></>
     </PageContent>
