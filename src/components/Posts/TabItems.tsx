@@ -29,7 +29,7 @@ const TabItems:React.FC<TabItemProps> = ({item, selected, setSelectedTab}) => {
       </Flex>
       <Text fontSize="10pt">{item.title}</Text>
     </Flex>
-  )
-}
+  );
+};
 
 export default TabItems;

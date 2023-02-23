@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import PageContent from "@/components/Layout/PageContent";
 import { Flex, Icon } from "@chakra-ui/react";
 
@@ -10,9 +10,17 @@ import { BsFillFileImageFill } from "react-icons/bs";
 import {AiFillFileText} from "react-icons/ai"
 import { FaPollH } from "react-icons/fa";
 import ImageUpload from "./PostForm/ImageUpload";
+import { Post } from "@/atoms/postsAtom";
+import { User } from "firebase/auth";
+import { useRouter } from "next/router";
+import { addDoc, collection, serverTimestamp, Timestamp, updateDoc } from "firebase/firestore";
+import { firestore, storage } from "@/Firebase/clientApp";
+import { getDownloadURL, ref, uploadString } from "firebase/storage";
   
 
-type NewPostForm = {};
+type NewPostForm = {
+  user: User ;
+};
 
 const formTabs : TabItem[] =[
   {
@@ -37,15 +45,52 @@ export type TabItem = {
   title: string;
   icon: typeof Icon.arguments;
 };
-const NewPostForm: React.FC = () => {
+const NewPostForm: React.FC<NewPostForm> = ({user}) => {
+    const router = useRouter();
     const [selectTab, setSelectTab] = useState(formTabs[0].title);
     const [textInputs, setTextInputs] = useState({
       title: "", 
       body:"", 
     });
     const [selectedFile, setSelectedFile] = useState<string>();
-    const [loading, setLoading] = useState(false)
-    const handleCreatePost = async () => {};
+    const [loading, setLoading] = useState(false);
+    const handleCreatePost = async () => {
+      setLoading(true);
+      const {departmentId} = router.query;
+      //create new post object => type post
+      const newPost: Post = {
+        // departmentId: departmentId as string,
+        employeeId: user?.uid,
+        employeeName: user.email!,
+        title: textInputs.title,
+        body: textInputs.body,
+        numberOfComments: 0,
+        voteStatus: 0,
+        createdTime: serverTimestamp() as Timestamp,
+      };
+
+      try{
+        //store post in firebase
+        const postDocRef = await addDoc(collection(firestore, "Posts"), newPost);
+        //image URL
+        if (selectedFile){
+          const imageRef = ref(storage, `Posts/${postDocRef.id}/image`);
+          await uploadString(imageRef, selectedFile, 'data_url')
+          const downloadURL = await getDownloadURL(imageRef);
+
+          //update post dock by adding imageURL
+          await updateDoc(postDocRef,{
+            imageURL: downloadURL,
+          });
+        }
+      }catch (error:any){
+        console.log("handleCreatePost error check", error.message)
+      };
+      setLoading(false);
+
+      //redirect the user back to the home page using the router
+      // router.back();
+    };
 
     const onSelectImage = (event: React.ChangeEvent<HTMLInputElement>) => {
       const reader = new FileReader();
@@ -86,7 +131,7 @@ const NewPostForm: React.FC = () => {
       {selectTab === "Post" && (
       <TextInput 
       textInputs={textInputs} 
-      handCreatePost={handleCreatePost} 
+      handleCreatePost={handleCreatePost} 
       onChange = {onTextChange}
       loading={loading}/>
       )}
@@ -95,7 +140,8 @@ const NewPostForm: React.FC = () => {
         selectedFile={selectedFile}
         onSelectImage={onSelectImage}
         setSelectedTab={setSelectTab}
-        setSelectedFile ={setSelectedFile}/>
+        setSelectedFile ={setSelectedFile}
+        />
       )}
     </Flex>
    </Flex>

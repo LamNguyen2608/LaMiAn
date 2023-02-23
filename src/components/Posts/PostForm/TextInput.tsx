@@ -9,11 +9,11 @@ type textInputProps = {
   onChange: (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => void;
-  handCreatePost: () => void;
+  handleCreatePost: () => void;
   loading:boolean;
 };
 
-const TextInput:React.FC<textInputProps> = ({textInputs, onChange, handCreatePost, loading}) => {
+const TextInput:React.FC<textInputProps> = ({textInputs, onChange, handleCreatePost, loading}) => {
   return(
     <Stack spacing={3} width="100%">
       <Input
@@ -71,9 +71,9 @@ const TextInput:React.FC<textInputProps> = ({textInputs, onChange, handCreatePos
         spinnerPlacement="start"
         isLoading ={loading}
         _loading= {{opacity:2}}
-        onClick={handCreatePost}>Post</Button>
+        onClick={handleCreatePost}>Post</Button>
       </Flex>
     </Stack>
-  )
-}
+  );
+};
 export default TextInput;
