@@ -2,9 +2,10 @@ import { Flex, Icon, Image, Stack, Text } from '@chakra-ui/react';
 import { TriangleDownIcon, TriangleUpIcon, ChatIcon, StarIcon } from '@chakra-ui/icons'
 import React from 'react';
 import moment from 'moment';
+import { Idea } from '@/atoms/ideaAtom';
 
 type IdeaItemProps = {
-    // idea: any;
+    idea: Idea;
     // userIsCreator: boolean;
     // userVoteValue?: number;
     // onVote: () => {};
@@ -13,7 +14,7 @@ type IdeaItemProps = {
 };
 
 const IdeaItem: React.FC<IdeaItemProps> = ({
-    // idea,
+    idea,
     // userIsCreator,
     // userVoteValue,
     // onVote,
