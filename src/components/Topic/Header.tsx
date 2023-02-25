@@ -1,9 +1,10 @@
 import { Box, Button, Flex, Icon, Image, Text } from '@chakra-ui/react';
 import React from 'react';
 import { StarIcon } from '@chakra-ui/icons';
+import { Topic } from '@/atoms/topicAtom';
 
 type HeaderProps = {
-    topicData: any;
+    topicData: Topic;
 };
 
 const Header: React.FC<HeaderProps> = ({ topicData }) => {
@@ -28,8 +29,8 @@ const Header: React.FC<HeaderProps> = ({ topicData }) => {
                     )}
                     <Flex padding="10px 16px">
                         <Flex direction='column' mr={6}>
-                            <Text fontWeight={800} fontSize="15pt">{topicData.name ? "Yes" : "An's Lies"}</Text>
-                            <Text fontWeight={500} color="brand.900" fontSize="9pt">60 ideas</Text>
+                            <Text fontWeight={800} fontSize="15pt">{topicData.name ? topicData.name : "An's Lies"}</Text>
+                            <Text fontWeight={500} color="brand.900" fontSize="9pt">{topicData.ideas.length} ideas </Text>
                         </Flex>
                         <Button
                             variant={isJoined ? "secondary" : "primary"}

@@ -18,11 +18,11 @@ const CreatePostForm: React.FC<CreatePostProps> = () => {
   const setAuthModalState = useSetRecoilState(authModalState);
   const onClick = () => {
     if (!user) {
-      setAuthModalState({open:true, view:"login"});
+      setAuthModalState({ open: true, view: "login" });
       return;
     }
-    const {topicId} = router.query;
-    router.push('/topic/${topicId}/submit');
+    const topicId = router.query.topicId;
+    router.push('/topic/' + topicId as string + '/submit');
   };
   return (
     <Flex

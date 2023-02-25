@@ -1,32 +1,31 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { GetServerSidePropsContext } from 'next'
 import safeJsonStringify from 'safe-json-stringify'
 import { stringify } from 'querystring';
 import axios from 'axios'
 import Header from '@/components/Topic/Header';
 import PageContent from '@/components/Layout/PageContent';
-import IdeaItem from '@/components/Ideas/IdeaItem';
-import CreatePostLink from '@/components/Ideas/CreatePostForm';
-import CreatePostForm from '@/components/Ideas/CreatePostForm';
-type Topic = {
-
-}
+import IdeaItem from '@/components/Posts/IdeaItem';
+import { Topic } from '@/atoms/topicAtom';
+import CreatePostForm from '@/components/Posts/CreatePostForm';
+import TopicRHS from '@/components/Topic/TopicRHS';
 type TopicPageProps = {
-    topicData: any;
+    topicData: Topic;
 };
 
 const TopicPage: React.FC<TopicPageProps> = ({ topicData }) => {
-    console.log(topicData);
+    console.log("===>", topicData.ideas);
     return (
         <>
-            <Header topicData={topicData.data} />
-            <div>Topic Page:  {topicData.data[3].name}</div>
+            <Header topicData={topicData} />
             <PageContent>
                 <>
-                <CreatePostForm />
+                    <CreatePostForm />
+                    {topicData.ideas.map((item) => (
+                        <IdeaItem idea={item} />
+                    ))}
                 </>
-                
-                <><div>RHS</div></>
+                <><TopicRHS /></>
             </PageContent>
         </>
     )
@@ -35,20 +34,16 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     //get topic data and pass it to cline
     //context.query.topicId as string => getting id from route
     try {
-        const response = await axios.get('https://user-api-rfbg.onrender.com/customer/');
-        console.log(response);
+        const response = await axios.get(process.env.REACT_APP_BACKEND_ENDPOINT + 'topic/' + context.query.topicId as string);
+        console.log(response.data);
         return {
             props: {
-                topicData: JSON.parse(safeJsonStringify({ ...response }))
+                topicData: JSON.parse(safeJsonStringify({ ...response.data }))
             }
         }
     } catch (error) {
         console.log(error)
-        return {
-            props: {
-                topicData: error
-            }
-        }
+        return error;
     }
 }
 export default TopicPage;
