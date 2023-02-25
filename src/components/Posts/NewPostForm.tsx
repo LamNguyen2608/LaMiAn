@@ -54,7 +54,7 @@ const NewPostForm: React.FC<NewPostForm> = ({user}) => {
       body:"", 
     });
     const [selectedFile, setSelectedFile] = useState<string>();
-    const [selectedCategory, setSelectedCategory] = useState<string[]>();
+    const [selectedCategory, setSelectedCategory] = useState<{value: string; label: string}[]>();
     const [loading, setLoading] = useState(false);
     const handleCreatePost = async () => {
       setLoading(true);
@@ -66,6 +66,7 @@ const NewPostForm: React.FC<NewPostForm> = ({user}) => {
         employeeName: user.email!,
         title: textInputs.title,
         body: textInputs.body,
+        cat: selectedCategory,
         numberOfComments: 0,
         voteStatus: 0,
         createdTime: serverTimestamp() as Timestamp,

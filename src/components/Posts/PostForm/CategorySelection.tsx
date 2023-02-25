@@ -7,17 +7,19 @@ import { Button, Flex, Stack, Text } from "@chakra-ui/react";
 
 type CategoryProps = {
     setSelectedTab: (value: string) => void;
-    selectedCategory?: string[]; 
-    setSelectedCategory: (value: string[]) => void
+    selectedCategory?: {value: string; label: string}[]; 
+    setSelectedCategory: (value: {value: string; label: string}[] ) => void;
   };
-const CategorySelection:React.FC<CategoryProps> = ({setSelectedTab, selectedCategory, setSelectedCategory}) => {
+  
+const CategorySelection:React.FC<CategoryProps> = ({setSelectedTab, selectedCategory,setSelectedCategory}) => {
    
    
-    const options = [
+    const cat_selections = [
         { label: 'Green', value: 'green' },
         { label: 'Green-Yellow', value: 'greenyellow' },
         { label: 'Red', value: 'red' },
       ]
+     
     return(
         <Stack spacing={3} width="100%" align="center">
           <Text>You can select or search your idea's category</Text>
@@ -30,10 +32,10 @@ const CategorySelection:React.FC<CategoryProps> = ({setSelectedTab, selectedCate
               isMulti
               placeholder="Choose your category..."
               size="md"
-              options={options}
+              options={cat_selections}
               value={selectedCategory}
+              onChange={(value) => {setSelectedCategory(value)}}
               closeMenuOnSelect={false}
-              onChange= {(value) => {setSelectedCategory(value)}}
               ></Select>
              </Flex>
       <Flex justify="flex-end">
