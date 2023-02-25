@@ -54,6 +54,7 @@ const NewPostForm: React.FC<NewPostForm> = ({user}) => {
       body:"", 
     });
     const [selectedFile, setSelectedFile] = useState<string>();
+    const [selectedCategory, setSelectedCategory] = useState<string[]>();
     const [loading, setLoading] = useState(false);
     const handleCreatePost = async () => {
       setLoading(true);
@@ -136,7 +137,7 @@ const NewPostForm: React.FC<NewPostForm> = ({user}) => {
       onChange = {onTextChange}
       loading={loading}/>
       )}
-      {selectTab === 'Images & Video' && (
+      {selectTab === 'File Upload' && (
         <ImageUpload 
         selectedFile={selectedFile}
         onSelectImage={onSelectImage}
@@ -144,8 +145,11 @@ const NewPostForm: React.FC<NewPostForm> = ({user}) => {
         setSelectedFile ={setSelectedFile}
         />
       )}
-      {selectTab === 'Category Selection' && (
-        <CategorySelection  setSelectedTab={setSelectTab} />
+      {selectTab === 'Category' && (
+        <CategorySelection  
+        setSelectedTab={setSelectTab} 
+        setSelectedCategory={setSelectedCategory}
+        selectedCategory={selectedCategory}/>
       )}
       
 
