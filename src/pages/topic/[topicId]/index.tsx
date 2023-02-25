@@ -1,32 +1,31 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { GetServerSidePropsContext } from 'next'
 import safeJsonStringify from 'safe-json-stringify'
 import { stringify } from 'querystring';
 import axios from 'axios'
 import Header from '@/components/Topic/Header';
 import PageContent from '@/components/Layout/PageContent';
-import IdeaItem from '@/components/Ideas/IdeaItem';
+import IdeaItem from '@/components/Posts/IdeaItem';
 import { Topic } from '@/atoms/topicAtom';
-import CreatePostForm from '@/components/Ideas/CreatePostForm';
-
-
+import CreatePostForm from '@/components/Posts/CreatePostForm';
+import TopicRHS from '@/components/Topic/TopicRHS';
 type TopicPageProps = {
     topicData: Topic;
 };
 
 const TopicPage: React.FC<TopicPageProps> = ({ topicData }) => {
-    console.log(topicData);
+    console.log("===>", topicData.ideas);
     return (
         <>
             <Header topicData={topicData} />
             <PageContent>
                 <>
                     <CreatePostForm />
-                    {topicData.ideas.map((item) => {
+                    {topicData.ideas.map((item) => (
                         <IdeaItem idea={item} />
-                    })}
+                    ))}
                 </>
-                <><div>RHS</div></>
+                <><TopicRHS /></>
             </PageContent>
         </>
     )

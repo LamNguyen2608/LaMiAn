@@ -30,6 +30,7 @@ const IdeaItem: React.FC<IdeaItemProps> = ({
             borderRadius={4}
             _hover={{ borderColor: "gray.500" }}
             cursor='pointer'
+            marginBottom={2}
         //onClick={onSelectPost}
         >
             <Flex direction='column'
@@ -44,7 +45,7 @@ const IdeaItem: React.FC<IdeaItemProps> = ({
                     cursor="pointer"
                 //  onClick={onVote} 
                 />
-                <Text fontSize="9pt">1702</Text>
+                <Text fontSize="9pt">{idea.reactions?.length}</Text>
                 <TriangleDownIcon
                     color="gray.300"
                     fontSize={22}
@@ -57,21 +58,18 @@ const IdeaItem: React.FC<IdeaItemProps> = ({
                     <Stack direction="row" spacing={0.6} align="center" fontSize="9pt">
                         {/*Home Page Check */}
                         <Text>Posted by LaMiAn {" "}
-                            {moment(new Date(12 * 1000)).fromNow()}
+                            {moment(new Date(12 * 100)).fromNow()}
                         </Text>
                     </Stack>
                     <Text fontSize="12pt" fontWeight={600}>
-                        Shocking!! An bought a 1.2M suit
+                        {idea.name}
                     </Text>
                     <Text fontSize="10pt" fontWeight={500}>
-                        For his ex-girlfriend's (from grade 5 :D?) birthday held in "Loi Nho Vao Doi",
-                        he decided to buy himself a new suit priced at 1.2M even though he refused
-                        to buy his dear friend 2 portions of chicken rice. He even considered to buy
-                        her a piece of jewelry roughly 1M.
+                        {idea.body}
                     </Text>
                     <Flex justify="center" align="center" p={2}>
                         <Image
-                            src="https://scontent.fsgn5-5.fna.fbcdn.net/v/t1.15752-9/331234073_1211235959523767_3550015648506473687_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=ae9488&_nc_ohc=UDABb4d-XYQAX-z9eiF&_nc_oc=AQl7U-A5D7RAJIFBE0oKfZFL15DDJ7VNig1e7pdRJEIsZg-eUObxj-VrsWzlxYs8k7Q&_nc_ht=scontent.fsgn5-5.fna&oh=03_AdTz9yxRelYipQ9rMZaq4RwdKyq3WLQ-xjSfSvdDSNBFTQ&oe=641728B9"
+                            src={idea.attached_path}
                             maxHeight="460px" />
                     </Flex>
                 </Stack>
