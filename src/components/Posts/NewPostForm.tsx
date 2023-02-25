@@ -5,7 +5,7 @@ import { Flex, Icon } from "@chakra-ui/react";
 import TabItems from "./TabItems";
 import { async } from "@firebase/util";
 import TextInput from "./PostForm/TextInput";
-import { BiLinkAlt } from "react-icons/bi";
+import { MdCategory } from "react-icons/md";
 import { BsFillFileImageFill } from "react-icons/bs";
 import { AiFillFileText } from "react-icons/ai"
 import { FaPollH } from "react-icons/fa";
@@ -18,6 +18,7 @@ import { getDownloadURL, ref, uploadString } from "firebase/storage";
 import { Idea } from "@/atoms/ideaAtom";
 import uuid from "react-uuid";
 import axios from "axios";
+import CategorySelection from "./PostForm/CategorySelection";
 
 
 type NewPostForm = {
@@ -30,12 +31,12 @@ const formTabs: TabItem[] = [
     icon: AiFillFileText
   },
   {
-    title: 'Images & Video',
+    title: 'File Upload',
     icon: BsFillFileImageFill
   },
   {
-    title: 'Link',
-    icon: BiLinkAlt
+    title: 'Category',
+    icon: MdCategory
   },
   {
     title: 'Poll',
@@ -55,19 +56,22 @@ const NewPostForm: React.FC<NewPostForm> = ({ user }) => {
     body: "",
   });
   const [selectedFile, setSelectedFile] = useState<string>();
+  const [selectedCategory, setSelectedCategory] = useState<{ value: string; label: string }[]>();
   const [loading, setLoading] = useState(false);
   const handleCreatePost = async () => {
     setLoading(true);
-    const { topicId } = router.query;
+    const { departmentId } = router.query;
     //create new post object => type post
-    const newPost: Idea = {
-      name: textInputs.title,
+    const newPost: Post = {
+      // departmentId: departmentId as string,
+      employeeId: user?.uid,
+      employeeName: user.email!,
+      title: textInputs.title,
       body: textInputs.body,
-      date: "2023-02-19T17:00:00.000+00:00",
-      modify_date: "2023-02-19T17:00:00.000+00:00",
-      attached_path: null,
-      client_id: user?.uid,
-      topic_id: parseInt(topicId as string)
+      cat: selectedCategory,
+      numberOfComments: 0,
+      voteStatus: 0,
+      createdTime: serverTimestamp() as Timestamp,
     };
 
     try {
@@ -140,7 +144,7 @@ const NewPostForm: React.FC<NewPostForm> = ({ user }) => {
             setSelectedTab={setSelectTab} />
         ))}
       </Flex>
-      <Flex p={3}>
+      <Flex p={3} width="100%" >
         {selectTab === "Post" && (
           <TextInput
             textInputs={textInputs}
@@ -148,7 +152,7 @@ const NewPostForm: React.FC<NewPostForm> = ({ user }) => {
             onChange={onTextChange}
             loading={loading} />
         )}
-        {selectTab === 'Images & Video' && (
+        {selectTab === 'File Upload' && (
           <ImageUpload
             selectedFile={selectedFile}
             onSelectImage={onSelectImage}
@@ -156,6 +160,14 @@ const NewPostForm: React.FC<NewPostForm> = ({ user }) => {
             setSelectedFile={setSelectedFile}
           />
         )}
+        {selectTab === 'Category' && (
+          <CategorySelection
+            setSelectedTab={setSelectTab}
+            setSelectedCategory={setSelectedCategory}
+            selectedCategory={selectedCategory} />
+        )}
+
+
       </Flex>
     </Flex>
   );
