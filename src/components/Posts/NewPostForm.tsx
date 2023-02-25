@@ -60,18 +60,16 @@ const NewPostForm: React.FC<NewPostForm> = ({ user }) => {
   const [loading, setLoading] = useState(false);
   const handleCreatePost = async () => {
     setLoading(true);
-    const { departmentId } = router.query;
+    const { topicId } = router.query;
     //create new post object => type post
-    const newPost: Post = {
-      // departmentId: departmentId as string,
-      employeeId: user?.uid,
-      employeeName: user.email!,
-      title: textInputs.title,
+    const newPost: Idea = {
+      name: textInputs.title,
       body: textInputs.body,
-      cat: selectedCategory,
-      numberOfComments: 0,
-      voteStatus: 0,
-      createdTime: serverTimestamp() as Timestamp,
+      date: "2023-02-19T17:00:00.000+00:00",
+      modify_date: "2023-02-19T17:00:00.000+00:00",
+      attached_path: null,
+      client_id: user?.uid,
+      topic_id: parseInt(topicId as string)
     };
 
     try {
