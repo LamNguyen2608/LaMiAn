@@ -5,7 +5,7 @@ import { Flex, Icon } from "@chakra-ui/react";
 import TabItems from "./TabItems";
 import { async } from "@firebase/util";
 import TextInput from "./PostForm/TextInput";
-import { BiLinkAlt } from "react-icons/bi";
+import { MdCategory } from "react-icons/md";
 import { BsFillFileImageFill } from "react-icons/bs";
 import {AiFillFileText} from "react-icons/ai"
 import { FaPollH } from "react-icons/fa";
@@ -16,6 +16,7 @@ import { useRouter } from "next/router";
 import { addDoc, collection, serverTimestamp, Timestamp, updateDoc } from "firebase/firestore";
 import { firestore, storage } from "@/Firebase/clientApp";
 import { getDownloadURL, ref, uploadString } from "firebase/storage";
+import CategorySelection from "./PostForm/CategorySelection";
   
 
 type NewPostForm = {
@@ -28,12 +29,12 @@ const formTabs : TabItem[] =[
   icon: AiFillFileText
 },
 {
-  title:'Images & Video',
+  title:'File Upload',
   icon: BsFillFileImageFill
 },  
 {
-  title:'Link',
-  icon: BiLinkAlt
+  title:'Category',
+  icon: MdCategory
 },  
 {
   title:'Poll',
@@ -127,7 +128,7 @@ const NewPostForm: React.FC<NewPostForm> = ({user}) => {
         setSelectedTab = {setSelectTab}/>
       ))}
     </Flex>
-    <Flex p={3}>
+    <Flex p={3} width="100%" >
       {selectTab === "Post" && (
       <TextInput 
       textInputs={textInputs} 
@@ -143,6 +144,11 @@ const NewPostForm: React.FC<NewPostForm> = ({user}) => {
         setSelectedFile ={setSelectedFile}
         />
       )}
+      {selectTab === 'Category Selection' && (
+        <CategorySelection  setSelectedTab={setSelectTab} />
+      )}
+      
+
     </Flex>
    </Flex>
   );
