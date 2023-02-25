@@ -13,7 +13,9 @@ const submit: React.FC = () => {
       <Box p="14px 8px" borderBottom="2px solid" borderColor="white">
         <Text fontSize={22} fontWeight={900} >Create a post</Text>
       </Box>
+      <Box height={400}>
       {user && <NewPostForm user={user}/>}
+      </Box>
       </>
       <></>
     </PageContent>

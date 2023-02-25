@@ -9,6 +9,7 @@ export type Post ={
   employeeName: string; 
   title: string;
   body: string;
+  cat?: {value: string; label: string}[];
   numberOfComments: number;
   voteStatus: number;
   imageURL?: string;
