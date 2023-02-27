@@ -11,7 +11,7 @@ const PageContent: React.FC<PageContentProps> = ({ children }) => {
         <Flex
             justify="center"
             p="16px 0px"
-
+           
         >
             <Flex
                 justify="center"
