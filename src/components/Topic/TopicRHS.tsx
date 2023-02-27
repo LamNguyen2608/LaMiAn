@@ -7,7 +7,7 @@ type TopicRHSProps = {
 };
 
 const TopicRHS: React.FC<TopicRHSProps> = ({ topicData }) => {
-
+    console.log(topicData);
     return (
         <Flex
             border="1px solid"
@@ -39,9 +39,9 @@ const TopicRHS: React.FC<TopicRHSProps> = ({ topicData }) => {
                 width="100%"
             >
                 <Text m={2}>Members: </Text>
-                <Text m={2}>Created at: </Text>
-                <Text m={2}>Closure date:</Text>
-                <Text m={2}>Final closure date: </Text>
+                <Text m={2}>Created at: {topicData.modifyDate}</Text>
+                <Text m={2}>Closure date: {topicData.idea_closure_date}</Text>
+                <Text m={2}>Final closure date: {topicData.final_closure_date}</Text>
             </Flex>
 
         </Flex>

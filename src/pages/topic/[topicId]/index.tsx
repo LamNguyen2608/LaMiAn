@@ -5,10 +5,11 @@ import { stringify } from 'querystring';
 import axios from 'axios'
 import Header from '@/components/Topic/Header';
 import PageContent from '@/components/Layout/PageContent';
-import IdeaItem from '@/components/Posts/IdeaItem';
 import { Topic } from '@/atoms/topicAtom';
 import CreatePostForm from '@/components/Posts/CreatePostForm';
 import TopicRHS from '@/components/Topic/TopicRHS';
+import IdeaItem from '@/components/Posts/IdeaItem';
+
 type TopicPageProps = {
     topicData: Topic;
 };
@@ -25,7 +26,7 @@ const TopicPage: React.FC<TopicPageProps> = ({ topicData }) => {
                         <IdeaItem idea={item} />
                     ))}
                 </>
-                <><TopicRHS /></>
+                <><TopicRHS topicData={topicData} /></>
             </PageContent>
         </>
     )
