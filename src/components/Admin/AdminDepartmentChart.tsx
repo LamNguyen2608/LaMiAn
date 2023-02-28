@@ -28,14 +28,12 @@ const AdminDepartmentChart: React.FC = () => {
   const sortedData = data.sort((a,b) => a.ideas - b.ideas)
     return(
         <>
-        <Box p="14px 8px" borderBottom="2px solid" borderColor="white">
+        <Box p="14px 8px" >
           <Text fontSize={22} fontWeight={900} >Top 5 Department</Text>
         </Box>
         <Flex
-        border='1px solid'
-        direction="column"
-        borderColor='brand.900'>
-         <ResponsiveContainer width="100%" aspect={0.9} >
+        direction="column">
+         <ResponsiveContainer width="95%" height={400}>
         <BarChart
           width={100}
           height={100}
@@ -46,7 +44,7 @@ const AdminDepartmentChart: React.FC = () => {
           <XAxis fontSize={12} tickMargin={8} dataKey="dep_name" />
           <YAxis fontSize={12} />
           <Tooltip />
-          <Legend />
+          <Legend wrapperStyle={{fontSize: "12px"}} />
           <Bar dataKey="ideas" fill="#8884d8" />
         </BarChart>
       </ResponsiveContainer>

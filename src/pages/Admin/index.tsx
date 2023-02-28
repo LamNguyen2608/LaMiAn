@@ -4,6 +4,7 @@ import AdminTopic from '@/components/Admin/AdminTopic';
 import AdminAccessChart from '@/components/Admin/AdminAccessChart';
 import AdminDepartmentChart from '@/components/Admin/AdminDepartmentChart';
 import AdminCategoryChart from '@/components/Admin/AdminCategoryChart';
+import AdminButtonFunc from '@/components/Admin/AdminButtonFunc';
 
 
 const TopicPage: React.FC = ({ }) => {
@@ -25,7 +26,7 @@ const TopicPage: React.FC = ({ }) => {
                 <AdminCategoryChart />
                 </>
                 <>
-                <div>lower second right hand</div>
+                <AdminButtonFunc />
                 </>
             </AdminPageContent>
         </>

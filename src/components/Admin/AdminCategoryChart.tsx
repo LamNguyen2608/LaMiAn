@@ -42,25 +42,22 @@ const data = [
 const AdminCategoryChart: React.FC = () => {
     return(
         <>
-        <Box p="14px 8px" borderBottom="2px solid" borderColor="white">
+        <Box p="14px 8px" >
           <Text fontSize={22} fontWeight={900} >Category</Text>
         </Box>
         <Flex
         align="center"
-        p="5px 0px"
-        border='1px solid'
-        direction="column"
-        borderColor='brand.900'>
-         <ResponsiveContainer width={400} height={400}>
-                            <PieChart width={600} height={600}>
-                                <Legend fontSize={12} layout="horizontal" verticalAlign="bottom"   />
+        direction="column">
+         <ResponsiveContainer height={400}>
+                            <PieChart >
+                                <Legend wrapperStyle={{fontSize: "12px"}} layout="horizontal" verticalAlign="bottom"   />
                                 <Pie
                                     data={data}
                                     cx="50%"
                                     cy="50%"
                                     labelLine={false}
                                     label={renderCustomizedLabel}
-                                    outerRadius={140}
+                                    outerRadius="90%"
                                     fill="#8884d8"
                                     dataKey="ideas"
 

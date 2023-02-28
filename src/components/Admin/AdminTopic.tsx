@@ -4,15 +4,14 @@ import React from "react";
 const AdminTopic: React.FC = () => {
     return(
         <>
-        <Box p="14px 8px" borderBottom="2px solid" borderColor="white">
+        <Box p="14px 8px" >
           <Text fontSize={22} fontWeight={900} >Topics</Text>
         </Box>
         <Flex
         align="center"
         p="5px 0px"
-        border='1px solid'
         direction="column"
-        borderColor='brand.900'>
+        >
         <TableContainer>
   <Table size='sm' variant='striped' colorScheme='pink'>
     <Thead>

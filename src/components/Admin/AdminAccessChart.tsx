@@ -35,15 +35,13 @@ const data = [
 const AdminAccessChart : React.FC = () => {
     return(
         <>
-        <Box p="14px 8px" borderBottom="2px solid" borderColor="white">
+        <Box p="14px 8px" >
           <Text fontSize={22} fontWeight={900} >Access Chart</Text>
         </Box>
         <Flex
         align="center"
         p="5px 0px"
-        border='1px solid'
-        direction="column"
-        borderColor='brand.900'>
+        direction="column">
          <ResponsiveContainer width="90%" aspect={3}>
         <LineChart
           width={500}
@@ -60,7 +58,7 @@ const AdminAccessChart : React.FC = () => {
           <XAxis fontSize={13} tickMargin={12} dataKey="date" />
           <YAxis fontSize={13} />
           <Tooltip />
-          <Legend/>
+          <Legend wrapperStyle={{fontSize: "12px"}}/>
           <Line name="Total of Access" type="monotone" dataKey="access" stroke="#8884d8" activeDot={{ r: 8 }} />
         </LineChart>
       </ResponsiveContainer>
