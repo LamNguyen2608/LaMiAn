@@ -30,7 +30,7 @@ const AdminButtonFunc: React.FC = () => {
                 fontWeight='bold'
                 fontSize={{ base: "11px", sm: "13px" }}
                 height={{ base: "80px", sm: "110px", md:"150px" }}
-                width={{ base: "80px", sm: "110px", md:"250px" }}
+                width={{ base: "80px", sm: "110px", md:"230px" }}
                 borderRadius='10px'
                 bgGradient='linear(to-r, brand.900, brand.800)'
                 _hover={{
@@ -51,7 +51,7 @@ const AdminButtonFunc: React.FC = () => {
                 fontWeight='bold'
                 fontSize={{ base: "11px", sm: "13px" }}
                 height={{ base: "80px", sm: "110px", md:"150px" }}
-                width={{ base: "80px", sm: "110px", md:"250px" }}
+                width={{ base: "80px", sm: "110px", md:"230px" }}
                 borderRadius='10px'
                 bgGradient='linear(to-r, brand.900, brand.800)'
                 _hover={{
@@ -78,7 +78,7 @@ const AdminButtonFunc: React.FC = () => {
                 fontWeight='bold'
                 fontSize={{ base: "11px", sm: "13px" }}
                 height={{ base: "80px", sm: "110px", md:"150px" }}
-                width={{ base: "80px", sm: "110px", md:"250px" }}
+                width={{ base: "80px", sm: "110px", md:"230px" }}
                 borderRadius='10px'
                 bgGradient='linear(to-r, brand.900, brand.800)'
                 _hover={{
@@ -98,7 +98,7 @@ const AdminButtonFunc: React.FC = () => {
                 fontWeight='bold'
                 fontSize={{ base: "11px", sm: "13px" }}
                 height={{ base: "80px", sm: "110px", md:"150px" }}
-                width={{ base: "80px", sm: "110px", md:"250px" }}
+                width={{ base: "80px", sm: "110px", md:"230px" }}
                 borderRadius='10px'
                 bgGradient='linear(to-r, brand.900, brand.800)'
                 _hover={{
@@ -108,7 +108,7 @@ const AdminButtonFunc: React.FC = () => {
                 onClick={() =>{}}
             >
               <Icon as={BsInfoCircleFill} fontSize={70} color="white" />
-              <Text fontSize={20} fontWeight={900} >Category</Text>
+              <Text fontSize={20} fontWeight={900} >Info</Text>
             </Box>
         </Flex>
         </Flex>

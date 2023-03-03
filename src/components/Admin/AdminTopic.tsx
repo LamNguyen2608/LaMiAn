@@ -1,16 +1,17 @@
 import { Box, Flex, Table, TableContainer, Tbody, Td, Text, Tfoot, Th, Thead, Tr } from "@chakra-ui/react";
+import router from "next/router";
 import React from "react";
 
 const AdminTopic: React.FC = () => {
     return(
         <>
-        <Box p="14px 8px" >
-          <Text fontSize={22} fontWeight={900} >Topics</Text>
+        <Box p="24px 0px" >
+          <Text p="24px 0px" fontSize={22} fontWeight={900} >Topics</Text>
         </Box>
         <Flex
         align="center"
-        p="5px 0px"
         direction="column"
+       onClick={() => { router.push('/Admin/' + '/Topic' + '/TopicList');}}
         >
         <TableContainer>
   <Table size='sm' variant='striped' colorScheme='pink'>
