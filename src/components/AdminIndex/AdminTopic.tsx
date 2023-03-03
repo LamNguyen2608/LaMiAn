@@ -5,11 +5,10 @@ import React from "react";
 const AdminTopic: React.FC = () => {
     return(
         <>
-        <Box p="24px 0px" >
-          <Text p="24px 0px" fontSize={22} fontWeight={900} >Topics</Text>
+        <Box p="14px 8px" >
+          <Text fontSize={22} fontWeight={900} >Recent Topics</Text>
         </Box>
         <Flex
-        align="center"
         direction="column"
        onClick={() => { router.push('/Admin/' + '/Topic' + '/TopicList');}}
         >
@@ -26,7 +25,7 @@ const AdminTopic: React.FC = () => {
       <Tr>
         <Td textAlign="center" fontWeight={900} >First topic</Td>
         <Td textAlign="center" justifyContent="center">27/2/2023</Td>
-        <Td textAlign="center">15</Td>
+        <Td textAlign="center">27/2/2023</Td>
       </Tr>
      
     </Tbody>

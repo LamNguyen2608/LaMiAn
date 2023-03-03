@@ -1,4 +1,5 @@
 import { Box, Flex, Icon, Table, TableContainer, Tbody, Td, Text, Tfoot, Th, Thead, Tr } from "@chakra-ui/react";
+import router from "next/router";
 import React from "react";
 import { BsInfoCircleFill } from "react-icons/bs";
 import { CgUserList } from "react-icons/cg";
@@ -37,10 +38,10 @@ const AdminButtonFunc: React.FC = () => {
                     bgGradient: 'linear(to-r, brand.100, brand.200)',
                     
                 }}
-                onClick={() =>{}}
+                onClick={() =>{router.push('/Admin/'  + '/UpdateRoleForm');}}
             >
               <Icon as={CgUserList} fontSize={80} color="white" />
-              <Text fontSize={20} fontWeight={900} >User</Text>
+              <Text fontSize={20} fontWeight={900} >Create new role</Text>
             </Box>
              <Box
                 // display={{ base: "none", sm: "none", md:"block" }}
@@ -58,10 +59,10 @@ const AdminButtonFunc: React.FC = () => {
                     bgGradient: 'linear(to-r, brand.100, brand.200)',
                     
                 }}
-                onClick={() =>{}}
+                onClick={() =>{router.push('/Admin/' + '/Topic' + '/CreateTopicForm');}}
             >
               <Icon as={RiPagesFill} fontSize={80} color="white" />
-              <Text fontSize={20} fontWeight={900} >Topic</Text>
+              <Text fontSize={20} fontWeight={900} >Create new topic</Text>
             </Box>
         </Flex>
 
@@ -87,7 +88,7 @@ const AdminButtonFunc: React.FC = () => {
                 onClick={() =>{}}
             >
               <Icon as={MdCategory} fontSize={70} color="white" />
-              <Text fontSize={20} fontWeight={900} >Category</Text>
+              <Text fontSize={20} fontWeight={900} >Create new category</Text>
             </Box>
              <Box
                 // display={{ base: "none", sm: "none", md:"block" }}

@@ -20,7 +20,7 @@ const AdminPageContent: React.FC<AdminPageContentProps> = ({children}) => {
                >
                 <Flex
                     direction="column"
-                    width="35%"
+                    width="36%"
                     borderRadius='10px'
                     border='3px solid' borderColor='gray.400'>
                     {children && children[0 as keyof typeof children]}
@@ -40,14 +40,14 @@ const AdminPageContent: React.FC<AdminPageContentProps> = ({children}) => {
                 >
                 <Flex
                     direction="column"
-                    width="30%"
+                    width="36%"
                     borderRadius='10px'
                     border='3px solid' borderColor='gray.400'>
                     {children && children[2 as keyof typeof children]}
                 </Flex>
                 <Flex
                     direction="column"
-                    width="30%"
+                    width="32%"
                     borderRadius='10px'
                     border='3px solid' borderColor='gray.400'
                     ml={2}>
@@ -55,7 +55,7 @@ const AdminPageContent: React.FC<AdminPageContentProps> = ({children}) => {
                 </Flex>
                 <Flex
                     direction="column"
-                    width="40%"
+                    width="37%"
                     borderRadius='10px'
                     ml={2}
                     border='3px solid' borderColor='gray.400'>
