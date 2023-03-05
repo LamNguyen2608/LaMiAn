@@ -14,13 +14,19 @@ export interface Idea {
   topic_id?: number;
 }
 
-interface IdeaState {
+export type myVote = {
+  reaction_id: number;
+  idea_id: number;
+  reaction: boolean | null | undefined;
+};
+export interface IdeaState {
   selectedIdea: Idea | null;
   Ideas: Idea[];
-  //IdeaVotes
+  IdeaVotes: myVote[];
 }
 
 const defaultIdeaState: IdeaState = {
+  IdeaVotes: [],
   selectedIdea: null,
   Ideas: [],
 };

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { GetServerSidePropsContext } from 'next'
 import safeJsonStringify from 'safe-json-stringify'
 import { stringify } from 'querystring';
@@ -9,6 +9,8 @@ import { Topic } from '@/atoms/topicAtom';
 import CreatePostForm from '@/components/Posts/CreatePostForm';
 import TopicRHS from '@/components/Topic/TopicRHS';
 import IdeaItem from '@/components/Posts/IdeaItem';
+import useIdeas from '@/hooks/useIdeas';
+import { ideaState } from '@/atoms/ideaAtom';
 
 type TopicPageProps = {
     topicData: Topic;
@@ -16,13 +18,20 @@ type TopicPageProps = {
 
 const TopicPage: React.FC<TopicPageProps> = ({ topicData }) => {
     console.log("===>", topicData.ideas);
+    const { ideaStateValue, setIdeaStateValue } = useIdeas();
+    useEffect(() => {
+        setIdeaStateValue((prev) => ({
+            ...prev,
+            Ideas: topicData.ideas
+        }))
+    }, [])
     return (
         <>
             <Header topicData={topicData} />
             <PageContent>
                 <>
                     <CreatePostForm />
-                    {topicData.ideas.map((item) => (
+                    {ideaStateValue.Ideas.map((item) => (
                         <IdeaItem idea={item} />
                     ))}
                 </>

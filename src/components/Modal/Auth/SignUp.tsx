@@ -3,9 +3,16 @@ import { useCreateUserWithEmailAndPassword } from 'react-firebase-hooks/auth'
 import { auth } from '../../../Firebase/clientApp'
 import { FIREBASE_ERROR } from '../../../Firebase/error'
 import { Input, Button, Flex, Text, Select } from "@chakra-ui/react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSetRecoilState } from "recoil";
 import axios from "axios";
+
+type Department = {
+  "id": number,
+  "name": string,
+  "department_info": string,
+  "isDeleted": boolean
+}
 
 const SignUp: React.FC = () => {
   const [signUpForm, setSignUpForm] = useState({
@@ -19,12 +26,23 @@ const SignUp: React.FC = () => {
     department: ""
   });
   const [formError, setformError] = useState("");
+  const [allDepartments, setAllDepartments] = useState<Department[]>([]);
   const [
     createUserWithEmailAndPassword,
     user,
     loading,
     userError,
   ] = useCreateUserWithEmailAndPassword(auth);
+
+  useEffect(() => {
+    axios.get("http://localhost:8080/department").then(
+      response => {
+        console.log("get all departments: ", response);
+        setAllDepartments(response.data);
+      }
+    )
+  }, [])
+
   //Firebase 
   const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -46,6 +64,7 @@ const SignUp: React.FC = () => {
             lastname: signUpForm.lastname,
             age: signUpForm.age,
             pronoun: signUpForm.pronoun,
+            department_id: signUpForm.department
           })
             .then(response => {
               console.log("after create client ===>", response);
@@ -211,7 +230,9 @@ const SignUp: React.FC = () => {
         }}
         bg="gray.50"
         color="gray.500">
-        <option value="1">Computer Science</option>
+        {allDepartments.map(item => (
+          <option value={item.id}>{item.name}</option>
+        ))}
       </Select>
       <Input
         required

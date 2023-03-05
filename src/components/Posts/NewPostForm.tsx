@@ -83,9 +83,21 @@ const NewPostForm: React.FC<NewPostForm> = ({ user }) => {
             console.log("newPost===>", newPost);
             axios.post('http://localhost:8080/idea/create', newPost)
               .then(response => {
-                console.log("after create idea ===>", response);
-                setLoading(false);
-                router.back();
+                console.log("after creating idea ===>", response);
+                if (selectedCategory?.length !== 0) {
+                  axios.post('http://localhost:8080/idea/cate_idea', {
+                    categories: selectedCategory?.map((item) => (item.value)),
+                    idea_id: response.data.id
+                  })
+                    .then(response => {
+                      console.log("after adding category for idea", response)
+                      setLoading(false);
+                      router.back();
+                    })
+                } else {
+                  setLoading(false);
+                  router.back();
+                }
               });
           });
 
@@ -94,13 +106,26 @@ const NewPostForm: React.FC<NewPostForm> = ({ user }) => {
         console.log("newPost===>", newPost);
         axios.post('http://localhost:8080/idea/create', newPost)
           .then(response => {
-            console.log("after create idea ===>", response);
-            setLoading(false);
-            router.back();
+            console.log("after creating idea ===>", response);
+            if (selectedCategory?.length !== 0) {
+              axios.post('http://localhost:8080/idea/cate_idea', {
+                categories: selectedCategory?.map((item) => (item.value)),
+                idea_id: response.data.id
+              })
+                .then(response => {
+                  console.log("after adding category for idea", response)
+                  setLoading(false);
+                  router.back();
+                })
+            } else {
+              setLoading(false);
+              router.back();
+            }
           });
       }
     } catch (error: any) {
       console.log("handleCreatePost error check", error.message)
+      setLoading(false);
     };
 
     //redirect the user back to the home page using the router

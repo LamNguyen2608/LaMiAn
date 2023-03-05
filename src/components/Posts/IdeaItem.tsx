@@ -1,8 +1,10 @@
 import { Flex, Icon, Image, Stack, Text } from '@chakra-ui/react';
 import { TriangleDownIcon, TriangleUpIcon, ChatIcon, StarIcon } from '@chakra-ui/icons'
+import { RiShareForwardLine } from 'react-icons/ri'
 import React from 'react';
 import moment from 'moment';
-import { Idea } from '@/atoms/ideaAtom';
+import { Idea, myVote } from '@/atoms/ideaAtom';
+import useIdeas from '@/hooks/useIdeas';
 
 type IdeaItemProps = {
     idea: Idea;
@@ -21,7 +23,11 @@ const IdeaItem: React.FC<IdeaItemProps> = ({
     // onDeletePost,
     // onSelectPost
 }) => {
-
+    const { ideaStateValue, setIdeaStateValue, onVote } = useIdeas();
+    const isVoted: myVote | undefined = ideaStateValue.IdeaVotes.find(
+        (item) => (item.idea_id === idea.id)
+    );
+    console.log("Idea ID: " + idea.id + "====> is vote: " + isVoted);
     return (
         <Flex
             border="1px solid"
@@ -40,18 +46,49 @@ const IdeaItem: React.FC<IdeaItemProps> = ({
                 width="40px"
                 borderRadius={4}>
                 <TriangleUpIcon
-                    color="brand.900"
+                    color={isVoted?.reaction ? "brand.900" : "gray.300"}
                     fontSize={22}
                     cursor="pointer"
-                //  onClick={onVote} 
+                    onClick={event => {
+                        if (isVoted?.reaction === true) {
+                            console.log("remove up vote");
+                            onVote(event, idea, {
+                                idea_id: idea.id,
+                                reaction: null
+                            })
+                        }
+                        else {
+                            console.log("add up vote")
+                            onVote(event, idea, {
+                                idea_id: idea.id,
+                                reaction: true
+                            })
+                        }
+                    }}
                 />
-                <Text fontSize="9pt">{idea.reactions?.length}</Text>
+                <Text fontSize="9pt">{idea.reactions?.filter((item) => item.reaction === true).length}</Text>
                 <TriangleDownIcon
-                    color="gray.300"
+                    color={isVoted?.reaction === false ? "brand.900" : "gray.300"}
                     fontSize={22}
                     cursor="pointer"
-                //  onClick={onVote} 
+                    onClick={event => {
+                        if (isVoted?.reaction === false) {
+                            console.log("remove down vote");
+                            onVote(event, idea, {
+                                idea_id: idea.id,
+                                reaction: false
+                            })
+                        }
+                        else {
+                            console.log("add down vote");
+                            onVote(event, idea, {
+                                idea_id: idea.id,
+                                reaction: null
+                            })
+                        }
+                    }}
                 />
+                <Text fontSize="9pt">{idea.reactions?.filter((item) => item.reaction === false).length}</Text>
             </Flex>
             <Flex direction="column" width="100%">
                 <Stack spacing={1} p="10px">
@@ -89,9 +126,19 @@ const IdeaItem: React.FC<IdeaItemProps> = ({
                         borderRadius={4}
                         _hover={{ bg: "gray.200" }}
                         cursor="pointer">
+                        <RiShareForwardLine width={3} color="gray.300" />
+                        <Text marginLeft={2} fontSize="9pt">Share</Text>
+                    </Flex>
+                    <Flex
+                        align="center"
+                        p="8px 10px"
+                        borderRadius={4}
+                        _hover={{ bg: "gray.200" }}
+                        cursor="pointer">
                         <StarIcon mr={2} color="gray.300" />
                         <Text fontSize="9pt">Save</Text>
                     </Flex>
+
                 </Flex>
 
             </Flex>
