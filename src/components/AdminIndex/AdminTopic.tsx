@@ -11,7 +11,7 @@ const AdminTopic: React.FC = () => {
         <Flex
         direction="column"
        onClick={() => { router.push('/Admin/' + '/Topic' + '/TopicList');}}
-        >
+        cursor="pointer">
         <TableContainer>
   <Table size='sm' variant='striped' colorScheme='pink'>
     <Thead>

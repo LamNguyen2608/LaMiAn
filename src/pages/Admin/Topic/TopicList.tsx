@@ -1,10 +1,26 @@
-import React from "react";
-import { Box, Flex, Link, LinkOverlay, Table, TableContainer, Tbody, Td, Text, Th, Thead, Tr } from "@chakra-ui/react";
+import React, { useState } from "react";
+import { Box, Flex, Icon, Link, LinkOverlay, Table, TableContainer, Tbody, Td, Text, Th, Thead, Tr } from "@chakra-ui/react";
+import DeleteConfirmationModal from "@/components/Modal/DeleteConfirmation";
+import router from "next/router";
+import { AiFillDelete, AiFillEdit, AiFillInfoCircle } from "react-icons/ai";
+import {IoMdArrowRoundBack } from "react-icons/io";
 
 const submit: React.FC = () => {
+  const [displayConfirmationModal, setDisplayConfirmationModal] = useState(false);
+  const showDeleteModal = () => {
+    setDisplayConfirmationModal(true);
+  };
+  // Hide the modal
+  const hideConfirmationModal = () => {
+    setDisplayConfirmationModal(false);
+  };
+  const submitDelete = () => {
+    setDisplayConfirmationModal(false);
+  };
   return (
       <>
         <Box p="24px 10px" borderBottom="2px solid" borderColor="white">
+        <Icon as={IoMdArrowRoundBack} fontSize={30} onClick={() => router.back()}/>
           <Text fontSize={22} fontWeight={900} >Topic List</Text>
         </Box>
         <Flex direction="column" border="1px solid black ">
@@ -23,31 +39,31 @@ const submit: React.FC = () => {
         <Td  fontWeight={900} >First topic</Td>
         <Td >27/2/2023</Td>
         <Td >28/2/2023</Td>
-        <Td >
+        <Td justifyItems="center">
+        <Icon as={AiFillInfoCircle} 
+        fontSize={40} color="white" 
+         _hover={{ color: "yellow" }}
+         onClick={() => router.push('/Admin' +'/Topic' + '/TopicDetails')} />
         
-        <Link
-    href="/Admin/Topic/TopicEdit" 
-   >
-    Edit
-   </Link>
-   |  <Link
-    href="/Admin/Topic/TopicDelete" 
-   >
-    Delete
-   </Link>
-   |  <Link
-    href="/Admin/Topic/TopicDetails" 
-   >
-    Details
-   </Link>
+        <Icon as={AiFillEdit} 
+        fontSize={40} color="white" 
+         _hover={{ color: "blue.300" }}
+         ml="20px"
+         onClick={() => router.push('/Admin' +'/Topic' + '/TopicEdit')}/>
+      
+        <Icon as={AiFillDelete} 
+        fontSize={40} color="white" 
+         _hover={{ color: "red" }}
+         ml="20px"
+         onClick={() => showDeleteModal()} />
         </Td>
       </Tr>
      
     </Tbody>
   </Table>
 </TableContainer>
-          
         </Flex>
+        <DeleteConfirmationModal showModal={displayConfirmationModal} confirmModal={submitDelete} hideModal={hideConfirmationModal}   />
       </>
   );
 };
