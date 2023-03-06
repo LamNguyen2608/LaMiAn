@@ -8,7 +8,6 @@ import {
     Stack,
     Text,
 } from "@chakra-ui/react";
-import { Timestamp } from "firebase/firestore";
 import moment from "moment";
 import { FaReddit } from "react-icons/fa";
 import {
@@ -36,7 +35,7 @@ const CommentItem: React.FC<CommentItemProps> = ({
     // isLoading,
     userId,
 }) => {
-    // const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     // const handleDelete = useCallback(async () => {
     //   setLoading(true);

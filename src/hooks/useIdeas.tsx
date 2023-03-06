@@ -8,6 +8,7 @@ import { Topic, TopicSnippet, TopicState } from "../atoms/topicAtom";
 import { auth } from "@/Firebase/clientApp";
 import { useRouter } from "next/router";
 import axios from 'axios';
+import Ideas from '@/components/Posts/Ideas';
 
 
 const useIdeas = () => {
@@ -34,8 +35,8 @@ const useIdeas = () => {
             (vote) => vote.idea_id === idea.id
         );
 
-        let updatedIdeaVotes = [...ideaStateValue.IdeaVotes];
-        let updatedIdeas = [...ideaStateValue.Ideas];
+        let updatedIdeaVotes = JSON.parse(JSON.stringify(ideaStateValue.IdeaVotes));
+        let updatedIdeas = JSON.parse(JSON.stringify(ideaStateValue.Ideas));
         const existingIdeaIndex: number = ideaStateValue.Ideas.findIndex(
             (item) => item.id === idea.id
         )
@@ -49,7 +50,7 @@ const useIdeas = () => {
                     "idea_id": idea.id
                 }).then(res => {
                     console.log("NEW VOTE!!!", res.data, newReaction);
-                    updatedIdeas[existingIdeaIndex].reactions?.push(res.data);
+                    updatedIdeas[existingIdeaIndex].reactions.push(res.data);
                     setIdeaStateValue((prev) => ({
                         ...prev,
                         IdeaVotes: updatedIdeaVotes,
@@ -58,16 +59,25 @@ const useIdeas = () => {
                 })
             } else {
                 console.log("Update VOTE!!! ==>", newReaction);
-                updatedIdeaVotes[existingVoteIndex] = newReaction;
-                const existingReactionIndex: number | undefined = updatedIdeas[existingIdeaIndex].reactions?.findIndex(
-                    (reaction) => reaction.id === idea.id
-                )
-                //updatedIdeas[existingIdeaIndex].reactions?[existingReactionIndex].reaction = 
                 //post here
-                setIdeaStateValue((prev) => ({
-                    ...prev,
-                    IdeaVotes: updatedIdeaVotes
-                }))
+                axios.put('http://localhost:8080/idea/reaction/update', {
+                    "reaction": newReaction.reaction,
+                    "client_id": user.uid,
+                    "idea_id": idea.id
+                }).then(res => {
+                    console.log("UPDATE VOTE RESULT!!!", res.data);
+                    updatedIdeaVotes[existingVoteIndex] = newReaction;
+                    let existingReactionIndex: number = updatedIdeas[existingIdeaIndex].reactions.findIndex(
+                        (reaction: { id: number; }) => reaction.id === newReaction.reaction_id
+                    )
+                    updatedIdeas[existingIdeaIndex].reactions[existingReactionIndex].reaction = newReaction.reaction;
+                    setIdeaStateValue((prev) => ({
+                        ...prev,
+                        IdeaVotes: updatedIdeaVotes,
+                        Ideas: updatedIdeas
+                    }))
+                })
+
             }
 
         } catch (error) {

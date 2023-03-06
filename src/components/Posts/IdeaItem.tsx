@@ -46,7 +46,7 @@ const IdeaItem: React.FC<IdeaItemProps> = ({
                         ...prev,
                         selectedIdea: idea
                     }))
-                    router.push('/topic/' + '1' + '/ideas/' + idea.id)
+                    router.push('/topic/' + topicId + '/ideas/' + idea.id)
                 }
             }}
         >
@@ -65,14 +65,16 @@ const IdeaItem: React.FC<IdeaItemProps> = ({
                             console.log("remove up vote");
                             onVote(event, idea, {
                                 idea_id: idea.id,
-                                reaction: null
+                                reaction: null,
+                                reaction_id: isVoted.reaction_id
                             })
                         }
                         else {
                             console.log("add up vote")
                             onVote(event, idea, {
                                 idea_id: idea.id,
-                                reaction: true
+                                reaction: true,
+                                reaction_id: isVoted.reaction_id
                             })
                         }
                     }}
@@ -87,14 +89,16 @@ const IdeaItem: React.FC<IdeaItemProps> = ({
                             console.log("remove down vote");
                             onVote(event, idea, {
                                 idea_id: idea.id,
-                                reaction: false
+                                reaction: null,
+                                reaction_id: isVoted.reaction_id
                             })
                         }
                         else {
                             console.log("add down vote");
                             onVote(event, idea, {
                                 idea_id: idea.id,
-                                reaction: null
+                                reaction: false,
+                                reaction_id: isVoted.reaction_id
                             })
                         }
                     }}

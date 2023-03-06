@@ -8,7 +8,7 @@ export interface Idea {
   date: string | Timestamp;
   modify_date: string;
   attached_path: string | null | undefined;
-  reactions?: any[];
+  reactions: { id: number; reaction: boolean | null | undefined }[];
   category?: any[];
   client_id?: string;
   topic_id?: number;
