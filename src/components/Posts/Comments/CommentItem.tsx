@@ -17,28 +17,23 @@ import {
 } from "react-icons/io5";
 
 export type Comment = {
-    id?: string;
-    creatorId: string;
-    creatorDisplayText: string;
-    creatorPhotoURL: string;
-    communityId: string;
-    postId: string;
-    postTitle: string;
-    text: string;
-    createdAt?: Timestamp;
+    "id": number,
+    "comment": string,
+    "modify_date": string,
+    "client_id"?: string
 };
 
 type CommentItemProps = {
     comment: Comment;
-    onDeleteComment: (comment: Comment) => void;
-    isLoading: boolean;
+    // onDeleteComment: (comment: Comment) => void;
+    // isLoading: boolean;
     userId?: string;
 };
 
 const CommentItem: React.FC<CommentItemProps> = ({
     comment,
-    onDeleteComment,
-    isLoading,
+    // onDeleteComment,
+    // isLoading,
     userId,
 }) => {
     // const [loading, setLoading] = useState(false);
@@ -58,6 +53,7 @@ const CommentItem: React.FC<CommentItemProps> = ({
     //   }
     // }, [setLoading]);
 
+
     return (
         <Flex>
             <Box mr={2}>
@@ -69,16 +65,18 @@ const CommentItem: React.FC<CommentItemProps> = ({
                         fontWeight={700}
                         _hover={{ textDecoration: "underline", cursor: "pointer" }}
                     >
-                        {comment.creatorDisplayText}
+                        {//comment.creatorDisplayText
+                        }
+                        Creator Name
                     </Text>
-                    {comment.createdAt?.seconds && (
+                    {comment.modify_date && (
                         <Text color="gray.600">
-                            {moment(new Date(comment.createdAt?.seconds * 1000)).fromNow()}
+                            {moment(new Date(comment.modify_date)).fromNow()}
                         </Text>
                     )}
-                    {isLoading && <Spinner size="sm" />}
+                    {/* {isLoading && <Spinner size="sm" />} */}
                 </Stack>
-                <Text fontSize="10pt">{comment.text}</Text>
+                <Text fontSize="10pt">{comment.comment}</Text>
                 <Stack
                     direction="row"
                     align="center"
@@ -88,7 +86,7 @@ const CommentItem: React.FC<CommentItemProps> = ({
                 >
                     <Icon as={IoArrowUpCircleOutline} />
                     <Icon as={IoArrowDownCircleOutline} />
-                    {userId === comment.creatorId && (
+                    {userId === comment.client_id && (
                         <>
                             <Text fontSize="9pt" _hover={{ color: "blue.500" }}>
                                 Edit
@@ -96,7 +94,7 @@ const CommentItem: React.FC<CommentItemProps> = ({
                             <Text
                                 fontSize="9pt"
                                 _hover={{ color: "blue.500" }}
-                                onClick={() => onDeleteComment(comment)}
+                                onClick={() => { }}
                             >
                                 Delete
                             </Text>

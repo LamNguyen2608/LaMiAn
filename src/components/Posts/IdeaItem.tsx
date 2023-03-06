@@ -5,6 +5,7 @@ import React from 'react';
 import moment from 'moment';
 import { Idea, myVote } from '@/atoms/ideaAtom';
 import useIdeas from '@/hooks/useIdeas';
+import { useRouter } from 'next/router';
 
 type IdeaItemProps = {
     idea: Idea;
@@ -27,6 +28,8 @@ const IdeaItem: React.FC<IdeaItemProps> = ({
     const isVoted: myVote | undefined = ideaStateValue.IdeaVotes.find(
         (item) => (item.idea_id === idea.id)
     );
+    const router = useRouter();
+    const { topicId, ideaid } = router.query;
     console.log("Idea ID: " + idea.id + "====> is vote: " + isVoted);
     return (
         <Flex
@@ -37,7 +40,15 @@ const IdeaItem: React.FC<IdeaItemProps> = ({
             _hover={{ borderColor: "gray.500" }}
             cursor='pointer'
             marginBottom={2}
-        //onClick={onSelectPost}
+            onClick={() => {
+                if (!ideaid) {
+                    setIdeaStateValue((prev) => ({
+                        ...prev,
+                        selectedIdea: idea
+                    }))
+                    router.push('/topic/' + '1' + '/ideas/' + idea.id)
+                }
+            }}
         >
             <Flex direction='column'
                 align='center'
@@ -118,7 +129,7 @@ const IdeaItem: React.FC<IdeaItemProps> = ({
                         _hover={{ bg: "gray.200" }}
                         cursor="pointer">
                         <ChatIcon mr={2} />
-                        <Text fontSize="9pt">2023</Text>
+                        <Text fontSize="9pt">{idea.comments.length}</Text>
                     </Flex>
                     <Flex
                         align="center"
