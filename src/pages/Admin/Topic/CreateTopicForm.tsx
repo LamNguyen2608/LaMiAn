@@ -1,8 +1,10 @@
+import { Topic } from "@/atoms/topicAtom";
 import { Box, Button, Flex, Image, Input, Stack, Text, Textarea } from "@chakra-ui/react";
 import React, { useRef, useState } from "react";
 
 
 const CreateTopicForm:React.FC = () => {
+  
   const [topicForm, setTopicForm] = useState({
     title:"", 
     body:"",
@@ -11,6 +13,14 @@ const CreateTopicForm:React.FC = () => {
   });
   const [selectedFile, setSelectedFile] = useState<string>();
   const selectedFileRef = useRef<HTMLInputElement>(null);
+  const handleCreateTopic = async () => {
+  const newTopic: Topic = {
+    name: topicForm.title,
+    image_url: null,
+    idea_closure_date: topicForm.closureDate,
+    final_closure_date: topicForm.finalclosureDate,
+  }
+}
   const onTextChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
     ) => {
       const {

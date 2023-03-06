@@ -2,13 +2,15 @@ import { atom } from "recoil";
 import { Idea } from "./ideaAtom";
 
 export interface Topic {
-  id: number;
+  id?: number;
   name: string;
+  body?: string;
+  image_url?: string | null | undefined;
   idea_closure_date: string;
   final_closure_date: string;
-  modifyDate: string;
-  isDeleted: boolean;
-  ideas: Idea[];
+  modifyDate?: string;
+  isDeleted?: boolean;
+  ideas?: Idea[];
 }
 
 export type ClientFollow = {
