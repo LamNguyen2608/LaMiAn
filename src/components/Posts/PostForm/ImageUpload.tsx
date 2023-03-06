@@ -16,7 +16,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({selectedFile, onSelectImage, s
            {selectedFile ? (
             <>
                 <Image src={selectedFile} maxWidth="80%" maxHeight="80%" />
-                
+                <Flex direction="row" align="center">
                 <Button
                 mt={4}
                  height="36px" 
@@ -27,9 +27,19 @@ const ImageUpload: React.FC<ImageUploadProps> = ({selectedFile, onSelectImage, s
                  >
                     Remove Image
                 </Button>
+                <Button
+                 mt={4}
+                 ml={3}
+                 height="36px" 
+                 width="120px"
+                  variant="primary" 
+                  onClick={() => setSelectedTab('Category')}>Next</Button>
+                 </Flex>
                 
             </>
            ) : (
+            <>
+             <Stack spacing={3} width="100%">
             <Flex justify="center" 
             align="center" 
             p={20} 
@@ -52,6 +62,17 @@ const ImageUpload: React.FC<ImageUploadProps> = ({selectedFile, onSelectImage, s
                 onChange={onSelectImage} />
                 <img src = {selectedFile} />
             </Flex>
+            <Flex justify="flex-end">
+            <Button
+            justifySelf="flex-end" 
+             height="34px" 
+             width="80px"
+             variant="primary" 
+             onClick={() => setSelectedTab('Category')}>Next</Button>
+            </Flex>
+            </Stack>
+            </>
+            
            )}
  
         </Flex>
