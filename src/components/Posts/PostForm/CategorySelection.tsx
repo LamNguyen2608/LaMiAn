@@ -52,7 +52,7 @@ const CategorySelection: React.FC<CategoryProps> = ({ setSelectedTab, selectedCa
           width="100px"
           variant="primary"
           type="submit"
-          onClick={() => setSelectedTab("Post")}>Confirm</Button>
+          onClick={() => setSelectedTab("Agreement and Submit")}>Next</Button>
       </Flex>
     </Stack>
   );
