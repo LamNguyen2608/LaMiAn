@@ -2,6 +2,7 @@ import { Box, Button, Flex, Icon, Image, Text } from '@chakra-ui/react';
 import React from 'react';
 import { StarIcon } from '@chakra-ui/icons';
 import { Topic } from '@/atoms/topicAtom';
+import useTopics from '@/hooks/useTopics';
 
 type HeaderProps = {
     topicData: Topic;
@@ -9,7 +10,12 @@ type HeaderProps = {
 
 const Header: React.FC<HeaderProps> = ({ topicData }) => {
     const imageURL = false;
-    const isJoined = false; //read from snippet
+    const { topicStateValue, onFollowOrUnfollowTopic } = useTopics();
+    console.log("followed Topics ==>", topicStateValue.followedTopics);
+    const isJoined = !!topicStateValue.followedTopics.find(
+        (item) => item.topic_id === topicData.id
+    );
+    console.log("Topic ID: " + topicData.id + "====> is followed?: " + isJoined);
     return (
         <Flex direction="column" width="100%" height="146px">
             <Box height="50%" bgGradient='linear(to-r, brand.900, brand.800)'></Box>
@@ -38,7 +44,7 @@ const Header: React.FC<HeaderProps> = ({ topicData }) => {
                             width="80px"
                             pr={6}
                             pl={6}
-                            onClick={() => { }}>
+                            onClick={() => onFollowOrUnfollowTopic(topicData, isJoined)}>
                             {isJoined ? "Unfollow" : "Follow"}
                         </Button>
                     </Flex>
