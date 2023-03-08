@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import AdminPageContent from '@/components/Layout/AdminPageContent';
 import AdminTopic from '@/components/AdminIndex/AdminTopic';
 import AdminAccessChart from '@/components/AdminIndex/AdminAccessChart';
@@ -8,7 +8,6 @@ import AdminButtonFunc from '@/components/AdminIndex/AdminButtonFunc';
 
 
 const TopicPage: React.FC = ({ }) => {
-  
     return (
         <>
             
@@ -29,6 +28,7 @@ const TopicPage: React.FC = ({ }) => {
                 <AdminButtonFunc />
                 </>
             </AdminPageContent>
+
         </>
     )
 }

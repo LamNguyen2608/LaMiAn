@@ -17,7 +17,7 @@ const DeleteConfirmationModal: React.FC<deleteProps> = ({showModal, hideModal, c
   <ModalContent>
     <ModalHeader>Delete Confirmation</ModalHeader>
     <ModalBody pb={6}>
-     Are you sure you want to delete this topic?
+     Are you sure you want to delete this?
     </ModalBody>
 
     <ModalFooter>

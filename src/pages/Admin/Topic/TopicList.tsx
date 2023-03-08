@@ -31,6 +31,7 @@ const submit: React.FC = () => {
         <Th fontSize={16}>Topic Name</Th>
         <Th fontSize={16}> CLosure Date</Th>
         <Th fontSize={16}>Final Closure Date</Th>
+        <Th fontSize={16}>Status</Th>
         <Th fontSize={16}>function</Th>
       </Tr>
     </Thead>
@@ -39,6 +40,7 @@ const submit: React.FC = () => {
         <Td  fontWeight={900} >First topic</Td>
         <Td >27/2/2023</Td>
         <Td >28/2/2023</Td>
+        <Td >Open</Td>
         <Td justifyItems="center">
         <Icon as={AiFillInfoCircle} 
         fontSize={40} color="white" 
