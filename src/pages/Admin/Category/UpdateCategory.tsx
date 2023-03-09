@@ -25,9 +25,9 @@ type updateCatProps = {
   CategoryData: {
     id?: number;
     name: string;
-  };
+  }
 };
-const CreateCategory: React.FC<updateCatProps> = ({
+const UpdateCategory: React.FC<updateCatProps> = ({
   showModal,
   hideModal,
   Update,
@@ -35,8 +35,6 @@ const CreateCategory: React.FC<updateCatProps> = ({
   loading,
   CategoryData,
 }) => {
-  const [category, setCategory] = useState<string>();
-
   return (
     <>
       <Modal closeOnOverlayClick={false} isOpen={showModal} onClose={hideModal}>
@@ -56,7 +54,7 @@ const CreateCategory: React.FC<updateCatProps> = ({
             <Input
               name="Cat_name"
               onChange={onChange}
-              // value={}
+              value={CategoryData.name}
               fontSize="14pt"
               placeholder="Title"
               borderRadius={4}
@@ -95,4 +93,4 @@ const CreateCategory: React.FC<updateCatProps> = ({
     </>
   );
 };
-export default CreateCategory;
+export default UpdateCategory;

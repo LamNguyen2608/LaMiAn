@@ -1,25 +1,35 @@
 import { Topic } from "@/atoms/topicAtom";
 import { Box, Button, Flex, Image, Input, Stack, Text, Textarea } from "@chakra-ui/react";
+import axios from "axios";
 import React, { useRef, useState } from "react";
 
 
 const CreateTopicForm:React.FC = () => {
   
-  const [topicForm, setTopicForm] = useState({
-    title:"", 
-    body:"",
-    closureDate:"",
-    finalclosureDate:"",
-  });
+  const [topicForm, setTopicForm] = useState<Topic>();
+  const [loading, setLoading] = useState(false);
   const [selectedFile, setSelectedFile] = useState<string>();
   const selectedFileRef = useRef<HTMLInputElement>(null);
   const handleCreateTopic = async () => {
-  const newTopic: Topic = {
-    name: topicForm.title,
-    image_url: null,
-    idea_closure_date: topicForm.closureDate,
-    final_closure_date: topicForm.finalclosureDate,
-  }
+    setLoading(true);
+    try {
+      if (topicForm) {
+        axios
+          .post('http://localhost:8080/topic/create', {
+            name: topicForm,
+          })
+          .then((response) => {
+            console.log('after creating idea ===>', response);
+            setTopicForm(...response.data);
+            setLoading(false);
+          });
+      } else {
+        setLoading(false);
+      }
+    } catch (error: any) {
+      console.log('handleCreatePost error check', error.message);
+      setLoading(false);
+    }
 }
   const onTextChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
     ) => {

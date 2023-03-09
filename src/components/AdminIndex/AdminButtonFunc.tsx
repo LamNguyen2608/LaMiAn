@@ -5,7 +5,7 @@ import { BsInfoCircleFill } from "react-icons/bs";
 import { CgUserList } from "react-icons/cg";
 import { MdCategory } from "react-icons/md";
 import { RiPagesFill } from "react-icons/ri";
-import CreateCategory from "../Modal/CreateCategory";
+import CreateCategory from "../../pages/Admin/Category/CreateCategory";
 
 const AdminButtonFunc: React.FC = () => {
   

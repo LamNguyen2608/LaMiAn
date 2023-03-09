@@ -19,11 +19,11 @@ import DeleteConfirmationModal from '@/components/Modal/DeleteConfirmation';
 import router from 'next/router';
 import { AiFillDelete, AiFillEdit, AiFillInfoCircle } from 'react-icons/ai';
 import { IoMdArrowRoundBack } from 'react-icons/io';
-import CreateCategory from '@/components/Modal/CreateCategory';
+import CreateCategory from '@/pages/Admin/Category/CreateCategory';
 import axios from 'axios';
 import { GetServerSidePropsContext } from 'next';
 import safeJsonStringify from 'safe-json-stringify';
-import UpdateCategory from '@/components/Modal/UpdateCategory';
+import UpdateCategory from '@/pages/Admin/Category/UpdateCategory';
 
 type CategoryProps = {
   CategoryData: {
@@ -35,6 +35,7 @@ const Category: React.FC<CategoryProps> = ({ CategoryData }) => {
   const [displayConfirmationModal, setDisplayConfirmationModal] =
     useState(false);
   const [displayUpdateCatModal, setDisplayUpdateCatModal] = useState(false);
+  const [valueUpdateCatModal, setValueUpdateCatModal] = useState<{id?:number; name:string;}>();
   const [category, setCategory] = useState<string>();
   const [listCategory, setListCategory] = useState<
     {
@@ -76,6 +77,29 @@ const Category: React.FC<CategoryProps> = ({ CategoryData }) => {
       setLoading(false);
     }
   };
+  const handleUpdateCategory = async () => {
+    setLoading(true);
+    try {
+      if (category) {
+        axios
+          .post('http://localhost:8080/cate/update', {
+            name: category,
+          })
+          .then((response) => {
+            console.log('after updateTopic ===>', response);
+            setListCategory([...listCategory, response.data]);
+            setLoading(false);
+            hideCatModal();
+          });
+      } else {
+        setLoading(false);
+        hideCatModal();
+      }
+    } catch (error: any) {
+      console.log('handleUpdatePost error check', error.message);
+      setLoading(false);
+    }
+  };
   const onTextChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
     setCategory(value);
@@ -84,8 +108,9 @@ const Category: React.FC<CategoryProps> = ({ CategoryData }) => {
   const showDeleteModal = () => {
     setDisplayConfirmationModal(true);
   };
-  const showUpdateCatModal = () => {
+  const showUpdateCatModal = (item : {id?:number; name:string;}) => {
     setDisplayUpdateCatModal(true);
+    setValueUpdateCatModal(item);
   };
   const hideUpdateCatModal = () => {
     setDisplayUpdateCatModal(false);
@@ -133,7 +158,7 @@ const Category: React.FC<CategoryProps> = ({ CategoryData }) => {
                       color="brand.900"
                       _hover={{ color: 'blue.300' }}
                       ml="20px"
-                      onClick={() => showUpdateCatModal()}
+                      onClick={() => showUpdateCatModal(item)}
                     />
 
                     <Icon
@@ -176,11 +201,11 @@ const Category: React.FC<CategoryProps> = ({ CategoryData }) => {
       />
       <UpdateCategory
         showModal={displayUpdateCatModal}
-        Update={handleCreateCategory}
+        Update={handleUpdateCategory}
         hideModal={hideUpdateCatModal}
         onChange={onTextChange}
         loading={loading}
-        CategoryData={CategoryData}
+        CategoryData={valueUpdateCatModal}
       />
     </>
   );
