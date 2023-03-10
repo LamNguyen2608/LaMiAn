@@ -1,5 +1,5 @@
-import { Timestamp } from "firebase/firestore";
-import { atom } from "recoil";
+import { Timestamp } from 'firebase/firestore';
+import { atom } from 'recoil';
 
 export interface Idea {
   id?: number;
@@ -12,7 +12,7 @@ export interface Idea {
   category?: any[];
   client_id?: string;
   topic_id?: number;
-  comments: any[];
+  comments?: any[];
 }
 
 export interface IdeaDetails {
@@ -49,6 +49,6 @@ const defaultIdeaState: IdeaState = {
 };
 
 export const ideaState = atom<IdeaState>({
-  key: "IdeaState",
+  key: 'IdeaState',
   default: defaultIdeaState,
 });

@@ -22,10 +22,10 @@ type updateCatProps = {
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   loading: boolean;
   Update: () => void;
-  CategoryData: {
+  CategoryData?: {
     id?: number;
     name: string;
-  }
+  };
 };
 const UpdateCategory: React.FC<updateCatProps> = ({
   showModal,
@@ -35,6 +35,8 @@ const UpdateCategory: React.FC<updateCatProps> = ({
   loading,
   CategoryData,
 }) => {
+  const [updateCategory, setUpdateCategory] = useState<string>();
+
   return (
     <>
       <Modal closeOnOverlayClick={false} isOpen={showModal} onClose={hideModal}>
@@ -54,7 +56,8 @@ const UpdateCategory: React.FC<updateCatProps> = ({
             <Input
               name="Cat_name"
               onChange={onChange}
-              value={CategoryData.name}
+              defaultValue={CategoryData?.name}
+              value={updateCategory}
               fontSize="14pt"
               placeholder="Title"
               borderRadius={4}
@@ -77,14 +80,15 @@ const UpdateCategory: React.FC<updateCatProps> = ({
           <ModalFooter>
             <Button
               variant="primary"
-              loadingText="Posting"
+              loadingText="Updating"
+              width="90px"
               spinnerPlacement="start"
               isLoading={loading}
               _loading={{ opacity: 2 }}
               mr={3}
               onClick={() => Update()}
             >
-              Create
+              Update
             </Button>
             <Button onClick={hideModal}>Cancel</Button>
           </ModalFooter>

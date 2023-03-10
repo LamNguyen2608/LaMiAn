@@ -75,7 +75,7 @@ const CreateCategory: React.FC<catProps> = ({
           <ModalFooter>
             <Button
               variant="primary"
-              loadingText="Posting"
+              loadingText="Creating"
               width="90px"
               spinnerPlacement="start"
               isLoading={loading}

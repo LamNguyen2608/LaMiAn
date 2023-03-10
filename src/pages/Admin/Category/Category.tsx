@@ -35,7 +35,10 @@ const Category: React.FC<CategoryProps> = ({ CategoryData }) => {
   const [displayConfirmationModal, setDisplayConfirmationModal] =
     useState(false);
   const [displayUpdateCatModal, setDisplayUpdateCatModal] = useState(false);
-  const [valueUpdateCatModal, setValueUpdateCatModal] = useState<{id?:number; name:string;}>();
+  const [valueUpdateCatModal, setValueUpdateCatModal] = useState<{
+    id?: number;
+    name: string;
+  }>();
   const [category, setCategory] = useState<string>();
   const [listCategory, setListCategory] = useState<
     {
@@ -77,23 +80,35 @@ const Category: React.FC<CategoryProps> = ({ CategoryData }) => {
       setLoading(false);
     }
   };
+  const showUpdateCatModal = (item: { id?: number; name: string }) => {
+    setDisplayUpdateCatModal(true);
+    setValueUpdateCatModal(item);
+  };
+  const hideUpdateCatModal = () => {
+    setDisplayUpdateCatModal(false);
+  };
   const handleUpdateCategory = async () => {
     setLoading(true);
     try {
       if (category) {
-        axios
-          .post('http://localhost:8080/cate/update', {
-            name: category,
-          })
-          .then((response) => {
-            console.log('after updateTopic ===>', response);
-            setListCategory([...listCategory, response.data]);
-            setLoading(false);
-            hideCatModal();
-          });
+        {
+          listCategory.map((item) =>
+            axios
+              .put('http://localhost:8080/cate/update', {
+                id: item.id,
+                name: category,
+              })
+              .then((response) => {
+                console.log('after updateTopic ===>', response);
+                window.location.reload();
+                setLoading(false);
+                hideUpdateCatModal();
+              })
+          );
+        }
       } else {
         setLoading(false);
-        hideCatModal();
+        hideUpdateCatModal();
       }
     } catch (error: any) {
       console.log('handleUpdatePost error check', error.message);
@@ -105,23 +120,32 @@ const Category: React.FC<CategoryProps> = ({ CategoryData }) => {
     setCategory(value);
   };
 
-  const showDeleteModal = () => {
+  const showDeleteModal = (item: { id?: number; name: string }) => {
     setDisplayConfirmationModal(true);
-  };
-  const showUpdateCatModal = (item : {id?:number; name:string;}) => {
-    setDisplayUpdateCatModal(true);
     setValueUpdateCatModal(item);
   };
-  const hideUpdateCatModal = () => {
-    setDisplayUpdateCatModal(false);
-  };
+
   // Hide the modal
   const hideConfirmationModal = () => {
     setDisplayConfirmationModal(false);
   };
-  const submitDelete = () => {
-    setDisplayConfirmationModal(false);
-    setDisplayCatModal(false);
+  const submitDelete = async () => {
+    setLoading(true);
+    try {
+      listCategory.map((item) =>
+        axios
+          .delete('http://localhost:8080/cate/delete/' + item.id)
+          .then((response) => {
+            console.log('after deleteTopic ===>', response);
+            window.location.reload();
+            setLoading(false);
+            hideConfirmationModal();
+          })
+      );
+    } catch (error: any) {
+      console.log('handleDeletePost error check', error.message);
+      setLoading(false);
+    }
   };
 
   return (
@@ -167,7 +191,7 @@ const Category: React.FC<CategoryProps> = ({ CategoryData }) => {
                       color="brand.900"
                       _hover={{ color: 'red' }}
                       ml="20px"
-                      onClick={() => showDeleteModal()}
+                      onClick={() => showDeleteModal(item)}
                     />
                   </Td>
                 </Tr>
@@ -198,6 +222,8 @@ const Category: React.FC<CategoryProps> = ({ CategoryData }) => {
         showModal={displayConfirmationModal}
         confirmModal={submitDelete}
         hideModal={hideConfirmationModal}
+        loading={loading}
+        CategoryData={valueUpdateCatModal}
       />
       <UpdateCategory
         showModal={displayUpdateCatModal}
