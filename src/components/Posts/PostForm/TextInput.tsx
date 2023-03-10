@@ -1,19 +1,21 @@
 import { Button, Flex, Input, Stack, Textarea } from "@chakra-ui/react";
 import React from "react";
+import { TabItem } from "../NewPostForm";
 
 type textInputProps = {
   textInputs: {
     title:string;
     body:string;
   };
+  setSelectedTab: (value: string) => void;
+  // item: TabItem;
   onChange: (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => void;
-  handleCreatePost: () => void;
   loading:boolean;
 };
 
-const TextInput:React.FC<textInputProps> = ({textInputs, onChange, handleCreatePost, loading}) => {
+const TextInput:React.FC<textInputProps> = ({textInputs, onChange,setSelectedTab , loading}) => {
   return(
     <Stack spacing={3} width="100%">
       <Input
@@ -21,7 +23,7 @@ const TextInput:React.FC<textInputProps> = ({textInputs, onChange, handleCreateP
       value={textInputs.title}
       onChange={onChange}
       fontSize="10pt"
-      placeholder="Title"
+      placeholder="Title "
       borderRadius={4}
       bg="gray.50"
       _placeholder={{color:"gray.500"}}
@@ -65,13 +67,7 @@ const TextInput:React.FC<textInputProps> = ({textInputs, onChange, handleCreateP
         height="34px" 
         width="80px"
         variant="primary" 
-        type="submit"
-        isDisabled={!textInputs.title}
-        loadingText='Posting'
-        spinnerPlacement="start"
-        isLoading ={loading}
-        _loading= {{opacity:2}}
-        onClick={handleCreatePost}>Post</Button>
+        onClick={() => setSelectedTab('File Upload')}>Next</Button>
       </Flex>
     </Stack>
   );

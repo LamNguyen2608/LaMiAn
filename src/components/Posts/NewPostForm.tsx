@@ -19,6 +19,7 @@ import { Idea } from "@/atoms/ideaAtom";
 import uuid from "react-uuid";
 import axios from "axios";
 import CategorySelection from "./PostForm/CategorySelection";
+import AgreeAndSubmit from "./PostForm/Agreement_and_Submit";
 
 
 type NewPostForm = {
@@ -39,7 +40,7 @@ const formTabs: TabItem[] = [
     icon: MdCategory
   },
   {
-    title: 'Poll',
+    title: 'Agreement and Submit',
     icon: FaPollH
   }
 
@@ -56,7 +57,9 @@ const NewPostForm: React.FC<NewPostForm> = ({ user }) => {
     body: "",
   });
   const [selectedFile, setSelectedFile] = useState<string>();
-  const [selectedCategory, setSelectedCategory] = useState<{ value: string; label: string }[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState<{ value: string; label: string }[]>();
+  const [agree, setAgree] = useState(false);
+  const [anonymous, isAnonymous] = useState(false);
   const [loading, setLoading] = useState(false);
   const handleCreatePost = async () => {
     setLoading(true);
@@ -156,6 +159,12 @@ const NewPostForm: React.FC<NewPostForm> = ({ user }) => {
     }
     ))
   };
+  const checkboxHandler = () => {
+    setAgree(!agree);
+  }
+  const anonymousHandler = () => {
+    isAnonymous(!anonymous);
+  }
   return (
     <Flex direction="column" bg="white" borderRadius={4} mt={2} >
       <Flex width="100%">
@@ -171,9 +180,9 @@ const NewPostForm: React.FC<NewPostForm> = ({ user }) => {
         {selectTab === "Post" && (
           <TextInput
             textInputs={textInputs}
-            handleCreatePost={handleCreatePost}
             onChange={onTextChange}
-            loading={loading} />
+            loading={loading}
+            setSelectedTab={setSelectTab}/>
         )}
         {selectTab === 'File Upload' && (
           <ImageUpload
@@ -188,6 +197,16 @@ const NewPostForm: React.FC<NewPostForm> = ({ user }) => {
             setSelectedTab={setSelectTab}
             setSelectedCategory={setSelectedCategory}
             selectedCategory={selectedCategory} />
+        )}
+         {selectTab === 'Agreement and Submit' && (
+          <AgreeAndSubmit
+            onChange={checkboxHandler}
+            handleCreatePost={handleCreatePost}
+            check_agree={agree}
+            check_Anonymous={anonymous}
+            anonymous_change={anonymousHandler}
+            loading={loading} 
+            title_input={textInputs.title}/>
         )}
 
 
