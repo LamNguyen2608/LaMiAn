@@ -19,7 +19,8 @@ export type Comment = {
     "id": number,
     "comment": string,
     "modify_date": string,
-    "client_id"?: string
+    "client": { id: string, firstname: string, lastname: string },
+    "isAnonymous": boolean,
 };
 
 type CommentItemProps = {
@@ -64,9 +65,7 @@ const CommentItem: React.FC<CommentItemProps> = ({
                         fontWeight={700}
                         _hover={{ textDecoration: "underline", cursor: "pointer" }}
                     >
-                        {//comment.creatorDisplayText
-                        }
-                        Creator Name
+                        {comment.client.firstname + " " + comment.client.lastname}
                     </Text>
                     {comment.modify_date && (
                         <Text color="gray.600">
@@ -85,9 +84,11 @@ const CommentItem: React.FC<CommentItemProps> = ({
                 >
                     <Icon as={IoArrowUpCircleOutline} />
                     <Icon as={IoArrowDownCircleOutline} />
-                    {userId === comment.client_id && (
+                    {userId === comment.client.id && (
                         <>
-                            <Text fontSize="9pt" _hover={{ color: "blue.500" }}>
+                            <Text
+                                fontSize="9pt"
+                                _hover={{ color: "blue.500" }}>
                                 Edit
                             </Text>
                             <Text

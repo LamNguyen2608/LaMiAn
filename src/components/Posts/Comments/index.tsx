@@ -77,6 +77,7 @@ const Comments: React.FC<CommentsProps> = ({
                 fontSize="10pt"
                 width="100%"
             >
+                {/* Add validation to hide comment input section */}
                 <CommentInput
                     comment={comment}
                     setComment={setComment}

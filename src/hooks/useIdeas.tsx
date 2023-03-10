@@ -50,7 +50,7 @@ const useIdeas = () => {
                     "idea_id": idea.id
                 }).then(res => {
                     console.log("NEW VOTE!!!", res.data, newReaction);
-                    updatedIdeas[existingIdeaIndex].reactions.push(res.data);
+                    updatedIdeas[existingIdeaIndex].reactions = [...updatedIdeas[existingIdeaIndex].reactions, res.data];
                     setIdeaStateValue((prev) => ({
                         ...prev,
                         IdeaVotes: updatedIdeaVotes,
@@ -65,7 +65,7 @@ const useIdeas = () => {
                     "client_id": user.uid,
                     "idea_id": idea.id
                 }).then(res => {
-                    console.log("UPDATE VOTE RESULT!!!", res.data);
+                    console.log("UPDATE VOTE RESULT!!!", res.data,);
                     updatedIdeaVotes[existingVoteIndex] = newReaction;
                     let existingReactionIndex: number = updatedIdeas[existingIdeaIndex].reactions.findIndex(
                         (reaction: { id: number; }) => reaction.id === newReaction.reaction_id

@@ -56,7 +56,7 @@ const NewPostForm: React.FC<NewPostForm> = ({ user }) => {
     body: "",
   });
   const [selectedFile, setSelectedFile] = useState<string>();
-  const [selectedCategory, setSelectedCategory] = useState<{ value: string; label: string }[]>();
+  const [selectedCategory, setSelectedCategory] = useState<{ value: string; label: string }[]>([]);
   const [loading, setLoading] = useState(false);
   const handleCreatePost = async () => {
     setLoading(true);
@@ -84,7 +84,7 @@ const NewPostForm: React.FC<NewPostForm> = ({ user }) => {
             axios.post('http://localhost:8080/idea/create', newPost)
               .then(response => {
                 console.log("after creating idea ===>", response);
-                if (selectedCategory?.length !== 0) {
+                if (selectedCategory.length > 0) {
                   axios.post('http://localhost:8080/idea/cate_idea', {
                     categories: selectedCategory?.map((item) => (item.value)),
                     idea_id: response.data.id
