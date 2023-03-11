@@ -40,7 +40,7 @@ const formTabs: TabItem[] = [
     icon: MdCategory
   },
   {
-    title: 'Agreement and Submit',
+    title: 'Terms & Condition',
     icon: FaPollH
   }
 
@@ -57,22 +57,20 @@ const NewPostForm: React.FC<NewPostForm> = ({ user }) => {
     body: "",
   });
   const [selectedFile, setSelectedFile] = useState<string>();
-  const [selectedCategory, setSelectedCategory] = useState<{ value: string; label: string }[]>();
+  const [selectedCategory, setSelectedCategory] = useState<{ value: string; label: string }[]>([]);
   const [agree, setAgree] = useState(false);
   const [anonymous, isAnonymous] = useState(false);
   const [loading, setLoading] = useState(false);
   const handleCreatePost = async () => {
     setLoading(true);
     const { topicId } = router.query;
-    //create new post object => type post
-    const newPost: Idea = {
+    const newPost = {
       name: textInputs.title,
       body: textInputs.body,
-      date: "2023-02-19T17:00:00.000+00:00",
-      modify_date: "2023-02-19T17:00:00.000+00:00",
-      attached_path: null,
+      attached_path: "",
       client_id: user?.uid,
-      topic_id: parseInt(topicId as string)
+      topic_id: parseInt(topicId as string),
+      isAnonymous: anonymous
     };
 
     try {
@@ -87,7 +85,7 @@ const NewPostForm: React.FC<NewPostForm> = ({ user }) => {
             axios.post('http://localhost:8080/idea/create', newPost)
               .then(response => {
                 console.log("after creating idea ===>", response);
-                if (selectedCategory?.length !== 0) {
+                if (selectedCategory.length > 0) {
                   axios.post('http://localhost:8080/idea/cate_idea', {
                     categories: selectedCategory?.map((item) => (item.value)),
                     idea_id: response.data.id
@@ -182,7 +180,7 @@ const NewPostForm: React.FC<NewPostForm> = ({ user }) => {
             textInputs={textInputs}
             onChange={onTextChange}
             loading={loading}
-            setSelectedTab={setSelectTab}/>
+            setSelectedTab={setSelectTab} />
         )}
         {selectTab === 'File Upload' && (
           <ImageUpload
@@ -198,15 +196,15 @@ const NewPostForm: React.FC<NewPostForm> = ({ user }) => {
             setSelectedCategory={setSelectedCategory}
             selectedCategory={selectedCategory} />
         )}
-         {selectTab === 'Agreement and Submit' && (
+        {selectTab === 'Terms & Condition' && (
           <AgreeAndSubmit
             onChange={checkboxHandler}
             handleCreatePost={handleCreatePost}
             check_agree={agree}
             check_Anonymous={anonymous}
             anonymous_change={anonymousHandler}
-            loading={loading} 
-            title_input={textInputs.title}/>
+            loading={loading}
+            title_input={textInputs.title} />
         )}
 
 

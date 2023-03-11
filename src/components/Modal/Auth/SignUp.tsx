@@ -64,7 +64,8 @@ const SignUp: React.FC = () => {
             lastname: signUpForm.lastname,
             age: signUpForm.age,
             pronoun: signUpForm.pronoun,
-            department_id: signUpForm.department
+            department_id: signUpForm.department,
+            email: user.user.email
           })
             .then(response => {
               console.log("after create client ===>", response);
