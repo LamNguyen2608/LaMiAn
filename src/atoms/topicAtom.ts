@@ -4,7 +4,7 @@ import { Idea } from './ideaAtom';
 export interface Topic {
   id?: number;
   name: string;
-  body?: string;
+  description?: string;
   imageURL?: string | null | undefined;
   topic_closure_date: string;
   final_closure_date: string;

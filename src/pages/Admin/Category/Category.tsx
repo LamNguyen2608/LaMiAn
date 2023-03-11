@@ -223,7 +223,7 @@ const Category: React.FC<CategoryProps> = ({ CategoryData }) => {
         confirmModal={submitDelete}
         hideModal={hideConfirmationModal}
         loading={loading}
-        CategoryData={valueUpdateCatModal}
+        
       />
       <UpdateCategory
         showModal={displayUpdateCatModal}

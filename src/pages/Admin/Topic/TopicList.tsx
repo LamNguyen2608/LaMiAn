@@ -31,6 +31,7 @@ const TopicList: React.FC<topicProps> = ({ TopicData }) => {
   useEffect(() => {
     setTopicList(TopicData);
   }, []);
+  const [loading, setLoading] = useState(false);
   const [displayConfirmationModal, setDisplayConfirmationModal] =
     useState(false);
   const showDeleteModal = () => {
@@ -40,8 +41,23 @@ const TopicList: React.FC<topicProps> = ({ TopicData }) => {
   const hideConfirmationModal = () => {
     setDisplayConfirmationModal(false);
   };
-  const submitDelete = () => {
-    setDisplayConfirmationModal(false);
+  const submitDelete = async () => {
+    setLoading(true);
+    try {
+      topicList.map((item) =>
+        axios
+          .delete('http://localhost:8080/topic/delete/' + item.id)
+          .then((response) => {
+            console.log('after deleteTopic ===>', response);
+            window.location.reload();
+            setLoading(false);
+            hideConfirmationModal();
+          })
+      );
+    } catch (error: any) {
+      console.log('handleDeletePost error check', error.message);
+      setLoading(false);
+    }
   };
   return (
     <>
@@ -82,8 +98,8 @@ const TopicList: React.FC<topicProps> = ({ TopicData }) => {
                       fontSize={40}
                       color="white"
                       _hover={{ color: 'yellow' }}
-                      onClick={() =>
-                        router.push('/Admin' + '/Topic' + '/TopicDetails')
+                      onClick={(e) =>
+                        router.push('/Admin/Topic/' + item.id + 'index')
                       }
                     />
 
@@ -93,8 +109,8 @@ const TopicList: React.FC<topicProps> = ({ TopicData }) => {
                       color="white"
                       _hover={{ color: 'blue.300' }}
                       ml="20px"
-                      onClick={() =>
-                        router.push('/Admin' + '/Topic' + '/TopicEdit')
+                      onClick={(e) =>
+                        router.push('/Admin/Topic/' + item.id + 'TopicEdit')
                       }
                     />
 
@@ -117,6 +133,7 @@ const TopicList: React.FC<topicProps> = ({ TopicData }) => {
         showModal={displayConfirmationModal}
         confirmModal={submitDelete}
         hideModal={hideConfirmationModal}
+        loading = {loading}
       />
     </>
   );

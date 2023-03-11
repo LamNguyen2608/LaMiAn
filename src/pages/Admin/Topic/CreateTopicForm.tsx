@@ -11,6 +11,7 @@ import uuid from 'react-uuid';
 const CreateTopicForm: React.FC = () => {
   const [topicForm, setTopicForm] = useState({
     title: '',
+    description: '',
     idea_closure_date: '',
     final_closure_date: '',
   });
@@ -22,6 +23,7 @@ const CreateTopicForm: React.FC = () => {
     //create new post object => type post
     const newTopic: Topic = {
       name: topicForm.title,
+      description: topicForm.description,
       imageURL: null,
       topic_closure_date: topicForm.idea_closure_date,
       final_closure_date: topicForm.final_closure_date,

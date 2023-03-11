@@ -75,7 +75,7 @@ const SignUp: React.FC = () => {
 
   };
 
-  const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const onChange = (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     //update form state
     setSignUpForm((prev) => ({
       ...prev,
