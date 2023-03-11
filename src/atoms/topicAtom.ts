@@ -4,13 +4,18 @@ import { Idea } from './ideaAtom';
 export interface Topic {
   id?: number;
   name: string;
+<<<<<<< HEAD
   description?: string;
   imageURL?: string | null | undefined;
+=======
+>>>>>>> 61931b35035b8cf472c2ff72adfae0e0088ff6be
   topic_closure_date: string;
   final_closure_date: string;
-  modifyDate?: string;
-  isDeleted?: boolean;
-  ideas?: Idea[];
+  modifyDate: string;
+  isDeleted: boolean;
+  ideas: Idea[];
+  imageURL: string;
+  description: string;
 }
 
 export type ClientFollow = {
