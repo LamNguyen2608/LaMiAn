@@ -40,15 +40,6 @@ const IdeaItem: React.FC<IdeaItemProps> = ({
             _hover={{ borderColor: "gray.500" }}
             cursor='pointer'
             marginBottom={2}
-            onClick={() => {
-                if (!ideaid) {
-                    setIdeaStateValue((prev) => ({
-                        ...prev,
-                        selectedIdea: idea
-                    }))
-                    router.push('/topic/' + '1' + '/ideas/' + idea.id)
-                }
-            }}
         >
             <Flex direction='column'
                 align='center'
@@ -65,15 +56,27 @@ const IdeaItem: React.FC<IdeaItemProps> = ({
                             console.log("remove up vote");
                             onVote(event, idea, {
                                 idea_id: idea.id,
-                                reaction: null
+                                reaction: null,
+                                reaction_id: isVoted.reaction_id
                             })
                         }
                         else {
-                            console.log("add up vote")
-                            onVote(event, idea, {
-                                idea_id: idea.id,
-                                reaction: true
-                            })
+                            if (isVoted?.reaction === false || isVoted?.reaction === null) {
+                                console.log("change to up vote");
+                                onVote(event, idea, {
+                                    idea_id: idea.id,
+                                    reaction: true,
+                                    reaction_id: isVoted.reaction_id
+                                })
+                            }
+                            else {
+                                console.log("add up vote")
+                                onVote(event, idea, {
+                                    idea_id: idea.id,
+                                    reaction: true,
+                                    reaction_id: isVoted ? isVoted.reaction : null
+                                })
+                            }
                         }
                     }}
                 />
@@ -87,26 +90,47 @@ const IdeaItem: React.FC<IdeaItemProps> = ({
                             console.log("remove down vote");
                             onVote(event, idea, {
                                 idea_id: idea.id,
-                                reaction: false
+                                reaction: null,
+                                reaction_id: isVoted.reaction_id
                             })
                         }
                         else {
-                            console.log("add down vote");
-                            onVote(event, idea, {
-                                idea_id: idea.id,
-                                reaction: null
-                            })
+                            if (isVoted?.reaction === true || isVoted?.reaction === null) {
+                                console.log("change to down vote");
+                                onVote(event, idea, {
+                                    idea_id: idea.id,
+                                    reaction: false,
+                                    reaction_id: isVoted.reaction_id
+                                })
+                            }
+                            else {
+                                console.log("add down vote");
+                                onVote(event, idea, {
+                                    idea_id: idea.id,
+                                    reaction: false,
+                                    reaction_id: isVoted ? isVoted.reaction : null
+                                })
+                            }
                         }
                     }}
                 />
                 <Text fontSize="9pt">{idea.reactions?.filter((item) => item.reaction === false).length}</Text>
             </Flex>
-            <Flex direction="column" width="100%">
+            <Flex direction="column" width="100%"
+                onClick={() => {
+                    if (!ideaid) {
+                        setIdeaStateValue((prev) => ({
+                            ...prev,
+                            selectedIdea: idea
+                        }))
+                        router.push('/topic/' + topicId + '/ideas/' + idea.id)
+                    }
+                }}>
                 <Stack spacing={1} p="10px">
                     <Stack direction="row" spacing={0.6} align="center" fontSize="9pt">
                         {/*Home Page Check */}
-                        <Text>Posted by LaMiAn {" "}
-                            {moment(new Date(12 * 100)).fromNow()}
+                        <Text>Posted by {idea.isAnonymous ? "Anonymous" : idea.client.firstname + " " + idea.client.lastname} {" "}
+                            {moment(new Date(idea.modify_date)).fromNow()}
                         </Text>
                     </Stack>
                     <Text fontSize="12pt" fontWeight={600}>

@@ -2,17 +2,18 @@ import { Timestamp } from 'firebase/firestore';
 import { atom } from 'recoil';
 
 export interface Idea {
-  id?: number;
+  id: number;
   name: string;
   body: string;
-  date: string | Timestamp;
+  date: string;
   modify_date: string;
   attached_path: string | null | undefined;
-  reactions?: any[];
-  category?: any[];
-  client_id?: string;
-  topic_id?: number;
-  comments?: any[];
+  topic: { id: number; name: string };
+  reactions: { id: number; reaction: boolean | null | undefined }[];
+  idea_cate: { cate_id: { id: number; name: string } }[];
+  client: { id: string; firstname: string; lastname: string };
+  comments: any[];
+  isAnonymous: boolean;
 }
 
 export interface IdeaDetails {
@@ -30,7 +31,7 @@ export interface IdeaDetails {
 }
 
 export type myVote = {
-  reaction_id: number;
+  reaction_id?: number;
   idea_id: number;
   reaction: boolean | null | undefined;
 };

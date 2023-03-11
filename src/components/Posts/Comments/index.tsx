@@ -35,8 +35,6 @@ const Comments: React.FC<CommentsProps> = ({
     const [deleteLoading, setDeleteLoading] = useState("");
     const setAuthModalState = useSetRecoilState(authModalState);
 
-    //const setPostState = useSetRecoilState(postState);
-
     const onCreateComment = async (comment: string) => {
         if (!user) {
             setAuthModalState({ open: true, view: "login" });
@@ -79,6 +77,7 @@ const Comments: React.FC<CommentsProps> = ({
                 fontSize="10pt"
                 width="100%"
             >
+                {/* Add validation to hide comment input section */}
                 <CommentInput
                     comment={comment}
                     setComment={setComment}

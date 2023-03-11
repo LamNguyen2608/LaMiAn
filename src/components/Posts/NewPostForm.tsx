@@ -45,9 +45,9 @@ const formTabs: TabItem[] = [
     icon: MdCategory,
   },
   {
-    title: 'Agreement and Submit',
-    icon: FaPollH,
-  },
+    title: 'Terms & Condition',
+    icon: FaPollH
+  }
 ];
 export type TabItem = {
   title: string;
@@ -61,23 +61,20 @@ const NewPostForm: React.FC<NewPostForm> = ({ user }) => {
     body: '',
   });
   const [selectedFile, setSelectedFile] = useState<string>();
-  const [selectedCategory, setSelectedCategory] =
-    useState<{ value: string; label: string }[]>();
+  const [selectedCategory, setSelectedCategory] = useState<{ value: string; label: string }[]>([]);
   const [agree, setAgree] = useState(false);
   const [anonymous, isAnonymous] = useState(false);
   const [loading, setLoading] = useState(false);
   const handleCreatePost = async () => {
     setLoading(true);
     const { topicId } = router.query;
-    //create new post object => type post
-    const newPost: Idea = {
+    const newPost = {
       name: textInputs.title,
       body: textInputs.body,
-      date: '2023-02-19T17:00:00.000+00:00',
-      modify_date: '2023-02-19T17:00:00.000+00:00',
-      attached_path: null,
+      attached_path: "",
       client_id: user?.uid,
       topic_id: parseInt(topicId as string),
+      isAnonymous: anonymous
     };
 
     try {
@@ -88,19 +85,17 @@ const NewPostForm: React.FC<NewPostForm> = ({ user }) => {
           console.log('result of uploading image ====>', result);
           getDownloadURL(imageRef).then((url) => {
             newPost.attached_path = url as string;
-            console.log('newPost===>', newPost);
-            axios
-              .post('http://localhost:8080/idea/create', newPost)
-              .then((response) => {
-                console.log('after creating idea ===>', response);
-                if (selectedCategory?.length !== 0) {
-                  axios
-                    .post('http://localhost:8080/idea/cate_idea', {
-                      categories: selectedCategory?.map((item) => item.value),
-                      idea_id: response.data.id,
-                    })
-                    .then((response) => {
-                      console.log('after adding category for idea', response);
+            console.log("newPost===>", newPost);
+            axios.post('http://localhost:8080/idea/create', newPost)
+              .then(response => {
+                console.log("after creating idea ===>", response);
+                if (selectedCategory.length > 0) {
+                  axios.post('http://localhost:8080/idea/cate_idea', {
+                    categories: selectedCategory?.map((item) => (item.value)),
+                    idea_id: response.data.id
+                  })
+                    .then(response => {
+                      console.log("after adding category for idea", response)
                       setLoading(false);
                       router.back();
                     });
@@ -190,8 +185,7 @@ const NewPostForm: React.FC<NewPostForm> = ({ user }) => {
             textInputs={textInputs}
             onChange={onTextChange}
             loading={loading}
-            setSelectedTab={setSelectTab}
-          />
+            setSelectedTab={setSelectTab} />
         )}
         {selectTab === 'File Upload' && (
           <ImageUpload
@@ -208,7 +202,7 @@ const NewPostForm: React.FC<NewPostForm> = ({ user }) => {
             selectedCategory={selectedCategory}
           />
         )}
-        {selectTab === 'Agreement and Submit' && (
+        {selectTab === 'Terms & Condition' && (
           <AgreeAndSubmit
             onChange={checkboxHandler}
             handleCreatePost={handleCreatePost}
@@ -216,8 +210,7 @@ const NewPostForm: React.FC<NewPostForm> = ({ user }) => {
             check_Anonymous={anonymous}
             anonymous_change={anonymousHandler}
             loading={loading}
-            title_input={textInputs.title}
-          />
+            title_input={textInputs.title} />
         )}
       </Flex>
     </Flex>
