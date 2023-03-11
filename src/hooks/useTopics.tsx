@@ -20,11 +20,29 @@ const useTopics = () => {
         followTopic(topicData);
     };
     const followTopic = (topicData: Topic) => {
-
+        axios.post('http://localhost:8080/client/topic', {
+            client_id: user?.uid,
+            topic_id: topicData.id
+        }).then(res => {
+            if (res.status === 200) {
+                console.log("successfully followed topic");
+                getFollowedTopics();
+            }
+        })
     };
 
     const unfollowTopic = (topicId: number) => {
-
+        axios.delete('http://localhost:8080/client/topic/delete', {
+            data: {
+                "topic_id": topicId,
+                "client_id": user?.uid
+            }
+        }).then(res => {
+            if (res.status === 200) {
+                console.log("successfully unfollowed topic")
+                getFollowedTopics();
+            }
+        })
     };
 
     const getFollowedTopics = async () => {
