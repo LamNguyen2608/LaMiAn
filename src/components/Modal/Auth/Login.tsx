@@ -1,9 +1,11 @@
 import { authModalState } from "@/atoms/authModalAtom";
+import { Client, clientState } from "@/atoms/clientAtom";
 import { ideaState } from "@/atoms/ideaAtom";
 import IdeaItem from "@/components/Posts/IdeaItem";
 import { auth } from "@/Firebase/clientApp";
 import { FIREBASE_ERROR } from "@/Firebase/error";
 import { border, Button, Flex, Input, Text } from "@chakra-ui/react";
+import axios from "axios";
 import React, { useState } from "react";
 import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
 import { useRecoilState, useSetRecoilState } from "recoil";
@@ -22,11 +24,24 @@ const Login: React.FC<LoginProps> = () => {
     loading,
     error,
   ] = useSignInWithEmailAndPassword(auth);
+  const [clientStateValue, setClientStateValue] = useRecoilState(clientState);
 
   //Firebase 
   const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    signInWithEmailAndPassword(loginForm.email, loginForm.password)
+    signInWithEmailAndPassword(loginForm.email, loginForm.password).then(
+      res => {
+        axios.get('http://localhost:8080/client/' + res?.user.uid).then(
+          client => {
+            console.log("log in client ==>", client);
+            localStorage.setItem("currentClient", JSON.stringify(client.data));
+            setClientStateValue({
+              currentClient: client.data
+            })
+          }
+        )
+      }
+    )
   };
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     //update form state

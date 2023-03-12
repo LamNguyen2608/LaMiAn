@@ -4,8 +4,9 @@ import { auth } from '../../../Firebase/clientApp'
 import { FIREBASE_ERROR } from '../../../Firebase/error'
 import { Input, Button, Flex, Text, Select } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
-import { useSetRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import axios from "axios";
+import { clientState } from "@/atoms/clientAtom";
 
 type Department = {
   "id": number,
@@ -27,6 +28,7 @@ const SignUp: React.FC = () => {
   });
   const [formError, setformError] = useState("");
   const [allDepartments, setAllDepartments] = useState<Department[]>([]);
+  const [clientStateValue, setClientStateValue] = useRecoilState(clientState);
   const [
     createUserWithEmailAndPassword,
     user,
@@ -67,8 +69,11 @@ const SignUp: React.FC = () => {
             department_id: signUpForm.department,
             email: user.user.email
           })
-            .then(response => {
-              console.log("after create client ===>", response);
+            .then(client => {
+              console.log("after create client ===>", client);
+              setClientStateValue({
+                currentClient: client.data
+              })
             });
         }
       }

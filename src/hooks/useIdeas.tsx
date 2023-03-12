@@ -40,6 +40,7 @@ const useIdeas = () => {
         const existingIdeaIndex: number = ideaStateValue.Ideas.findIndex(
             (item) => item.id === idea.id
         )
+        console.log("The idea that changes vote ====>", existingIdeaIndex);
 
         try {
             if (existingVoteIndex === -1) {
@@ -65,7 +66,7 @@ const useIdeas = () => {
                     "client_id": user.uid,
                     "idea_id": idea.id
                 }).then(res => {
-                    console.log("UPDATE VOTE RESULT!!!", res.data,);
+                    console.log("UPDATE VOTE RESULT!!!", res.data);
                     updatedIdeaVotes[existingVoteIndex] = newReaction;
                     let existingReactionIndex: number = updatedIdeas[existingIdeaIndex].reactions.findIndex(
                         (reaction: { id: number; }) => reaction.id === newReaction.reaction_id
@@ -86,9 +87,6 @@ const useIdeas = () => {
 
     }
 
-    const onSelectIdea = async () => {
-
-    }
 
     const onDeleteIdea = async () => {
 

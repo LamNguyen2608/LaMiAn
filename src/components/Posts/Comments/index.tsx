@@ -12,28 +12,36 @@ import { authModalState } from "../../../atoms/authModalAtom";
 import CommentItem, { Comment } from "./CommentItem";
 import CommentInput from "./Input";
 import { User } from "firebase/auth";
-import { IdeaDetails } from "@/atoms/ideaAtom";
+import { Idea, IdeaDetails } from "@/atoms/ideaAtom";
 import axios from "axios";
+import useIdeas from "@/hooks/useIdeas";
 
 type CommentsProps = {
     user?: User | null;
-    selectedIdea: IdeaDetails;
+    selectedIdea: Idea;
     topic: string;
-    fetchIdea: (idea_id: string) => void
+    //fetchIdea: (idea_id: string) => void
 };
+
 
 const Comments: React.FC<CommentsProps> = ({
     user,
     selectedIdea,
     topic,
-    fetchIdea
+    // fetchIdea
 }) => {
     const [comment, setComment] = useState("");
-    const [comments, setComments] = useState<Comment[] | null>([]);
+    const [comments, setComments] = useState<Comment[]>([]);
+    const [commentAnonymous, setCommentAnonymous] = useState(false);
     const [commentFetchLoading, setCommentFetchLoading] = useState(false);
     const [commentCreateLoading, setCommentCreateLoading] = useState(false);
     const [deleteLoading, setDeleteLoading] = useState("");
     const setAuthModalState = useSetRecoilState(authModalState);
+    const { ideaStateValue, setIdeaStateValue, onVote } = useIdeas();
+
+    const setAnonymous = () => {
+        setCommentAnonymous(!commentAnonymous);
+    }
 
     const onCreateComment = async (comment: string) => {
         if (!user) {
@@ -43,15 +51,22 @@ const Comments: React.FC<CommentsProps> = ({
 
         setCommentCreateLoading(true);
         try {
-
+            console.log("anonymous ===========>", commentAnonymous);
             axios.post('http://localhost:8080/idea/comment', {
                 "comment": comment,
                 "client_id": user.uid,
-                "idea_id": selectedIdea.id
-            }).then(async res => {
+                "idea_id": selectedIdea.id,
+                "isAnonymous": commentAnonymous
+            }).then(res => {
                 setComment("");
                 setCommentCreateLoading(false);
-                await fetchIdea(selectedIdea.id.toString());
+                let updatedComments = JSON.parse(JSON.stringify(ideaStateValue.Ideas));
+                updatedComments[ideaStateValue.selectedIdeaIndex].comments.push(res.data);
+                setIdeaStateValue(prev => ({
+                    ...prev,
+                    Ideas: updatedComments
+                }))
+                //await fetchIdea(selectedIdea.id.toString());
             })
         } catch (error) {
 
@@ -84,6 +99,8 @@ const Comments: React.FC<CommentsProps> = ({
                     loading={commentCreateLoading}
                     user={user}
                     onCreateComment={onCreateComment}
+                    isAnonymous={commentAnonymous}
+                    setAnonymous={setAnonymous}
                 />
             </Flex>
             <Stack spacing={6} p={2}>
@@ -131,3 +148,4 @@ const Comments: React.FC<CommentsProps> = ({
     );
 };
 export default Comments;
+

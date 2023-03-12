@@ -12,17 +12,17 @@ const useTopics = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
 
-    const onFollowOrUnfollowTopic = (topicData: Topic, isFollowed: boolean) => {
+    const onFollowOrUnfollowTopic = (topicId: number, isFollowed: boolean) => {
         if (isFollowed) {
-            unfollowTopic(topicData.id);
+            unfollowTopic(topicId);
             return;
         }
-        followTopic(topicData);
+        followTopic(topicId);
     };
-    const followTopic = (topicData: Topic) => {
+    const followTopic = (topicId: number) => {
         axios.post('http://localhost:8080/client/topic', {
             client_id: user?.uid,
-            topic_id: topicData.id
+            topic_id: topicId
         }).then(res => {
             if (res.status === 200) {
                 console.log("successfully followed topic");

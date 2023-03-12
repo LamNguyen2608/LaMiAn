@@ -44,7 +44,7 @@ const Header: React.FC<HeaderProps> = ({ topicData }) => {
                             width="80px"
                             pr={6}
                             pl={6}
-                            onClick={() => onFollowOrUnfollowTopic(topicData, isJoined)}>
+                            onClick={() => onFollowOrUnfollowTopic(topicData.id, isJoined)}>
                             {isJoined ? "Unfollow" : "Follow"}
                         </Button>
                     </Flex>

@@ -18,45 +18,47 @@ const IdeaPage: React.FC<IdeaPageProps> = () => {
     const [user] = useAuthState(auth);
     const router = useRouter();
     const { topicId, ideaid } = router.query;
-    //const { communityStateValue } = useCommunityData();
     const { ideaStateValue, setIdeaStateValue, onVote } = useIdeas();
-    //const [idea, setIdea] = useState();
     const [loading, setLoading] = useState(false);
 
-    useEffect(() => {
-        fetchIdea(ideaid);
-        localStorage.setItem("cache_idea", JSON.stringify(ideaStateValue.selectedIdea));
-    }, [ideaid])
+    // useEffect(() => {
+    //     if (ideaid) {
+    //         fetchIdea(ideaid);
+    //     }
+    //     //localStorage.setItem("selectedId", JSON.stringify(ideaStateValue.selectedIdea));
+    // }, [])
 
-    const fetchIdea = async (idea_id: string) => {
-        console.log("FETCHING IDEA");
-        try {
-            axios.get('http://localhost:8080/idea/' + idea_id).then(
-                res => {
-                    console.log("Idea fetched ==>", res.data)
-                    setIdeaStateValue((prev) => ({
-                        ...prev,
-                        selectedIdeaDetails: res.data
-                    }))
-                }
-            )
+    // const fetchIdea = async (idea_id: string | string[]) => {
+    //     console.log("FETCHING IDEA");
+    //     try {
+    //         axios.get('http://localhost:8080/idea/' + idea_id).then(
+    //             res => {
+    //                 console.log("Idea fetched ==>", res.data)
+    //                 setIdeaStateValue((prev) => ({
+    //                     ...prev,
+    //                     selectedIdeaDetails: res.data
+    //                 }))
+    //             }
+    //         )
 
-        } catch (error) {
-            console.log("Idea fetched error ==>", error)
-        }
-    }
+    //     } catch (error) {
+    //         console.log("Idea fetched error ==>", error)
+    //     }
+    // }
+
 
     return (
         <PageContent>
             <>
                 <IdeaItem
-                    idea={ideaStateValue.selectedIdea ? ideaStateValue.selectedIdea : JSON.parse(localStorage.getItem("cache_idea")) as Idea}
+                    idea={ideaStateValue.Ideas[ideaStateValue.selectedIdeaIndex]}
+                    index={ideaStateValue.selectedIdeaIndex}
                 />
                 <Comments
                     user={user}
                     topic={topicId}
-                    selectedIdea={ideaStateValue.selectedIdeaDetails}
-                    fetchIdea={fetchIdea}
+                    selectedIdea={ideaStateValue.Ideas[ideaStateValue.selectedIdeaIndex]}
+                //fetchIdea={fetchIdea}
                 />
             </>
             <></>
