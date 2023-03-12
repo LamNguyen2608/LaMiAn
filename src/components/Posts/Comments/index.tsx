@@ -12,14 +12,15 @@ import { authModalState } from "../../../atoms/authModalAtom";
 import CommentItem, { Comment } from "./CommentItem";
 import CommentInput from "./Input";
 import { User } from "firebase/auth";
-import { IdeaDetails } from "@/atoms/ideaAtom";
+import { Idea, IdeaDetails } from "@/atoms/ideaAtom";
 import axios from "axios";
+import useIdeas from "@/hooks/useIdeas";
 
 type CommentsProps = {
     user?: User | null;
-    selectedIdea: IdeaDetails;
+    selectedIdea: Idea;
     topic: string;
-    fetchIdea: (idea_id: string) => void
+    //fetchIdea: (idea_id: string) => void
 };
 
 
@@ -27,7 +28,7 @@ const Comments: React.FC<CommentsProps> = ({
     user,
     selectedIdea,
     topic,
-    fetchIdea
+    // fetchIdea
 }) => {
     const [comment, setComment] = useState("");
     const [comments, setComments] = useState<Comment[]>([]);
@@ -36,6 +37,7 @@ const Comments: React.FC<CommentsProps> = ({
     const [commentCreateLoading, setCommentCreateLoading] = useState(false);
     const [deleteLoading, setDeleteLoading] = useState("");
     const setAuthModalState = useSetRecoilState(authModalState);
+    const { ideaStateValue, setIdeaStateValue, onVote } = useIdeas();
 
     const setAnonymous = () => {
         setCommentAnonymous(!commentAnonymous);
@@ -55,10 +57,16 @@ const Comments: React.FC<CommentsProps> = ({
                 "client_id": user.uid,
                 "idea_id": selectedIdea.id,
                 "isAnonymous": commentAnonymous
-            }).then(async res => {
+            }).then(res => {
                 setComment("");
                 setCommentCreateLoading(false);
-                await fetchIdea(selectedIdea.id.toString());
+                let updatedComments = JSON.parse(JSON.stringify(ideaStateValue.Ideas));
+                updatedComments[ideaStateValue.selectedIdeaIndex].comments.push(res.data);
+                setIdeaStateValue(prev => ({
+                    ...prev,
+                    Ideas: updatedComments
+                }))
+                //await fetchIdea(selectedIdea.id.toString());
             })
         } catch (error) {
 
@@ -140,3 +148,4 @@ const Comments: React.FC<CommentsProps> = ({
     );
 };
 export default Comments;
+

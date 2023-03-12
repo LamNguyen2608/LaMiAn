@@ -44,14 +44,14 @@ export interface IdeaState {
   selectedIdea: Idea | null;
   Ideas: Idea[];
   IdeaVotes: myVote[];
-  selectedIdeaDetails: IdeaDetails | null;
+  selectedIdeaIndex: number;
 }
 
 const defaultIdeaState: IdeaState = {
   IdeaVotes: [],
   selectedIdea: null,
   Ideas: [],
-  selectedIdeaDetails: null,
+  selectedIdeaIndex: -1,
 };
 
 export const ideaState = atom<IdeaState>({

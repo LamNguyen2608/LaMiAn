@@ -14,6 +14,7 @@ const badgeColors = ["red", "orange", "yellow", "green", "teal", "blue", "cyan",
 
 type IdeaItemProps = {
     idea: Idea;
+    index: number;
     // userIsCreator: boolean;
     // userVoteValue?: number;
     // onVote: () => {};
@@ -22,7 +23,8 @@ type IdeaItemProps = {
 };
 
 const IdeaItem: React.FC<IdeaItemProps> = ({
-    idea
+    idea,
+    index
 }) => {
     const { ideaStateValue, setIdeaStateValue, onVote } = useIdeas();
     const isVoted: myVote | undefined = ideaStateValue.IdeaVotes.find(
@@ -122,7 +124,8 @@ const IdeaItem: React.FC<IdeaItemProps> = ({
                     if (!ideaid) {
                         setIdeaStateValue((prev) => ({
                             ...prev,
-                            selectedIdea: idea
+                            selectedIdea: idea,
+                            selectedIdeaIndex: index
                         }))
                         router.push('/topic/' + idea.topic.id + '/ideas/' + idea.id)
                     }
