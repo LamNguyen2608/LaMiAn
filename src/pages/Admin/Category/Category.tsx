@@ -35,7 +35,7 @@ const Category: React.FC<CategoryProps> = ({ CategoryData }) => {
   const [displayConfirmationModal, setDisplayConfirmationModal] =
     useState(false);
   const [displayUpdateCatModal, setDisplayUpdateCatModal] = useState(false);
-  const [valueUpdateCatModal, setValueUpdateCatModal] = useState<{
+  const [valueCatModal, setValueCatModal] = useState<{
     id?: number;
     name: string;
   }>();
@@ -82,7 +82,7 @@ const Category: React.FC<CategoryProps> = ({ CategoryData }) => {
   };
   const showUpdateCatModal = (item: { id?: number; name: string }) => {
     setDisplayUpdateCatModal(true);
-    setValueUpdateCatModal(item);
+    setValueCatModal(item);
   };
   const hideUpdateCatModal = () => {
     setDisplayUpdateCatModal(false);
@@ -92,19 +92,17 @@ const Category: React.FC<CategoryProps> = ({ CategoryData }) => {
     try {
       if (category) {
         {
-          listCategory.map((item) =>
-            axios
-              .put('http://localhost:8080/cate/update', {
-                id: item.id,
-                name: category,
-              })
-              .then((response) => {
-                console.log('after updateTopic ===>', response);
-                window.location.reload();
-                setLoading(false);
-                hideUpdateCatModal();
-              })
-          );
+          axios
+            .put('http://localhost:8080/cate/update', {
+              id: valueCatModal?.id,
+              name: category,
+            })
+            .then((response) => {
+              console.log('after updateTopic ===>', response);
+              window.location.reload();
+              setLoading(false);
+              hideUpdateCatModal();
+            });
         }
       } else {
         setLoading(false);
@@ -122,7 +120,7 @@ const Category: React.FC<CategoryProps> = ({ CategoryData }) => {
 
   const showDeleteModal = (item: { id?: number; name: string }) => {
     setDisplayConfirmationModal(true);
-    setValueUpdateCatModal(item);
+    setValueCatModal(item);
   };
 
   // Hide the modal
@@ -132,16 +130,14 @@ const Category: React.FC<CategoryProps> = ({ CategoryData }) => {
   const submitDelete = async () => {
     setLoading(true);
     try {
-      listCategory.map((item) =>
-        axios
-          .delete('http://localhost:8080/cate/delete/' + item.id)
-          .then((response) => {
-            console.log('after deleteTopic ===>', response);
-            window.location.reload();
-            setLoading(false);
-            hideConfirmationModal();
-          })
-      );
+      axios
+        .delete('http://localhost:8080/cate/delete/' + valueCatModal?.id)
+        .then((response) => {
+          console.log('after deleteTopic ===>', response);
+          window.location.reload();
+          setLoading(false);
+          hideConfirmationModal();
+        });
     } catch (error: any) {
       console.log('handleDeletePost error check', error.message);
       setLoading(false);
@@ -223,7 +219,6 @@ const Category: React.FC<CategoryProps> = ({ CategoryData }) => {
         confirmModal={submitDelete}
         hideModal={hideConfirmationModal}
         loading={loading}
-        
       />
       <UpdateCategory
         showModal={displayUpdateCatModal}
@@ -231,7 +226,7 @@ const Category: React.FC<CategoryProps> = ({ CategoryData }) => {
         hideModal={hideUpdateCatModal}
         onChange={onTextChange}
         loading={loading}
-        CategoryData={valueUpdateCatModal}
+        CategoryData={valueCatModal}
       />
     </>
   );

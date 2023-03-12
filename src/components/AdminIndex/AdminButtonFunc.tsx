@@ -45,7 +45,7 @@ const AdminButtonFunc: React.FC = () => {
               bgGradient: 'linear(to-r, brand.100, brand.200)',
             }}
             onClick={() => {
-              router.push('/Admin/' + '/UpdateRoleForm');
+              router.push('/Admin/UserRole/UpdateRoleForm');
             }}
           >
             <Icon as={CgUserList} fontSize={80} color="white" />
