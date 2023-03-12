@@ -1,4 +1,6 @@
+
 import { atom } from "recoil";
+
 
 export interface Idea {
   id: number;
@@ -55,6 +57,6 @@ const defaultIdeaState: IdeaState = {
 };
 
 export const ideaState = atom<IdeaState>({
-  key: "IdeaState",
+  key: 'IdeaState',
   default: defaultIdeaState,
 });

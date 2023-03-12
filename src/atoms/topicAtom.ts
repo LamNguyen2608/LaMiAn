@@ -1,8 +1,8 @@
-import { atom } from "recoil";
-import { Idea } from "./ideaAtom";
+import { atom } from 'recoil';
+import { Idea } from './ideaAtom';
 
 export interface Topic {
-  id: number;
+  id?: number;
   name: string;
   topic_closure_date: string;
   final_closure_date: string;
@@ -61,6 +61,6 @@ export const defaultTopicState: TopicState = {
 };
 
 export const TopicState = atom<TopicState>({
-  key: "TopicState",
+  key: 'TopicState',
   default: defaultTopicState,
 });
