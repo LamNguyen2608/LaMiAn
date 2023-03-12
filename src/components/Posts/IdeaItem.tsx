@@ -1,4 +1,4 @@
-import { Badge, Flex, Icon, Image, Stack, Text } from '@chakra-ui/react';
+import { Badge, Flex, Icon, Image, Spinner, Stack, Text } from '@chakra-ui/react';
 import { TriangleDownIcon, TriangleUpIcon, ChatIcon, StarIcon } from '@chakra-ui/icons'
 import { RiShareForwardLine } from 'react-icons/ri'
 import React from 'react';
@@ -6,6 +6,9 @@ import moment from 'moment';
 import { Idea, myVote } from '@/atoms/ideaAtom';
 import useIdeas from '@/hooks/useIdeas';
 import { useRouter } from 'next/router';
+import { auth } from '@/Firebase/clientApp';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { AiOutlineDelete, AiOutlineEdit } from 'react-icons/ai';
 
 const badgeColors = ["red", "orange", "yellow", "green", "teal", "blue", "cyan", "purple", "pink", "linkedin", "facebook", "messenger", "whatsapp", "twitter", "telegram"];
 
@@ -19,12 +22,7 @@ type IdeaItemProps = {
 };
 
 const IdeaItem: React.FC<IdeaItemProps> = ({
-    idea,
-    // userIsCreator,
-    // userVoteValue,
-    // onVote,
-    // onDeletePost,
-    // onSelectPost
+    idea
 }) => {
     const { ideaStateValue, setIdeaStateValue, onVote } = useIdeas();
     const isVoted: myVote | undefined = ideaStateValue.IdeaVotes.find(
@@ -32,6 +30,7 @@ const IdeaItem: React.FC<IdeaItemProps> = ({
     );
     const router = useRouter();
     const { topicId, ideaid } = router.query;
+    const [user, loadingUser] = useAuthState(auth);
     console.log("Idea ID: " + idea.id + "====> is vote: " + isVoted);
     return (
         <Flex
@@ -184,7 +183,50 @@ const IdeaItem: React.FC<IdeaItemProps> = ({
                         <StarIcon mr={2} color="gray.300" />
                         <Text fontSize="9pt">Save</Text>
                     </Flex>
+                    {idea.client.id === user?.uid && (
+                        <>
+                            <Flex
+                                align="center"
+                                p="8px 10px"
+                                borderRadius={4}
+                                _hover={{ bg: "gray.200" }}
+                                cursor="pointer"
+                            //onClick={}
+                            >
+                                {false ? (
+                                    <Spinner size="sm" />
+                                ) : (
+                                    <>
+                                        <Icon as={AiOutlineDelete} mr={2} />
+                                        <Text fontSize="9pt">Delete</Text>
+                                    </>
+                                )}
 
+                            </Flex>
+                            <Flex
+                                align="center"
+                                p="8px 10px"
+                                borderRadius={4}
+                                _hover={{ bg: "gray.200" }}
+                                cursor="pointer"
+                            //onClick={}
+                            >
+                                {
+                                    false ? (
+                                        <Spinner size="sm" />
+                                    ) : (
+                                        <>
+                                            <Icon as={AiOutlineEdit} mr={2} />
+                                            <Text fontSize="9pt">Edit</Text>
+                                        </>
+                                    )
+                                }
+
+                            </Flex>
+                        </>
+
+
+                    )}
                 </Flex>
 
             </Flex>
@@ -192,3 +234,4 @@ const IdeaItem: React.FC<IdeaItemProps> = ({
     )
 }
 export default IdeaItem;
+

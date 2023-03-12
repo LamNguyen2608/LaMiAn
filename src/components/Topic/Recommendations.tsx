@@ -155,7 +155,7 @@ const Recommendations: React.FC<RecommendationsProps> = () => {
                                                 fontSize="8pt"
                                                 onClick={(event) => {
                                                     event.stopPropagation();
-                                                    //onFollowOrUnfollowTopic(item, isJoined);
+                                                    onFollowOrUnfollowTopic(item.id, isJoined);
                                                 }}
                                                 variant={isJoined ? "secondary" : "primary"}
                                             >
