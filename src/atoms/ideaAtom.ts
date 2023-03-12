@@ -1,4 +1,3 @@
-import { Timestamp } from "firebase/firestore";
 import { atom } from "recoil";
 
 export interface Idea {
@@ -26,7 +25,13 @@ export interface IdeaDetails {
   topic: { id: number; name: string }[];
   client: { id: string; firstname: string; lastname: string }[];
   reactions: any[];
-  comments: { id: number; comment: string; modify_date: string }[];
+  comments: {
+    id: number;
+    comment: string;
+    modify_date: string;
+    client: { id: string; firstname: string; lastname: string };
+    isAnonymous: boolean;
+  }[];
   idea_cate: any[];
 }
 

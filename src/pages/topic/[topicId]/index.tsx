@@ -11,6 +11,7 @@ import TopicRHS from '@/components/Topic/TopicRHS';
 import IdeaItem from '@/components/Posts/IdeaItem';
 import useIdeas from '@/hooks/useIdeas';
 import { ideaState } from '@/atoms/ideaAtom';
+import About from '@/components/Topic/About';
 
 type TopicPageProps = {
     topicData: Topic;
@@ -36,14 +37,12 @@ const TopicPage: React.FC<TopicPageProps> = ({ topicData }) => {
                         <IdeaItem idea={item} />
                     ))}
                 </>
-                <><TopicRHS topicData={topicData} /></>
+                <><About topicData={topicData} /></>
             </PageContent>
         </>
     )
 }
 export async function getServerSideProps(context: GetServerSidePropsContext) {
-    //get topic data and pass it to cline
-    //context.query.topicId as string => getting id from route
     try {
         const response = await axios.get(process.env.REACT_APP_BACKEND_ENDPOINT + 'topic/' + context.query.topicId as string);
         console.log(response.data);

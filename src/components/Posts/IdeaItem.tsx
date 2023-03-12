@@ -1,4 +1,4 @@
-import { Flex, Icon, Image, Stack, Text } from '@chakra-ui/react';
+import { Badge, Flex, Icon, Image, Stack, Text } from '@chakra-ui/react';
 import { TriangleDownIcon, TriangleUpIcon, ChatIcon, StarIcon } from '@chakra-ui/icons'
 import { RiShareForwardLine } from 'react-icons/ri'
 import React from 'react';
@@ -6,6 +6,8 @@ import moment from 'moment';
 import { Idea, myVote } from '@/atoms/ideaAtom';
 import useIdeas from '@/hooks/useIdeas';
 import { useRouter } from 'next/router';
+
+const badgeColors = ["red", "orange", "yellow", "green", "teal", "blue", "cyan", "purple", "pink", "linkedin", "facebook", "messenger", "whatsapp", "twitter", "telegram"];
 
 type IdeaItemProps = {
     idea: Idea;
@@ -123,14 +125,18 @@ const IdeaItem: React.FC<IdeaItemProps> = ({
                             ...prev,
                             selectedIdea: idea
                         }))
-                        router.push('/topic/' + topicId + '/ideas/' + idea.id)
+                        router.push('/topic/' + idea.topic.id + '/ideas/' + idea.id)
                     }
                 }}>
                 <Stack spacing={1} p="10px">
-                    <Stack direction="row" spacing={0.6} align="center" fontSize="9pt">
+                    <Stack direction="column" spacing={0.6} align="left" fontSize="9pt">
                         {/*Home Page Check */}
-                        <Text>Posted by {idea.isAnonymous ? "Anonymous" : idea.client.firstname + " " + idea.client.lastname} {" "}
+                        <Text>Posted by
+                            <b> {" "} {idea.isAnonymous ? "Anonymous" : idea.client.firstname + " " + idea.client.lastname} {" "}</b>
                             {moment(new Date(idea.modify_date)).fromNow()}
+                        </Text>
+                        <Text color="brand.900" fontSize="10px">
+                            Topic: {" "}{idea.topic.name}
                         </Text>
                     </Stack>
                     <Text fontSize="12pt" fontWeight={600}>
@@ -139,6 +145,11 @@ const IdeaItem: React.FC<IdeaItemProps> = ({
                     <Text fontSize="10pt" fontWeight={500}>
                         {idea.body}
                     </Text>
+                    <Stack direction='row'>
+                        {idea.idea_cate.map((cate, index) => (
+                            <Badge colorScheme={badgeColors[index]}>{cate.cate_id.name}</Badge>
+                        ))}
+                    </Stack>
                     <Flex justify="center" align="center" p={2}>
                         <Image
                             src={idea.attached_path}

@@ -22,6 +22,7 @@ type CommentsProps = {
     fetchIdea: (idea_id: string) => void
 };
 
+
 const Comments: React.FC<CommentsProps> = ({
     user,
     selectedIdea,
@@ -29,11 +30,16 @@ const Comments: React.FC<CommentsProps> = ({
     fetchIdea
 }) => {
     const [comment, setComment] = useState("");
-    const [comments, setComments] = useState<Comment[] | null>([]);
+    const [comments, setComments] = useState<Comment[]>([]);
+    const [commentAnonymous, setCommentAnonymous] = useState(false);
     const [commentFetchLoading, setCommentFetchLoading] = useState(false);
     const [commentCreateLoading, setCommentCreateLoading] = useState(false);
     const [deleteLoading, setDeleteLoading] = useState("");
     const setAuthModalState = useSetRecoilState(authModalState);
+
+    const setAnonymous = () => {
+        setCommentAnonymous(!commentAnonymous);
+    }
 
     const onCreateComment = async (comment: string) => {
         if (!user) {
@@ -43,11 +49,12 @@ const Comments: React.FC<CommentsProps> = ({
 
         setCommentCreateLoading(true);
         try {
-
+            console.log("anonymous ===========>", commentAnonymous);
             axios.post('http://localhost:8080/idea/comment', {
                 "comment": comment,
                 "client_id": user.uid,
-                "idea_id": selectedIdea.id
+                "idea_id": selectedIdea.id,
+                "isAnonymous": commentAnonymous
             }).then(async res => {
                 setComment("");
                 setCommentCreateLoading(false);
@@ -84,6 +91,8 @@ const Comments: React.FC<CommentsProps> = ({
                     loading={commentCreateLoading}
                     user={user}
                     onCreateComment={onCreateComment}
+                    isAnonymous={commentAnonymous}
+                    setAnonymous={setAnonymous}
                 />
             </Flex>
             <Stack spacing={6} p={2}>

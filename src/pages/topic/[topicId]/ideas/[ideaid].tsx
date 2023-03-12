@@ -24,11 +24,13 @@ const IdeaPage: React.FC<IdeaPageProps> = () => {
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
-        fetchIdea(ideaid);
-        localStorage.setItem("cache_idea", JSON.stringify(ideaStateValue.selectedIdea));
-    }, [ideaid])
+        if (ideaid) {
+            fetchIdea(ideaid);
+        }
+        //localStorage.setItem("selectedId", JSON.stringify(ideaStateValue.selectedIdea));
+    }, [])
 
-    const fetchIdea = async (idea_id: string) => {
+    const fetchIdea = async (idea_id: string | string[]) => {
         console.log("FETCHING IDEA");
         try {
             axios.get('http://localhost:8080/idea/' + idea_id).then(
@@ -46,11 +48,12 @@ const IdeaPage: React.FC<IdeaPageProps> = () => {
         }
     }
 
+
     return (
         <PageContent>
             <>
                 <IdeaItem
-                    idea={ideaStateValue.selectedIdea ? ideaStateValue.selectedIdea : JSON.parse(localStorage.getItem("cache_idea")) as Idea}
+                    idea={ideaStateValue.selectedIdea}
                 />
                 <Comments
                     user={user}
