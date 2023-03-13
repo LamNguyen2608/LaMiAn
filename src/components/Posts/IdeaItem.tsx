@@ -26,7 +26,7 @@ const IdeaItem: React.FC<IdeaItemProps> = ({
     idea,
     index
 }) => {
-    const { ideaStateValue, setIdeaStateValue, onVote } = useIdeas();
+    const { ideaStateValue, setIdeaStateValue, onVote, setUpdateIdea } = useIdeas();
     const isVoted: myVote | undefined = ideaStateValue.IdeaVotes.find(
         (item) => (item.idea_id === idea.id)
     );
@@ -212,7 +212,13 @@ const IdeaItem: React.FC<IdeaItemProps> = ({
                                 borderRadius={4}
                                 _hover={{ bg: "gray.200" }}
                                 cursor="pointer"
-                            //onClick={}
+                                onClick={() => {
+                                    setIdeaStateValue((prev) => ({
+                                        ...prev,
+                                        selectedIdea: ideaStateValue.Ideas[index]
+                                    }))
+                                    router.push('/topic/' + idea.topic.id + '/ideas/update');
+                                }}
                             >
                                 {
                                     false ? (

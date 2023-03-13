@@ -12,19 +12,25 @@ import IdeaItem from '@/components/Posts/IdeaItem';
 import useIdeas from '@/hooks/useIdeas';
 import { ideaState } from '@/atoms/ideaAtom';
 import About from '@/components/Topic/About';
+import useTopics from '@/hooks/useTopics';
 
 type TopicPageProps = {
     topicData: Topic;
 };
 
 const TopicPage: React.FC<TopicPageProps> = ({ topicData }) => {
+    const { topicStateValue, setTopicStateValue } = useTopics();
     console.log("===>", topicData.ideas);
     const { ideaStateValue, setIdeaStateValue } = useIdeas();
     useEffect(() => {
         setIdeaStateValue((prev) => ({
             ...prev,
             Ideas: topicData.ideas
-        }))
+        }));
+        setTopicStateValue((prev) => ({
+            ...prev,
+            currentTopic: topicData
+        }));
     }, [])
     return (
         <>

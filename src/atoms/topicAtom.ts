@@ -14,12 +14,12 @@ export interface Topic {
 }
 
 export type TopTopic = {
-  id: number;
-  name: string;
+  topic_id: number;
+  topic_name: string;
   numOfFollowers: number;
-  topic_closure_date: string;
+  idea_closure_date: string;
   final_closure_date: string;
-  imgURL: string;
+  image_url: string;
 };
 
 export type ClientFollow = {

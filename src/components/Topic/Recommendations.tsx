@@ -11,6 +11,7 @@ import {
     Stack,
     Text,
 } from "@chakra-ui/react";
+import axios from "axios";
 import { collection, getDocs, limit, orderBy, query } from "firebase/firestore";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
@@ -21,47 +22,28 @@ type RecommendationsProps = {
 
 };
 
-const dummyData: TopTopic[] = [
-    {
-        id: 1,
-        name: "test 1",
-        numOfFollowers: 123,
-        topic_closure_date: "2023-03-09",
-        final_closure_date: "2023-03-10",
-        imgURL: "https://firebasestorage.googleapis.com/v0/b/enterpriseprojectdemo.appspot.com/o/Ideas%2F0226f7d6-4538-04a3-5cb1-15a516eec596?alt=media&token=3ac89c2c-8d5a-4629-9f38-c700effc085d"
-    },
-    {
-        id: 2,
-        name: "test 2",
-        numOfFollowers: 123,
-        topic_closure_date: "2023-03-09",
-        final_closure_date: "2023-03-10",
-        imgURL: "https://firebasestorage.googleapis.com/v0/b/enterpriseprojectdemo.appspot.com/o/Ideas%2F0226f7d6-4538-04a3-5cb1-15a516eec596?alt=media&token=3ac89c2c-8d5a-4629-9f38-c700effc085d"
-    },
-    {
-        id: 3,
-        name: "test 3",
-        numOfFollowers: 123,
-        topic_closure_date: "2023-03-09",
-        final_closure_date: "2023-03-10",
-        imgURL: "https://firebasestorage.googleapis.com/v0/b/enterpriseprojectdemo.appspot.com/o/Ideas%2F0226f7d6-4538-04a3-5cb1-15a516eec596?alt=media&token=3ac89c2c-8d5a-4629-9f38-c700effc085d"
-    }
-]
 
 
 const Recommendations: React.FC<RecommendationsProps> = () => {
-    const [topics, setTopics] = useState<TopTopic[]>(dummyData);
+    const [topics, setTopics] = useState<TopTopic[]>([]);
     const [loading, setLoading] = useState(false);
     const { topicStateValue, onFollowOrUnfollowTopic } = useTopics();
 
     const getCommunityRecommendations = async () => {
         setLoading(true);
-
+        try {
+            console.log("GET TOP FOLLOWERS TOPICS");
+            axios.get('http://localhost:8080/topic/top7followers').then(res => {
+                setTopics(res.data)
+            });
+        } catch (error) {
+            console.log("FAILED TO GET TOP FOLLOWERS TOPICS ==>", error);
+        }
         setLoading(false);
     };
 
     useEffect(() => {
-        //getCommunityRecommendations();
+        getCommunityRecommendations();
     }, []);
 
     return (
@@ -107,10 +89,10 @@ const Recommendations: React.FC<RecommendationsProps> = () => {
                     <>
                         {topics.map((item, index) => {
                             const isJoined = !!topicStateValue.followedTopics.find(
-                                (snippet) => snippet.topic_id === item.id
+                                (snippet) => snippet.topic_id === item.topic_id
                             );
                             return (
-                                <Link key={item.id} href={`/topic/${item.id}`}>
+                                <Link key={item.topic_id} href={`/topic/${item.topic_id}`}>
                                     <Flex
                                         position="relative"
                                         align="center"
@@ -121,15 +103,15 @@ const Recommendations: React.FC<RecommendationsProps> = () => {
                                         fontWeight={600}
                                     >
                                         <Flex width="80%" align="center">
-                                            <Flex width="15%">
-                                                <Text mr={2}>{index + 1}</Text>
+                                            <Flex width="10%">
+                                                <Text>{index + 1}</Text>
                                             </Flex>
                                             <Flex align="center" width="80%">
-                                                {item.imgURL ? (
+                                                {item.image_url ? (
                                                     <Image
                                                         borderRadius="full"
                                                         boxSize="28px"
-                                                        src={item.imgURL}
+                                                        src={item.image_url}
                                                         mr={2}
                                                     />
                                                 ) : (
@@ -146,16 +128,16 @@ const Recommendations: React.FC<RecommendationsProps> = () => {
                                                         overflow: "hidden",
                                                         textOverflow: "ellipsis",
                                                     }}
-                                                >{item.name}</span>
+                                                >{item.topic_name}</span>
                                             </Flex>
                                         </Flex>
-                                        <Box position="absolute" right="10px">
+                                        <Box position="relative" right="5px" marginLeft={2}>
                                             <Button
                                                 height="22px"
                                                 fontSize="8pt"
                                                 onClick={(event) => {
                                                     event.stopPropagation();
-                                                    onFollowOrUnfollowTopic(item.id, isJoined);
+                                                    onFollowOrUnfollowTopic(item.topic_id, isJoined);
                                                 }}
                                                 variant={isJoined ? "secondary" : "primary"}
                                             >

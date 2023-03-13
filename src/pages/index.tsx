@@ -122,6 +122,7 @@ const Home: NextPage = () => {
           {ideaStateValue.Ideas.map((idea: Idea, index) => (
             <IdeaItem
               idea={idea}
+              index={index}
             />
           ))}
         </Stack>

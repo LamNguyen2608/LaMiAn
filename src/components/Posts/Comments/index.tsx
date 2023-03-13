@@ -15,6 +15,7 @@ import { User } from "firebase/auth";
 import { Idea, IdeaDetails } from "@/atoms/ideaAtom";
 import axios from "axios";
 import useIdeas from "@/hooks/useIdeas";
+import useTopics from "@/hooks/useTopics";
 
 type CommentsProps = {
     user?: User | null;
@@ -38,6 +39,9 @@ const Comments: React.FC<CommentsProps> = ({
     const [deleteLoading, setDeleteLoading] = useState("");
     const setAuthModalState = useSetRecoilState(authModalState);
     const { ideaStateValue, setIdeaStateValue, onVote } = useIdeas();
+    const { topicStateValue } = useTopics();
+
+    const isDeadline: boolean = new Date(topicStateValue.currentTopic?.final_closure_date).getTime() > new Date().getTime()
 
     const setAnonymous = () => {
         setCommentAnonymous(!commentAnonymous);
@@ -69,14 +73,13 @@ const Comments: React.FC<CommentsProps> = ({
                 //await fetchIdea(selectedIdea.id.toString());
             })
         } catch (error) {
-
+            console.log(error)
         };
     }
 
 
+
     useEffect(() => {
-        //console.log("HERE IS SELECTED POST", selectedPost.id);
-        // getPostComments();
         if (selectedIdea) {
             setComments(selectedIdea.comments)
         }
@@ -92,16 +95,18 @@ const Comments: React.FC<CommentsProps> = ({
                 fontSize="10pt"
                 width="100%"
             >
-                {/* Add validation to hide comment input section */}
-                <CommentInput
-                    comment={comment}
-                    setComment={setComment}
-                    loading={commentCreateLoading}
-                    user={user}
-                    onCreateComment={onCreateComment}
-                    isAnonymous={commentAnonymous}
-                    setAnonymous={setAnonymous}
-                />
+                {isDeadline && (
+                    <CommentInput
+                        comment={comment}
+                        setComment={setComment}
+                        loading={commentCreateLoading}
+                        user={user}
+                        onCreateComment={onCreateComment}
+                        isAnonymous={commentAnonymous}
+                        setAnonymous={setAnonymous}
+                    />
+
+                )}
             </Flex>
             <Stack spacing={6} p={2}>
                 {commentFetchLoading ? (

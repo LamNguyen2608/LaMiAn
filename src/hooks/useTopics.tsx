@@ -66,7 +66,8 @@ const useTopics = () => {
     }, [user])
     return {
         topicStateValue,
-        onFollowOrUnfollowTopic
+        onFollowOrUnfollowTopic,
+        setTopicStateValue
     }
 }
 export default useTopics;

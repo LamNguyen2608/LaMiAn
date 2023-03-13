@@ -13,6 +13,7 @@ import Ideas from '@/components/Posts/Ideas';
 
 const useIdeas = () => {
     const [ideaStateValue, setIdeaStateValue] = useRecoilState(ideaState);
+    const [updateIdea, setUpdateIdea] = useState<Idea>()
     const [user, loadingUser] = useAuthState(auth);
     const setAuthModalState = useSetRecoilState(authModalState);
     const [loading, setLoading] = useState(false);
@@ -113,6 +114,8 @@ const useIdeas = () => {
     return {
         ideaStateValue,
         setIdeaStateValue,
+        setUpdateIdea,
+        updateIdea,
         onVote
     }
 }
