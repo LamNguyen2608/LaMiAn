@@ -14,8 +14,10 @@ import {
 } from '@chakra-ui/react';
 import router from 'next/router';
 import React, { useState } from 'react';
+import { AiOutlineApartment } from 'react-icons/ai';
 import { BsInfoCircleFill } from 'react-icons/bs';
 import { CgUserList } from 'react-icons/cg';
+import { FaUsersCog } from 'react-icons/fa';
 import { MdCategory } from 'react-icons/md';
 import { RiPagesFill } from 'react-icons/ri';
 import CreateCategory from '../../pages/Admin/Category/CreateCategory';
@@ -38,7 +40,7 @@ const AdminButtonFunc: React.FC = () => {
             fontWeight="bold"
             fontSize={{ base: '11px', sm: '13px' }}
             height={{ base: '80px', sm: '110px', md: '150px' }}
-            width={{ base: '80px', sm: '110px', md: '200px' }}
+            width={{ base: '80px', sm: '110px', md: '150px' , xl: '200px'}}
             borderRadius="20px"
             bgGradient="linear(to-r, brand.900, brand.800)"
             _hover={{
@@ -48,7 +50,7 @@ const AdminButtonFunc: React.FC = () => {
               router.push('/Admin/UserRole/UpdateRoleForm');
             }}
           >
-            <Icon as={CgUserList} fontSize={80} color="white" />
+            <Icon as={FaUsersCog} fontSize={60} color="white" />
             <Text fontSize={20} fontWeight={900}>
               Manage User
             </Text>
@@ -62,7 +64,7 @@ const AdminButtonFunc: React.FC = () => {
             fontWeight="bold"
             fontSize={{ base: '11px', sm: '13px' }}
             height={{ base: '80px', sm: '110px', md: '150px' }}
-            width={{ base: '80px', sm: '110px', md: '200px' }}
+            width={{ base: '80px', sm: '110px', md: '150px' , xl: '200px'}}
             borderRadius="20px"
             bgGradient="linear(to-r, brand.900, brand.800)"
             _hover={{
@@ -72,7 +74,7 @@ const AdminButtonFunc: React.FC = () => {
               router.push('/Admin/' + '/Topic' + '/CreateTopicForm');
             }}
           >
-            <Icon as={RiPagesFill} fontSize={80} color="white" />
+            <Icon as={RiPagesFill} fontSize={60} color="white" />
             <Text fontSize={20} fontWeight={900}>
               Manage topic
             </Text>
@@ -88,7 +90,7 @@ const AdminButtonFunc: React.FC = () => {
             fontWeight="bold"
             fontSize={{ base: '11px', sm: '13px' }}
             height={{ base: '80px', sm: '110px', md: '150px' }}
-            width={{ base: '80px', sm: '110px', md: '200px' }}
+            width={{ base: '80px', sm: '110px', md: '150px' , xl: '200px'}}
             borderRadius="20px"
             bgGradient="linear(to-r, brand.900, brand.800)"
             _hover={{
@@ -98,7 +100,7 @@ const AdminButtonFunc: React.FC = () => {
               router.push('/Admin/' + '/Category' + '/Category');
             }}
           >
-            <Icon as={MdCategory} fontSize={70} color="white" />
+            <Icon as={MdCategory} fontSize={60} color="white" />
             <Text fontSize={20} fontWeight={900}>
               Manage category
             </Text>
@@ -112,7 +114,7 @@ const AdminButtonFunc: React.FC = () => {
             fontWeight="bold"
             fontSize={{ base: '11px', sm: '13px' }}
             height={{ base: '80px', sm: '110px', md: '150px' }}
-            width={{ base: '80px', sm: '110px', md: '200px' }}
+            width={{ base: '80px', sm: '110px', md: '150px' , xl: '200px'}}
             borderRadius="20px"
             bgGradient="linear(to-r, brand.900, brand.800)"
             _hover={{
@@ -120,7 +122,7 @@ const AdminButtonFunc: React.FC = () => {
             }}
             onClick={() => {}}
           >
-            <Icon as={BsInfoCircleFill} fontSize={70} color="white" />
+            <Icon as={AiOutlineApartment} fontSize={60} color="white" />
             <Text fontSize={20} fontWeight={900}>
               Manange department
             </Text>
