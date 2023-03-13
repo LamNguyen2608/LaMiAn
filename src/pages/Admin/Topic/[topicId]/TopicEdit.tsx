@@ -23,7 +23,7 @@ type detailsProps = {
 };
 const TopicEdit: React.FC<detailsProps> = ({ TopicData }) => {
   const [topicForm, setTopicForm] = useState<Topic>();
-  const [selectedFile, setSelectedFile] = useState<string>();
+  const [selectedFile, setSelectedFile] = useState<string>("");
   const selectedFileRef = useRef<HTMLInputElement>(null);
   const [loading, setLoading] = useState(false);
   const onTextChange = (
@@ -34,7 +34,7 @@ const TopicEdit: React.FC<detailsProps> = ({ TopicData }) => {
     } = event;
     setTopicForm((prev) => ({
       ...prev,
-      [name]: value,
+      name: value,
     }));
   };
   const onSelectImage = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -69,7 +69,7 @@ const TopicEdit: React.FC<detailsProps> = ({ TopicData }) => {
       //image URL
 
       if (selectedFile != TopicData.imageURL) {
-        const imageRef = ref(storage, `Topic/` + uuid());
+        const imageRef = ref(storage, `Topics/` + uuid());
         uploadString(imageRef, selectedFile, 'data_url').then((result) => {
           console.log('result of uploading image ====>', result);
           getDownloadURL(imageRef).then((url) => {
