@@ -13,36 +13,41 @@ import {
   Box,
   Image,
   Input,
+  Select,
 } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 
-type updateCatProps = {
+type updateRoleProps = {
   showModal: any;
   hideModal: any;
-  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
   loading: boolean;
   Update: () => void;
-  CategoryData?: {
-    id?: number;
-    name: string;
+  userData?: {
+    email: string;
+    firstname: string;
+    lastname: string;
+    age: number;
+    role: string;
+    client_info: string;
   };
 };
-const UpdateCategory: React.FC<updateCatProps> = ({
+const UpdateRole: React.FC<updateRoleProps> = ({
   showModal,
   hideModal,
   Update,
   onChange,
   loading,
-  CategoryData,
+  userData,
 }) => {
-  const [updateCategory, setUpdateCategory] = useState<string>();
-
   return (
     <>
       <Modal closeOnOverlayClick={false} isOpen={showModal} onClose={hideModal}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Update Category "{CategoryData?.name}"</ModalHeader>
+          <ModalHeader>
+            Update Role For "{userData?.firstname} {userData?.lastname}"
+          </ModalHeader>
           <ModalBody pb={6}>
             <Text
               mb={2}
@@ -51,31 +56,36 @@ const UpdateCategory: React.FC<updateCatProps> = ({
               fontWeight={900}
               color="blackAlpha.600"
             >
-              Category name
+              User Role
             </Text>
-            <Input
-              name="Cat_name"
+
+            <Select
+              placeholder="Select Role"
+              mb={2}
+              name="department"
               onChange={onChange}
-              defaultValue={CategoryData?.name}
-              value={updateCategory}
-              fontSize="14pt"
-              placeholder="Title"
-              borderRadius={4}
-              bg="gray.50"
-              _placeholder={{ color: 'gray.500' }}
-              focusBorderColor="black"
+              defaultValue={userData?.role}
+              fontSize="10pt"
+              height="35px"
               _hover={{
                 bg: 'white',
                 border: '2px solid',
-                borderColor: 'brand.600',
+                borderColor: 'brand.500',
               }}
               _focus={{
                 outline: 'none',
                 bg: 'white',
                 border: '1px solid',
-                borderColor: 'black',
+                borderColor: 'brand.900',
               }}
-            />
+              bg="gray.50"
+              color="gray.500"
+            >
+              <option value="ROLE_USER">USER</option>
+              <option value="ROLE_QA_ALL">QA_ALL</option>
+              <option value="ROLE_QA_DE">QA_DE</option>
+              <option value="ROLE_MOD">MOD</option>
+            </Select>
           </ModalBody>
           <ModalFooter>
             <Button
@@ -97,4 +107,4 @@ const UpdateCategory: React.FC<updateCatProps> = ({
     </>
   );
 };
-export default UpdateCategory;
+export default UpdateRole;

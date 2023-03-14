@@ -13,36 +13,38 @@ import {
   Box,
   Image,
   Input,
+  Textarea,
 } from '@chakra-ui/react';
+import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 
-type updateCatProps = {
+type depProps = {
+  department?: {
+    name: string;
+    department_info: string;
+  };
   showModal: any;
   hideModal: any;
-  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onChange: (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => void;
   loading: boolean;
-  Update: () => void;
-  CategoryData?: {
-    id?: number;
-    name: string;
-  };
+  Create: () => void;
 };
-const UpdateCategory: React.FC<updateCatProps> = ({
+const CreateDepartment: React.FC<depProps> = ({
   showModal,
   hideModal,
-  Update,
+  Create,
   onChange,
   loading,
-  CategoryData,
+  department,
 }) => {
-  const [updateCategory, setUpdateCategory] = useState<string>();
-
   return (
     <>
       <Modal closeOnOverlayClick={false} isOpen={showModal} onClose={hideModal}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Update Category "{CategoryData?.name}"</ModalHeader>
+          <ModalHeader>Create new Department</ModalHeader>
           <ModalBody pb={6}>
             <Text
               mb={2}
@@ -51,17 +53,47 @@ const UpdateCategory: React.FC<updateCatProps> = ({
               fontWeight={900}
               color="blackAlpha.600"
             >
-              Category name
+              Department name
             </Text>
             <Input
-              name="Cat_name"
+              name="name"
               onChange={onChange}
-              defaultValue={CategoryData?.name}
-              value={updateCategory}
               fontSize="14pt"
-              placeholder="Title"
+              placeholder="Name..."
               borderRadius={4}
               bg="gray.50"
+              _placeholder={{ color: 'gray.500' }}
+              focusBorderColor="black"
+              _hover={{
+                bg: 'white',
+                border: '2px solid',
+                borderColor: 'brand.600',
+              }}
+              _focus={{
+                outline: 'none',
+                bg: 'white',
+                border: '1px solid',
+                borderColor: 'black',
+              }}
+            />
+            <Text
+              mb={2}
+              mt={2}
+              fontSize={20}
+              fontWeight={900}
+              color="blackAlpha.600"
+            >
+              Department Info
+            </Text>
+            <Textarea
+              name="department_info"
+              fontSize="14pt"
+              onChange={onChange}
+              placeholder="Info..."
+              bg="gray.50"
+              borderRadius={4}
+              mt={2}
+              height="100px"
               _placeholder={{ color: 'gray.500' }}
               focusBorderColor="black"
               _hover={{
@@ -80,15 +112,15 @@ const UpdateCategory: React.FC<updateCatProps> = ({
           <ModalFooter>
             <Button
               variant="primary"
-              loadingText="Updating"
+              loadingText="Creating"
               width="90px"
               spinnerPlacement="start"
               isLoading={loading}
               _loading={{ opacity: 2 }}
               mr={3}
-              onClick={() => Update()}
+              onClick={() => Create()}
             >
-              Update
+              Create
             </Button>
             <Button onClick={hideModal}>Cancel</Button>
           </ModalFooter>
@@ -97,4 +129,4 @@ const UpdateCategory: React.FC<updateCatProps> = ({
     </>
   );
 };
-export default UpdateCategory;
+export default CreateDepartment;

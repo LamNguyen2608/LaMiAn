@@ -1,4 +1,3 @@
-
 import React, { useEffect, useRef, useState } from 'react';
 import { Flex, Icon } from '@chakra-ui/react';
 import TabItems from './TabItems';

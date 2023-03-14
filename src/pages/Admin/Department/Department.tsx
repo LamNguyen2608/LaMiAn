@@ -24,50 +24,59 @@ import axios from 'axios';
 import { GetServerSidePropsContext } from 'next';
 import safeJsonStringify from 'safe-json-stringify';
 import UpdateCategory from '@/pages/Admin/Category/UpdateCategory';
+import CreateDepartment from './CreateDepartment';
+import UpdateDepartment from './UpdateDepartment';
 
-type CategoryProps = {
-  CategoryData: {
-    id?: number;
+type departmentProps = {
+  departmentData: {
     name: string;
+    department_info: string;
   }[];
 };
-const Category: React.FC<CategoryProps> = ({ CategoryData }) => {
+const Category: React.FC<departmentProps> = ({ departmentData }) => {
   const [displayConfirmationModal, setDisplayConfirmationModal] =
     useState(false);
-  const [displayUpdateCatModal, setDisplayUpdateCatModal] = useState(false);
-  const [valueCatModal, setValueCatModal] = useState<{
+  const [displayUpdateDepModal, setDisplayUpdateDepModal] = useState(false);
+  const [valueDepModal, setValueDepModal] = useState<{
     id?: number;
     name: string;
+    department_info: string;
   }>();
-  const [category, setCategory] = useState<string>();
-  const [listCategory, setListCategory] = useState<
+  const [department, setDepartment] = useState<{
+    id?: number;
+    name: string;
+    department_info: string;
+  }>();
+  const [listDepartment, setListDepartment] = useState<
     {
       id?: number;
       name: string;
+      department_info: string;
     }[]
   >([]);
   useEffect(() => {
-    setListCategory(CategoryData);
+    setListDepartment(departmentData);
   }, []);
   const [loading, setLoading] = useState(false);
   const [displayCatModal, setDisplayCatModal] = useState(false);
-  const showCatModal = () => {
+  const showCreateModal = () => {
     setDisplayCatModal(true);
   };
   const hideCatModal = () => {
     setDisplayCatModal(false);
   };
-  const handleCreateCategory = async () => {
+  const handleCreateDepartment = async () => {
     setLoading(true);
     try {
-      if (category) {
+      if (department) {
         axios
-          .post('http://localhost:8080/cate/create', {
-            name: category,
+          .post('http://localhost:8080/department/create', {
+            name: department.name,
+            department_info: department.department_info,
           })
           .then((response) => {
             console.log('after creating idea ===>', response);
-            setListCategory([...listCategory, response.data]);
+            setListDepartment([...listDepartment, response.data]);
             setLoading(false);
             hideCatModal();
           });
@@ -80,22 +89,27 @@ const Category: React.FC<CategoryProps> = ({ CategoryData }) => {
       setLoading(false);
     }
   };
-  const showUpdateCatModal = (item: { id?: number; name: string }) => {
-    setDisplayUpdateCatModal(true);
-    setValueCatModal(item);
+  const showUpdateCatModal = (item: {
+    id?: number;
+    name: string;
+    department_info: string;
+  }) => {
+    setDisplayUpdateDepModal(true);
+    setValueDepModal(item);
   };
   const hideUpdateCatModal = () => {
-    setDisplayUpdateCatModal(false);
+    setDisplayUpdateDepModal(false);
   };
   const handleUpdateCategory = async () => {
     setLoading(true);
     try {
-      if (category) {
+      if (department) {
         {
           axios
-            .put('http://localhost:8080/cate/update', {
-              id: valueCatModal?.id,
-              name: category,
+            .put('http://localhost:8080/department/update', {
+              id: valueDepModal?.id,
+              name: department.name,
+              department_info: department.department_info,
             })
             .then((response) => {
               console.log('after updateTopic ===>', response);
@@ -113,14 +127,23 @@ const Category: React.FC<CategoryProps> = ({ CategoryData }) => {
       setLoading(false);
     }
   };
-  const onTextChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value;
-    setCategory(value);
+  const onTextChange = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    //update form state
+    setDepartment((prev) => ({
+      ...prev,
+      [event.target.name]: event.target.value,
+    }));
   };
 
-  const showDeleteModal = (item: { id?: number; name: string }) => {
+  const showDeleteModal = (item: {
+    id?: number;
+    name: string;
+    department_info: string;
+  }) => {
     setDisplayConfirmationModal(true);
-    setValueCatModal(item);
+    setValueDepModal(item);
   };
 
   // Hide the modal
@@ -131,7 +154,7 @@ const Category: React.FC<CategoryProps> = ({ CategoryData }) => {
     setLoading(true);
     try {
       axios
-        .delete('http://localhost:8080/cate/delete/' + valueCatModal?.id)
+        .delete('http://localhost:8080/department/delete/' + valueDepModal?.id)
         .then((response) => {
           console.log('after deleteTopic ===>', response);
           window.location.reload();
@@ -159,7 +182,7 @@ const Category: React.FC<CategoryProps> = ({ CategoryData }) => {
           onClick={() => router.push('/Admin')}
         />
         <Text fontSize={22} fontWeight={900}>
-          Category List
+          Department List
         </Text>
       </Flex>
       <Flex direction="column">
@@ -167,12 +190,12 @@ const Category: React.FC<CategoryProps> = ({ CategoryData }) => {
           <Table variant="striped" size="sm">
             <Thead>
               <Tr>
-                <Th fontSize={12}>Category Name</Th>
+                <Th fontSize={12}>Derpartment Name</Th>
                 <Th fontSize={12}>Function</Th>
               </Tr>
             </Thead>
             <Tbody>
-              {listCategory.map((item) => (
+              {listDepartment.map((item) => (
                 <Tr>
                   <Td fontSize={14} fontWeight={900}>
                     {item.name}
@@ -207,18 +230,19 @@ const Category: React.FC<CategoryProps> = ({ CategoryData }) => {
             width="160px"
             variant="primary"
             type="submit"
-            onClick={() => showCatModal()}
+            onClick={() => showCreateModal()}
           >
             Create new category
           </Button>
         </Flex>
       </Flex>
-      <CreateCategory
+      <CreateDepartment
         showModal={displayCatModal}
-        Create={handleCreateCategory}
+        Create={handleCreateDepartment}
         hideModal={hideCatModal}
         onChange={onTextChange}
         loading={loading}
+        department={department}
       />
       <DeleteConfirmationModal
         showModal={displayConfirmationModal}
@@ -226,13 +250,13 @@ const Category: React.FC<CategoryProps> = ({ CategoryData }) => {
         hideModal={hideConfirmationModal}
         loading={loading}
       />
-      <UpdateCategory
-        showModal={displayUpdateCatModal}
+      <UpdateDepartment
+        showModal={displayUpdateDepModal}
         Update={handleUpdateCategory}
         hideModal={hideUpdateCatModal}
         onChange={onTextChange}
         loading={loading}
-        CategoryData={valueCatModal}
+        depData={valueDepModal}
       />
     </>
   );
@@ -241,11 +265,11 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   //get topic data and pass it to cline
   //context.query.topicId as string => getting id from route
   try {
-    const response = await axios.get('http://localhost:8080/cate');
+    const response = await axios.get('http://localhost:8080/department');
     console.log(response.data);
     return {
       props: {
-        CategoryData: JSON.parse(safeJsonStringify([...response.data])),
+        departmentData: JSON.parse(safeJsonStringify([...response.data])),
       },
     };
   } catch (error) {

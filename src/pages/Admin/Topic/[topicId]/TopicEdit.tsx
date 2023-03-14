@@ -4,89 +4,44 @@ import {
   Box,
   Button,
   Flex,
+  FormControl,
+  FormErrorMessage,
   Image,
   Input,
+  Stack,
   Text,
   Textarea,
 } from '@chakra-ui/react';
 import axios from 'axios';
 import { ref, uploadString, getDownloadURL } from 'firebase/storage';
-import moment from 'moment';
+import { GetServerSidePropsContext } from 'next';
 import router from 'next/router';
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import uuid from 'react-uuid';
+import safeJsonStringify from 'safe-json-stringify';
 
-const CreateTopicForm: React.FC = () => {
-  const [topicForm, setTopicForm] = useState({
-    title: '',
-    description: '',
-    idea_closure_date: '',
-    final_closure_date: '',
-  });
-  const [loading, setLoading] = useState(false);
-  const [selectedFile, setSelectedFile] = useState<string>();
+type detailsProps = {
+  TopicData: Topic;
+};
+const TopicEdit: React.FC<detailsProps> = ({ TopicData }) => {
+  const [topicForm, setTopicForm] = useState<Topic>();
+  const [selectedFile, setSelectedFile] = useState<string>('');
   const selectedFileRef = useRef<HTMLInputElement>(null);
-  const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    //set Error
-    if (topicForm?.idea_closure_date > topicForm?.final_closure_date) {
-      return;
-    }
-    setLoading(true);
-    //create new post object => type post
-    const newTopic: Topic = {
-      name: topicForm.title,
-      description: topicForm.description,
-      imageURL: null,
-      topic_closure_date: topicForm.idea_closure_date,
-      final_closure_date: topicForm.final_closure_date,
-    };
-    //image URL
-    try {
-      if (selectedFile) {
-        const imageRef = ref(storage, `Topics/` + uuid());
-        uploadString(imageRef, selectedFile, 'data_url').then((result) => {
-          console.log('result of uploading image ====>', result);
-          getDownloadURL(imageRef).then((url) => {
-            newTopic.imageURL = url as string;
-            console.log('newPost===>', newTopic);
-            axios
-              .post('http://localhost:8080/topic/create', newTopic)
-              .then((response) => {
-                console.log('after creating topic ===>', response);
-                setLoading(false);
-                router.push('/Admin/Topic/TopicList');
-              });
-          });
-        });
-      } else {
-        console.log('newTopic===>', newTopic);
-        axios
-          .post('http://localhost:8080/topic/create', newTopic)
-          .then((response) => {
-            console.log('after creating topic ===>', response);
-            setLoading(false);
-            router.push('/Admin/Topic/TopicList');
-          });
-      }
-    } catch (error: any) {
-      console.log('handleCreateTopic error check', error.message);
-      setLoading(false);
-    }
-  };
-  const onChange = (
+  const [loading, setLoading] = useState(false);
+  const [date, setDate] = useState(false);
+  const onTextChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    const newDate = moment(new Date(topicForm.idea_closure_date)).format(
-      'YYYY-MM-DD'
-    );
-    //update form state
+    // const compareDate = new Date(topicForm.topic_closure_date).getTime() <= new Date(topicForm.final_closure_date).getTime();
+    const {
+      target: { name, value },
+    } = event;
     setTopicForm((prev) => ({
       ...prev,
-      [event.target.name]: event.target.value,
-      newDate,
+      [name]: value,
     }));
   };
+
   const onSelectImage = (event: React.ChangeEvent<HTMLInputElement>) => {
     const reader = new FileReader();
 
@@ -98,14 +53,75 @@ const CreateTopicForm: React.FC = () => {
       setSelectedFile(readerEvent.target?.result as string);
     };
   };
+  useEffect(() => {
+    if (TopicData) {
+      setTopicForm(TopicData);
+      setSelectedFile(TopicData.imageURL ? TopicData.imageURL : '');
+    }
+  }, []);
+
+  const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    //set Error
+    if (topicForm?.topic_closure_date > topicForm?.final_closure_date) {
+      return;
+    }
+    console.log(topicForm);
+    setLoading(true);
+    const updateTopic: Topic = {
+      id: TopicData.id,
+      name: topicForm?.name,
+      description: topicForm?.description,
+      imageURL: topicForm?.imageURL,
+      topic_closure_date: topicForm?.topic_closure_date,
+      final_closure_date: topicForm?.final_closure_date,
+    };
+
+    try {
+      //image URL
+
+      if (selectedFile != TopicData.imageURL) {
+        const imageRef = ref(storage, `Topics/` + uuid());
+        uploadString(imageRef, selectedFile, 'data_url').then((result) => {
+          console.log('result of uploading image ====>', result);
+          getDownloadURL(imageRef).then((url) => {
+            updateTopic.imageURL = url as string;
+            console.log('updateTopic===>', updateTopic);
+            axios
+              .put('http://localhost:8080/topic/update', updateTopic)
+              .then((response) => {
+                console.log('after creating idea ===>', response);
+                setLoading(false);
+                router.back();
+              });
+          });
+        });
+      } else {
+        console.log('newPost===>', updateTopic);
+        axios
+          .put('http://localhost:8080/topic/update', updateTopic)
+          .then((response) => {
+            console.log('after creating idea ===>', response);
+            setLoading(false);
+            router.back();
+          });
+      }
+    } catch (error: any) {
+      console.log('handleCreatePost error check', error.message);
+      setLoading(false);
+    }
+  };
   const isInvalid =
-    topicForm?.idea_closure_date > topicForm?.final_closure_date;
+    topicForm?.topic_closure_date > topicForm?.final_closure_date;
   return (
     <form onSubmit={onSubmit}>
       <Flex justify="center" p="10px 50px" direction="column">
+        <button type="button" onClick={() => router.back()}>
+          Click here to go back
+        </button>
         <Box p="14px 8px" borderBottom="2px solid" borderColor="blackAlpha.600">
           <Text fontSize={25} fontWeight={900}>
-            Create new topic
+            Update topic
           </Text>
         </Box>
         <Text
@@ -118,8 +134,10 @@ const CreateTopicForm: React.FC = () => {
           Topic content
         </Text>
         <Input
-          name="title"
-          onChange={onChange}
+          required
+          name="name"
+          onChange={onTextChange}
+          defaultValue={TopicData.name}
           fontSize="14pt"
           placeholder="Title"
           borderRadius={4}
@@ -141,7 +159,8 @@ const CreateTopicForm: React.FC = () => {
         <Textarea
           name="description"
           fontSize="14pt"
-          onChange={onChange}
+          onChange={onTextChange}
+          defaultValue={TopicData.description}
           placeholder="Topic description..."
           bg="gray.50"
           borderRadius={4}
@@ -179,45 +198,52 @@ const CreateTopicForm: React.FC = () => {
         >
           {selectedFile ? (
             <>
-              <Image src={selectedFile} maxWidth="60%" maxHeight="60%" />
-
-              <Button
-                mt={4}
-                height="50px"
-                width="20%"
-                variant="primary"
-                onClick={() => setSelectedFile('')}
-              >
-                Remove Image
-              </Button>
+              <Image src={selectedFile} maxWidth="50%" maxHeight="50%" />
+              <Flex direction="row" align="center">
+                <Button
+                  mt={4}
+                  height="36px"
+                  width="120px"
+                  variant="primary"
+                  type="submit"
+                  onClick={() => setSelectedFile('')}
+                >
+                  Remove Image
+                </Button>
+              </Flex>
             </>
           ) : (
-            <Flex
-              justify="center"
-              align="center"
-              p={20}
-              border="2px dashed"
-              borderColor="brand.600"
-              borderRadius={4}
-              width="60%"
-              height="50px"
-            >
-              <Button
-                height="34px"
-                width="80px"
-                variant="primary"
-                onClick={() => selectedFileRef.current?.click()}
-              >
-                Upload
-              </Button>
-              <Input
-                ref={selectedFileRef}
-                type="file"
-                hidden
-                onChange={onSelectImage}
-              />
-              <img src={selectedFile} />
-            </Flex>
+            <>
+              <Stack spacing={3} width="100%">
+                <Flex
+                  justify="center"
+                  align="center"
+                  p={20}
+                  border="2px dashed"
+                  borderColor="brand.600"
+                  borderRadius={4}
+                  width="100%"
+                >
+                  <Button
+                    height="34px"
+                    width="80px"
+                    variant="primary"
+                    type="submit"
+                    onClick={() => selectedFileRef.current?.click()}
+                  >
+                    Upload
+                  </Button>
+                  <Input
+                    ref={selectedFileRef}
+                    type="file"
+                    hidden
+                    onChange={onSelectImage}
+                  />
+                  <img src={selectedFile} />
+                </Flex>
+                <Flex justify="flex-end"></Flex>
+              </Stack>
+            </>
           )}
         </Flex>
         <Flex mt={2} width="100%" justify="center" direction="row">
@@ -233,12 +259,13 @@ const CreateTopicForm: React.FC = () => {
             </Text>
             <Input
               placeholder="Select Date and Time"
-              name="idea_closure_date"
+              name="topic_closure_date"
               size="md"
               type="datetime-local"
-              isInvalid={isInvalid}
               fontSize="14pt"
-              onChange={onChange}
+              defaultValue={TopicData.topic_closure_date}
+              onChange={onTextChange}
+              isInvalid={isInvalid}
               bg="gray.50"
               borderRadius={4}
               height="50px"
@@ -271,10 +298,11 @@ const CreateTopicForm: React.FC = () => {
               placeholder="Select Date and Time"
               name="final_closure_date"
               size="md"
+              defaultValue={TopicData.final_closure_date}
+              isInvalid={isInvalid}
               type="datetime-local"
               fontSize="14pt"
-              isInvalid={isInvalid}
-              onChange={onChange}
+              onChange={onTextChange}
               bg="gray.50"
               borderRadius={4}
               height="50px"
@@ -309,21 +337,38 @@ const CreateTopicForm: React.FC = () => {
           <Button
             height="50px"
             width="50%"
-            variant="primary"
-            type="submit"
             mt={8}
             mb={8}
-            isDisabled={!topicForm.title}
-            loadingText="Creating"
-            spinnerPlacement="start"
+            loadingText="Posting"
+            variant="primary"
+            type="submit"
             isLoading={loading}
+            spinnerPlacement="start"
             _loading={{ opacity: 2 }}
           >
-            Post
+            Update{''}
           </Button>
         </Flex>
       </Flex>
     </form>
   );
 };
-export default CreateTopicForm;
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+  //get topic data and pass it to cline
+  //context.query.topicId as string => getting id from route
+  try {
+    const response = await axios.get(
+      ('http://localhost:8080/topic/' + context.query.topicId) as string
+    );
+    console.log(response.data);
+    return {
+      props: {
+        TopicData: JSON.parse(safeJsonStringify({ ...response.data })),
+      },
+    };
+  } catch (error) {
+    console.log(error);
+    return error;
+  }
+}
+export default TopicEdit;

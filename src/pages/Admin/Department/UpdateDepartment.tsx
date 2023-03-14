@@ -16,33 +16,32 @@ import {
 } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 
-type updateCatProps = {
+type updateDepProps = {
   showModal: any;
   hideModal: any;
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   loading: boolean;
   Update: () => void;
-  CategoryData?: {
+  depData?: {
     id?: number;
     name: string;
+    department_info: string;
   };
 };
-const UpdateCategory: React.FC<updateCatProps> = ({
+const UpdateDepartment: React.FC<updateDepProps> = ({
   showModal,
   hideModal,
   Update,
   onChange,
   loading,
-  CategoryData,
+  depData,
 }) => {
-  const [updateCategory, setUpdateCategory] = useState<string>();
-
   return (
     <>
       <Modal closeOnOverlayClick={false} isOpen={showModal} onClose={hideModal}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Update Category "{CategoryData?.name}"</ModalHeader>
+          <ModalHeader>Update department "{depData?.name}"</ModalHeader>
           <ModalBody pb={6}>
             <Text
               mb={2}
@@ -51,13 +50,12 @@ const UpdateCategory: React.FC<updateCatProps> = ({
               fontWeight={900}
               color="blackAlpha.600"
             >
-              Category name
+              Department name
             </Text>
             <Input
-              name="Cat_name"
+              name="name"
               onChange={onChange}
-              defaultValue={CategoryData?.name}
-              value={updateCategory}
+              defaultValue={depData?.name}
               fontSize="14pt"
               placeholder="Title"
               borderRadius={4}
@@ -97,4 +95,4 @@ const UpdateCategory: React.FC<updateCatProps> = ({
     </>
   );
 };
-export default UpdateCategory;
+export default UpdateDepartment;

@@ -31,31 +31,53 @@ const TopicList: React.FC<topicProps> = ({ TopicData }) => {
   useEffect(() => {
     setTopicList(TopicData);
   }, []);
+  const [loading, setLoading] = useState(false);
+  const [valueTopicModal, setValueTopicModal] = useState<Topic>();
   const [displayConfirmationModal, setDisplayConfirmationModal] =
     useState(false);
-  const showDeleteModal = () => {
+  const showDeleteModal = (item: Topic) => {
     setDisplayConfirmationModal(true);
+    setValueTopicModal(item);
   };
   // Hide the modal
   const hideConfirmationModal = () => {
     setDisplayConfirmationModal(false);
   };
-  const submitDelete = () => {
-    setDisplayConfirmationModal(false);
+  const submitDelete = async () => {
+    setLoading(true);
+    try {
+      axios
+        .delete('http://localhost:8080/topic/delete/' + valueTopicModal?.id)
+        .then((response) => {
+          console.log('after deleteTopic ===>', response);
+          window.location.reload();
+          setLoading(false);
+          hideConfirmationModal();
+        });
+    } catch (error: any) {
+      console.log('handleDeletePost error check', error.message);
+      setLoading(false);
+    }
   };
   return (
     <>
-      <Box p="24px 10px" borderBottom="2px solid" borderColor="white">
+      <Flex
+        direction="row"
+        p="24px 10px"
+        borderBottom="2px solid"
+        borderColor="white"
+      >
         <Icon
           as={IoMdArrowRoundBack}
           fontSize={30}
-          onClick={() => router.back()}
+          cursor="pointer"
+          onClick={() => router.push('/Admin')}
         />
         <Text fontSize={22} fontWeight={900}>
           Topic List
         </Text>
-      </Box>
-      <Flex direction="column" border="1px solid black ">
+      </Flex>
+      <Flex direction="column">
         <TableContainer>
           <Table variant="striped" colorScheme="pink">
             <Thead>
@@ -80,31 +102,31 @@ const TopicList: React.FC<topicProps> = ({ TopicData }) => {
                     <Icon
                       as={AiFillInfoCircle}
                       fontSize={40}
-                      color="white"
+                      color="gray.400"
                       _hover={{ color: 'yellow' }}
-                      onClick={() =>
-                        router.push('/Admin' + '/Topic' + '/TopicDetails')
+                      onClick={(e) =>
+                        router.push('/Admin/Topic/' + item.id + '/TopicDetails')
                       }
                     />
 
                     <Icon
                       as={AiFillEdit}
                       fontSize={40}
-                      color="white"
+                      color="gray.400"
                       _hover={{ color: 'blue.300' }}
                       ml="20px"
-                      onClick={() =>
-                        router.push('/Admin' + '/Topic' + '/TopicEdit')
+                      onClick={(e) =>
+                        router.push('/Admin/Topic/' + item.id + '/TopicEdit')
                       }
                     />
 
                     <Icon
                       as={AiFillDelete}
                       fontSize={40}
-                      color="white"
+                      color="gray.400"
                       _hover={{ color: 'red' }}
                       ml="20px"
-                      onClick={() => showDeleteModal()}
+                      onClick={() => showDeleteModal(item)}
                     />
                   </Td>
                 </Tr>
@@ -117,6 +139,7 @@ const TopicList: React.FC<topicProps> = ({ TopicData }) => {
         showModal={displayConfirmationModal}
         confirmModal={submitDelete}
         hideModal={hideConfirmationModal}
+        loading={loading}
       />
     </>
   );

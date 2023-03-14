@@ -1,3 +1,4 @@
+
 import { authModalState } from "@/atoms/authModalAtom";
 import { useCreateUserWithEmailAndPassword } from 'react-firebase-hooks/auth'
 import { auth } from '../../../Firebase/clientApp'
@@ -8,25 +9,26 @@ import { useRecoilState, useSetRecoilState } from "recoil";
 import axios from "axios";
 import { clientState } from "@/atoms/clientAtom";
 
+
 type Department = {
-  "id": number,
-  "name": string,
-  "department_info": string,
-  "isDeleted": boolean
-}
+  id: number;
+  name: string;
+  department_info: string;
+  isDeleted: boolean;
+};
 
 const SignUp: React.FC = () => {
   const [signUpForm, setSignUpForm] = useState({
-    email: "",
-    password: "",
-    confirmPass: "",
-    firstname: "",
-    lastname: "",
-    age: "",
-    pronoun: "",
-    department: ""
+    email: '',
+    password: '',
+    confirmPass: '',
+    firstname: '',
+    lastname: '',
+    age: '',
+    pronoun: '',
+    department: '',
   });
-  const [formError, setformError] = useState("");
+  const [formError, setformError] = useState('');
   const [allDepartments, setAllDepartments] = useState<Department[]>([]);
   const [clientStateValue, setClientStateValue] = useRecoilState(clientState);
   const [
@@ -37,27 +39,24 @@ const SignUp: React.FC = () => {
   ] = useCreateUserWithEmailAndPassword(auth);
 
   useEffect(() => {
-    axios.get("http://localhost:8080/department").then(
-      response => {
-        console.log("get all departments: ", response);
-        setAllDepartments(response.data);
-      }
-    )
-  }, [])
+    axios.get('http://localhost:8080/department').then((response) => {
+      console.log('get all departments: ', response);
+      setAllDepartments(response.data);
+    });
+  }, []);
 
-  //Firebase 
   const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     //set Error
     console.log(signUpForm);
-    if (formError) setformError("");
+    if (formError) setformError('');
     if (signUpForm.password !== signUpForm.confirmPass) {
-      setformError("Password does not match");
+      setformError('Password does not match');
       return;
     }
     //password matching
-    createUserWithEmailAndPassword(signUpForm.email, signUpForm.password)
-      .then((user) => {
+    createUserWithEmailAndPassword(signUpForm.email, signUpForm.password).then(
+      (user) => {
         if (user) {
           console.log("====>", user.user.uid);
           axios.post('http://localhost:8080/client/signup', {
@@ -77,15 +76,16 @@ const SignUp: React.FC = () => {
             });
         }
       }
-      );
-
+    );
   };
 
-  const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const onChange = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     //update form state
     setSignUpForm((prev) => ({
       ...prev,
-      [event.target.name]: event.target.value
+      [event.target.name]: event.target.value,
     }));
   };
   const setAuthModalState = useSetRecoilState(authModalState);
@@ -103,19 +103,18 @@ const SignUp: React.FC = () => {
           fontSize="10pt"
           height="35px"
           _hover={{
-            bg: "white",
-            border: "2px solid",
-            borderColor: "brand.500",
+            bg: 'white',
+            border: '2px solid',
+            borderColor: 'brand.500',
           }}
           _focus={{
-            outline: "none",
-            bg: "white",
-            border: "1px solid",
-            borderColor: "brand.900"
+            outline: 'none',
+            bg: 'white',
+            border: '1px solid',
+            borderColor: 'brand.900',
           }}
           bg="gray.50"
-        >
-        </Input>
+        ></Input>
 
         <Input
           required
@@ -127,19 +126,18 @@ const SignUp: React.FC = () => {
           fontSize="10pt"
           height="35px"
           _hover={{
-            bg: "white",
-            border: "2px solid",
-            borderColor: "brand.500",
+            bg: 'white',
+            border: '2px solid',
+            borderColor: 'brand.500',
           }}
           _focus={{
-            outline: "none",
-            bg: "white",
-            border: "1px solid",
-            borderColor: "brand.900"
+            outline: 'none',
+            bg: 'white',
+            border: '1px solid',
+            borderColor: 'brand.900',
           }}
           bg="gray.50"
-        >
-        </Input>
+        ></Input>
       </Flex>
       <Flex direction="row">
         <Input
@@ -154,21 +152,20 @@ const SignUp: React.FC = () => {
           fontSize="10pt"
           height="35px"
           _hover={{
-            bg: "white",
-            border: "2px solid",
-            borderColor: "brand.500",
+            bg: 'white',
+            border: '2px solid',
+            borderColor: 'brand.500',
           }}
           _focus={{
-            outline: "none",
-            bg: "white",
-            border: "1px solid",
-            borderColor: "brand.900"
+            outline: 'none',
+            bg: 'white',
+            border: '1px solid',
+            borderColor: 'brand.900',
           }}
           bg="gray.50"
-        >
-        </Input>
+        ></Input>
         <Select
-          placeholder='Pronoun'
+          placeholder="Pronoun"
           mb={2}
           flex={1}
           name="pronoun"
@@ -176,21 +173,22 @@ const SignUp: React.FC = () => {
           height="35px"
           onChange={onChange}
           _hover={{
-            bg: "white",
-            border: "2px solid",
-            borderColor: "brand.500",
+            bg: 'white',
+            border: '2px solid',
+            borderColor: 'brand.500',
           }}
           _focus={{
-            outline: "none",
-            bg: "white",
-            border: "1px solid",
-            borderColor: "brand.900"
+            outline: 'none',
+            bg: 'white',
+            border: '1px solid',
+            borderColor: 'brand.900',
           }}
           bg="gray.50"
-          color="gray.500">
-          <option value='HE_HIM'>He/Him</option>
-          <option value='SHE_HER'>She/Her</option>
-          <option value='THEY_THEM'>They/Them</option>
+          color="gray.500"
+        >
+          <option value="HE_HIM">He/Him</option>
+          <option value="SHE_HER">She/Her</option>
+          <option value="THEY_THEM">They/Them</option>
         </Select>
       </Flex>
       <Input
@@ -203,40 +201,40 @@ const SignUp: React.FC = () => {
         fontSize="10pt"
         height="35px"
         _hover={{
-          bg: "white",
-          border: "2px solid",
-          borderColor: "brand.500",
+          bg: 'white',
+          border: '2px solid',
+          borderColor: 'brand.500',
         }}
         _focus={{
-          outline: "none",
-          bg: "white",
-          border: "1px solid",
-          borderColor: "brand.900"
+          outline: 'none',
+          bg: 'white',
+          border: '1px solid',
+          borderColor: 'brand.900',
         }}
         bg="gray.50"
-      >
-      </Input>
+      ></Input>
       <Select
-        placeholder='Select Department'
+        placeholder="Select Department"
         mb={2}
         name="department"
         onChange={onChange}
         fontSize="10pt"
         height="35px"
         _hover={{
-          bg: "white",
-          border: "2px solid",
-          borderColor: "brand.500",
+          bg: 'white',
+          border: '2px solid',
+          borderColor: 'brand.500',
         }}
         _focus={{
-          outline: "none",
-          bg: "white",
-          border: "1px solid",
-          borderColor: "brand.900"
+          outline: 'none',
+          bg: 'white',
+          border: '1px solid',
+          borderColor: 'brand.900',
         }}
         bg="gray.50"
-        color="gray.500">
-        {allDepartments.map(item => (
+        color="gray.500"
+      >
+        {allDepartments.map((item) => (
           <option value={item.id}>{item.name}</option>
         ))}
       </Select>
@@ -250,18 +248,18 @@ const SignUp: React.FC = () => {
         onChange={onChange}
         fontSize="10pt"
         _hover={{
-          bg: "white",
-          border: "2px solid",
-          borderColor: "brand.500",
+          bg: 'white',
+          border: '2px solid',
+          borderColor: 'brand.500',
         }}
         _focus={{
-          outline: "none",
-          bg: "white",
-          border: "1px solid",
-          borderColor: "brand.900"
+          outline: 'none',
+          bg: 'white',
+          border: '1px solid',
+          borderColor: 'brand.900',
         }}
-        bg="gray.50">
-      </Input>
+        bg="gray.50"
+      ></Input>
       <Input
         required
         name="confirmPass"
@@ -272,50 +270,64 @@ const SignUp: React.FC = () => {
         onChange={onChange}
         fontSize="10pt"
         _hover={{
-          bg: "white",
-          border: "2px solid",
-          borderColor: "brand.500",
+          bg: 'white',
+          border: '2px solid',
+          borderColor: 'brand.500',
         }}
         _focus={{
-          outline: "none",
-          bg: "white",
-          border: "1px solid",
-          borderColor: "brand.900"
+          outline: 'none',
+          bg: 'white',
+          border: '1px solid',
+          borderColor: 'brand.900',
         }}
-        bg="gray.50">
-      </Input>
+        bg="gray.50"
+      ></Input>
       {(formError || userError) && (
         <Text textAlign="center" color="red" fontSize="10pt" mb={2}>
-          {formError || FIREBASE_ERROR[userError?.message as keyof typeof FIREBASE_ERROR]}
+          {formError ||
+            FIREBASE_ERROR[userError?.message as keyof typeof FIREBASE_ERROR]}
         </Text>
       )}
-      <Flex direction="column" fontSize="9pt" justifyContent="center" alignItems="center">
+      <Flex
+        direction="column"
+        fontSize="9pt"
+        justifyContent="center"
+        alignItems="center"
+      >
         <Button
           height="30px"
           variant="primary"
           type="submit"
           isLoading={loading}
-          loadingText='Signing up'
+          loadingText="Signing up"
           spinnerPlacement="start"
-          _loading={{ opacity: 2 }}>Sign up </Button>
+          _loading={{ opacity: 2 }}
+        >
+          Sign up{''}
+        </Button>
         <Flex fontSize="9pt" justifyContent="center">
-          <Text mr={1} mt={2}> Already have an account?</Text>
+          <Text mr={1} mt={2}>
+            {' '}
+            Already have an account?
+          </Text>
           <Text
             color="brand.500"
-            fontWeight='bold'
+            fontWeight="bold"
             mt={2}
             cursor="pointer"
-            onClick={() => setAuthModalState((prev) => ({
-              ...prev,
-              view: "login",
-            }))
-            }>
+            onClick={() =>
+              setAuthModalState((prev) => ({
+                ...prev,
+                view: 'login',
+              }))
+            }
+          >
             Log In
           </Text>
         </Flex>
       </Flex>
     </form>
-  )
+  );
 };
 
 export default SignUp;
