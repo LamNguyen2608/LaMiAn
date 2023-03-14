@@ -42,7 +42,7 @@ const UpdateCategory: React.FC<updateCatProps> = ({
       <Modal closeOnOverlayClick={false} isOpen={showModal} onClose={hideModal}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Create new Category</ModalHeader>
+          <ModalHeader>Update Category "{CategoryData?.name}"</ModalHeader>
           <ModalBody pb={6}>
             <Text
               mb={2}

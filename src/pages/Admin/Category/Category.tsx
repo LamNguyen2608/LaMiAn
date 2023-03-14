@@ -146,16 +146,22 @@ const Category: React.FC<CategoryProps> = ({ CategoryData }) => {
 
   return (
     <>
-      <Box p="24px 10px" borderBottom="2px solid" borderColor="white">
+      <Flex
+        direction="row"
+        p="24px 10px"
+        borderBottom="2px solid"
+        borderColor="white"
+      >
         <Icon
           as={IoMdArrowRoundBack}
           fontSize={30}
-          onClick={() => router.back()}
+          cursor="pointer"
+          onClick={() => router.push('/Admin')}
         />
         <Text fontSize={22} fontWeight={900}>
           Category List
         </Text>
-      </Box>
+      </Flex>
       <Flex direction="column">
         <TableContainer>
           <Table variant="striped" size="sm">

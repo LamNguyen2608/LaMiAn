@@ -40,14 +40,14 @@ const AdminButtonFunc: React.FC = () => {
             fontWeight="bold"
             fontSize={{ base: '11px', sm: '13px' }}
             height={{ base: '80px', sm: '110px', md: '150px' }}
-            width={{ base: '80px', sm: '110px', md: '150px' , xl: '200px'}}
+            width={{ base: '80px', sm: '110px', md: '150px', xl: '200px' }}
             borderRadius="20px"
             bgGradient="linear(to-r, brand.900, brand.800)"
             _hover={{
               bgGradient: 'linear(to-r, brand.100, brand.200)',
             }}
             onClick={() => {
-              router.push('/Admin/UserRole/UpdateRoleForm');
+              router.push('/Admin/UserRole/UserList');
             }}
           >
             <Icon as={FaUsersCog} fontSize={60} color="white" />
@@ -64,7 +64,7 @@ const AdminButtonFunc: React.FC = () => {
             fontWeight="bold"
             fontSize={{ base: '11px', sm: '13px' }}
             height={{ base: '80px', sm: '110px', md: '150px' }}
-            width={{ base: '80px', sm: '110px', md: '150px' , xl: '200px'}}
+            width={{ base: '80px', sm: '110px', md: '150px', xl: '200px' }}
             borderRadius="20px"
             bgGradient="linear(to-r, brand.900, brand.800)"
             _hover={{
@@ -90,7 +90,7 @@ const AdminButtonFunc: React.FC = () => {
             fontWeight="bold"
             fontSize={{ base: '11px', sm: '13px' }}
             height={{ base: '80px', sm: '110px', md: '150px' }}
-            width={{ base: '80px', sm: '110px', md: '150px' , xl: '200px'}}
+            width={{ base: '80px', sm: '110px', md: '150px', xl: '200px' }}
             borderRadius="20px"
             bgGradient="linear(to-r, brand.900, brand.800)"
             _hover={{
@@ -114,13 +114,15 @@ const AdminButtonFunc: React.FC = () => {
             fontWeight="bold"
             fontSize={{ base: '11px', sm: '13px' }}
             height={{ base: '80px', sm: '110px', md: '150px' }}
-            width={{ base: '80px', sm: '110px', md: '150px' , xl: '200px'}}
+            width={{ base: '80px', sm: '110px', md: '150px', xl: '200px' }}
             borderRadius="20px"
             bgGradient="linear(to-r, brand.900, brand.800)"
             _hover={{
               bgGradient: 'linear(to-r, brand.100, brand.200)',
             }}
-            onClick={() => {}}
+            onClick={() => {
+              router.push('/Admin/Department/Department');
+            }}
           >
             <Icon as={AiOutlineApartment} fontSize={60} color="white" />
             <Text fontSize={20} fontWeight={900}>

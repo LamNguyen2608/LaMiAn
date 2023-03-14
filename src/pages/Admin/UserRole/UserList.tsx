@@ -22,87 +22,84 @@ import axios from 'axios';
 import safeJsonStringify from 'safe-json-stringify';
 import { Topic } from '@/atoms/topicAtom';
 import UpdateRole from '@/pages/Admin/UserRole/UpdateRole';
+import { Idea } from '@/atoms/ideaAtom';
 
 type roleProps = {
   UserData: {
-      id:"",
-      email: "",
-      firstname: "",
-      lastname: "",
-      age: "",
-      pronoun: "",
-      department: ""
-      role: "",
-  }[]
+    id: string;
+    email: string;
+    firstname: string;
+    lastname: string;
+    client_info: string;
+    age: number;
+    pronoun: string;
+    department_id: number;
+    role: string;
+  }[];
 };
 const UserList: React.FC<roleProps> = ({ UserData }) => {
-  const [userList, setUserList] = useState<{
-    id:"",
-    email: "",
-    firstname: "",
-    lastname: "",
-    age: "",
-    pronoun: "",
-    department: ""
-    role:""}[]>([]);
+  const [userList, setUserList] = useState<
+    {
+      id: string;
+      email: string;
+      firstname: string;
+      lastname: string;
+      age: number;
+      pronoun: string;
+      department_id: number;
+      client_info: string;
+      role: string;
+    }[]
+  >([]);
   useEffect(() => {
     setUserList(UserData);
   }, []);
+  const [userRole, setUserRole] = useState<string>();
   const [loading, setLoading] = useState(false);
   const [displayUpdateModal, setDisplayUpdateModal] = useState(false);
-  const showUpdateModal = () => {
-    setDisplayUpdateModal(true);
-  };
   const hideUpdateModal = () => {
     setDisplayUpdateModal(false);
   };
   const [valueRoleModal, setValueRoleModal] = useState<{
-    id:"",
-    email: "",
-    firstname: "",
-    lastname: "",
-    age: "",
-    pronoun: "",
-    department: ""
-    role:""}>();
+    id: string;
+    email: string;
+    firstname: string;
+    lastname: string;
+    age: number;
+    client_info: string;
+    role: string;
+  }>();
   const showUpdateRole = (item: {
-    id: "",
-     email: "",
-  firstname: "",
-  lastname: "",
-  age: "",
-  pronoun: "",
-  department: ""
-  role:"" }) => {
+    id: string;
+    email: string;
+    firstname: string;
+    lastname: string;
+    age: number;
+    client_info: string;
+    role: string;
+  }) => {
     setDisplayUpdateModal(true);
     setValueRoleModal(item);
   };
-  const onSelectChange = (
-    event: React.ChangeEvent<HTMLSelectElement>
-  ) => {
-    const {
-      target: { name, value },
-    } = event;
-    setUserList((prev) => ({
-      ...prev,
-      name: value,
-    }));
+  const onSelectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const value = event.target.value;
+    setUserRole(value);
   };
+
   const handleUpdateRole = async () => {
     setLoading(true);
     try {
-      if (userList) {
+      if (userRole) {
         {
           axios
-            .put('http://localhost:8080/cate/update', {
+            .put('http://localhost:8080/client/update', {
               id: valueRoleModal?.id,
               email: valueRoleModal?.email,
-  firstname: valueRoleModal?.firstname,
-  lastname: valueRoleModal?.lastname,
-  age: valueRoleModal?.age,
-  pronoun: valueRoleModal?.pronoun,
-  department: valueRoleModal?.department,
-  role:valueRoleModal?.role,
+              firstname: valueRoleModal?.firstname,
+              lastname: valueRoleModal?.lastname,
+              age: valueRoleModal?.age,
+              client_info: valueRoleModal?.client_info,
+              role: userRole,
             })
             .then((response) => {
               console.log('after updateTopic ===>', response);
@@ -148,8 +145,8 @@ const UserList: React.FC<roleProps> = ({ UserData }) => {
                 <Th fontSize={16}>User Email</Th>
                 <Th fontSize={16}>User Age</Th>
                 <Th fontSize={16}>User pronoun</Th>
-                <Th fontSize={16}>Department</Th>
                 <Th fontSize={16}>Role</Th>
+                <Th fontSize={16}>Edit Role</Th>
               </Tr>
             </Thead>
             <Tbody>
@@ -160,9 +157,7 @@ const UserList: React.FC<roleProps> = ({ UserData }) => {
                   <Td>{item.email}</Td>
                   <Td>{item.age}</Td>
                   <Td>{item.pronoun}</Td>
-                  <Td>{item.department}</Td>
                   <Td>{item.role}</Td>
-                  <Td>Open</Td>
                   <Td justifyItems="center">
                     <Icon
                       as={AiFillEdit}
@@ -170,11 +165,8 @@ const UserList: React.FC<roleProps> = ({ UserData }) => {
                       color="gray.400"
                       _hover={{ color: 'blue.300' }}
                       ml="20px"
-                      onClick={() =>
-                        showUpdateRole(item)
-                      }
+                      onClick={() => showUpdateRole(item)}
                     />
-
                   </Td>
                 </Tr>
               ))}
@@ -183,12 +175,13 @@ const UserList: React.FC<roleProps> = ({ UserData }) => {
         </TableContainer>
       </Flex>
       <UpdateRole
-      showModal = {showUpdateModal}
-      hideModal = {hideUpdateModal}
-      onChange = {onSelectChange}
-      loading = {loading}
-      Update = {handleUpdateRole}
-      userData ={valueRoleModal} />
+        showModal={displayUpdateModal}
+        hideModal={hideUpdateModal}
+        onChange={onSelectChange}
+        loading={loading}
+        Update={handleUpdateRole}
+        userData={valueRoleModal}
+      />
     </>
   );
 };

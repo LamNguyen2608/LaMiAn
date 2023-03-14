@@ -54,7 +54,9 @@ const TopicDetails: React.FC<detailsProps> = ({ TopicData }) => {
           >
             Closure Date
           </Text>
-          <Text fontSize="14pt">{TopicData.topic_closure_date}</Text>
+          <Text fontSize="14pt">
+            {TopicData.topic_closure_date.split('T').join(' ')}
+          </Text>
         </Flex>
         <Flex width="50%" direction="column" ml={2}>
           <Text
@@ -66,7 +68,9 @@ const TopicDetails: React.FC<detailsProps> = ({ TopicData }) => {
           >
             Final Closure Date
           </Text>
-          <Text fontSize="14pt">{TopicData.final_closure_date}</Text>
+          <Text fontSize="14pt">
+            {TopicData.final_closure_date.split('T').join(' ')}
+          </Text>
         </Flex>
       </Flex>
       <Flex justify="center" align="center">

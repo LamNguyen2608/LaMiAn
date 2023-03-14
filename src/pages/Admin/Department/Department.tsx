@@ -25,11 +25,12 @@ import { GetServerSidePropsContext } from 'next';
 import safeJsonStringify from 'safe-json-stringify';
 import UpdateCategory from '@/pages/Admin/Category/UpdateCategory';
 import CreateDepartment from './CreateDepartment';
+import UpdateDepartment from './UpdateDepartment';
 
 type departmentProps = {
   departmentData: {
-    id?: number;
     name: string;
+    department_info: string;
   }[];
 };
 const Category: React.FC<departmentProps> = ({ departmentData }) => {
@@ -39,12 +40,18 @@ const Category: React.FC<departmentProps> = ({ departmentData }) => {
   const [valueDepModal, setValueDepModal] = useState<{
     id?: number;
     name: string;
+    department_info: string;
   }>();
-  const [department, setDepartment] = useState<string>();
+  const [department, setDepartment] = useState<{
+    id?: number;
+    name: string;
+    department_info: string;
+  }>();
   const [listDepartment, setListDepartment] = useState<
     {
       id?: number;
       name: string;
+      department_info: string;
     }[]
   >([]);
   useEffect(() => {
@@ -52,19 +59,20 @@ const Category: React.FC<departmentProps> = ({ departmentData }) => {
   }, []);
   const [loading, setLoading] = useState(false);
   const [displayCatModal, setDisplayCatModal] = useState(false);
-  const showCatModal = () => {
+  const showCreateModal = () => {
     setDisplayCatModal(true);
   };
   const hideCatModal = () => {
     setDisplayCatModal(false);
   };
-  const handleCreateCategory = async () => {
+  const handleCreateDepartment = async () => {
     setLoading(true);
     try {
       if (department) {
         axios
           .post('http://localhost:8080/department/create', {
-            name: department,
+            name: department.name,
+            department_info: department.department_info,
           })
           .then((response) => {
             console.log('after creating idea ===>', response);
@@ -81,7 +89,11 @@ const Category: React.FC<departmentProps> = ({ departmentData }) => {
       setLoading(false);
     }
   };
-  const showUpdateCatModal = (item: { id?: number; name: string }) => {
+  const showUpdateCatModal = (item: {
+    id?: number;
+    name: string;
+    department_info: string;
+  }) => {
     setDisplayUpdateDepModal(true);
     setValueDepModal(item);
   };
@@ -96,7 +108,8 @@ const Category: React.FC<departmentProps> = ({ departmentData }) => {
           axios
             .put('http://localhost:8080/department/update', {
               id: valueDepModal?.id,
-              name: department,
+              name: department.name,
+              department_info: department.department_info,
             })
             .then((response) => {
               console.log('after updateTopic ===>', response);
@@ -114,12 +127,21 @@ const Category: React.FC<departmentProps> = ({ departmentData }) => {
       setLoading(false);
     }
   };
-  const onTextChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value;
-    setDepartment(value);
+  const onTextChange = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    //update form state
+    setDepartment((prev) => ({
+      ...prev,
+      [event.target.name]: event.target.value,
+    }));
   };
 
-  const showDeleteModal = (item: { id?: number; name: string }) => {
+  const showDeleteModal = (item: {
+    id?: number;
+    name: string;
+    department_info: string;
+  }) => {
     setDisplayConfirmationModal(true);
     setValueDepModal(item);
   };
@@ -147,16 +169,22 @@ const Category: React.FC<departmentProps> = ({ departmentData }) => {
 
   return (
     <>
-      <Box p="24px 10px" borderBottom="2px solid" borderColor="white">
+      <Flex
+        direction="row"
+        p="24px 10px"
+        borderBottom="2px solid"
+        borderColor="white"
+      >
         <Icon
           as={IoMdArrowRoundBack}
           fontSize={30}
-          onClick={() => router.back()}
+          cursor="pointer"
+          onClick={() => router.push('/Admin')}
         />
         <Text fontSize={22} fontWeight={900}>
           Department List
         </Text>
-      </Box>
+      </Flex>
       <Flex direction="column">
         <TableContainer>
           <Table variant="striped" size="sm">
@@ -202,7 +230,7 @@ const Category: React.FC<departmentProps> = ({ departmentData }) => {
             width="160px"
             variant="primary"
             type="submit"
-            onClick={() => showCatModal()}
+            onClick={() => showCreateModal()}
           >
             Create new category
           </Button>
@@ -210,10 +238,11 @@ const Category: React.FC<departmentProps> = ({ departmentData }) => {
       </Flex>
       <CreateDepartment
         showModal={displayCatModal}
-        Create={handleCreateCategory}
+        Create={handleCreateDepartment}
         hideModal={hideCatModal}
         onChange={onTextChange}
         loading={loading}
+        department={department}
       />
       <DeleteConfirmationModal
         showModal={displayConfirmationModal}
@@ -221,13 +250,13 @@ const Category: React.FC<departmentProps> = ({ departmentData }) => {
         hideModal={hideConfirmationModal}
         loading={loading}
       />
-      <UpdateCategory
+      <UpdateDepartment
         showModal={displayUpdateDepModal}
         Update={handleUpdateCategory}
         hideModal={hideUpdateCatModal}
         onChange={onTextChange}
         loading={loading}
-        CategoryData={valueDepModal}
+        depData={valueDepModal}
       />
     </>
   );
