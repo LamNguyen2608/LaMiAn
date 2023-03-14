@@ -1,11 +1,14 @@
-import { authModalState } from '@/atoms/authModalAtom';
-import { useCreateUserWithEmailAndPassword } from 'react-firebase-hooks/auth';
-import { auth } from '../../../Firebase/clientApp';
-import { FIREBASE_ERROR } from '../../../Firebase/error';
-import { Input, Button, Flex, Text, Select } from '@chakra-ui/react';
-import React, { useEffect, useState } from 'react';
-import { useSetRecoilState } from 'recoil';
-import axios from 'axios';
+
+import { authModalState } from "@/atoms/authModalAtom";
+import { useCreateUserWithEmailAndPassword } from 'react-firebase-hooks/auth'
+import { auth } from '../../../Firebase/clientApp'
+import { FIREBASE_ERROR } from '../../../Firebase/error'
+import { Input, Button, Flex, Text, Select } from "@chakra-ui/react";
+import React, { useEffect, useState } from "react";
+import { useRecoilState, useSetRecoilState } from "recoil";
+import axios from "axios";
+import { clientState } from "@/atoms/clientAtom";
+
 
 type Department = {
   id: number;
@@ -27,8 +30,13 @@ const SignUp: React.FC = () => {
   });
   const [formError, setformError] = useState('');
   const [allDepartments, setAllDepartments] = useState<Department[]>([]);
-  const [createUserWithEmailAndPassword, user, loading, userError] =
-    useCreateUserWithEmailAndPassword(auth);
+  const [clientStateValue, setClientStateValue] = useRecoilState(clientState);
+  const [
+    createUserWithEmailAndPassword,
+    user,
+    loading,
+    userError,
+  ] = useCreateUserWithEmailAndPassword(auth);
 
   useEffect(() => {
     axios.get('http://localhost:8080/department').then((response) => {
@@ -50,19 +58,21 @@ const SignUp: React.FC = () => {
     createUserWithEmailAndPassword(signUpForm.email, signUpForm.password).then(
       (user) => {
         if (user) {
-          console.log('====>', user.user.uid);
-          axios
-            .post('http://localhost:8080/client/signup', {
-              id: user.user.uid,
-              firstname: signUpForm.firstname,
-              lastname: signUpForm.lastname,
-              age: signUpForm.age,
-              pronoun: signUpForm.pronoun,
-              department_id: signUpForm.department,
-              email: user.user.email,
-            })
-            .then((response) => {
-              console.log('after create client ===>', response);
+          console.log("====>", user.user.uid);
+          axios.post('http://localhost:8080/client/signup', {
+            id: user.user.uid,
+            firstname: signUpForm.firstname,
+            lastname: signUpForm.lastname,
+            age: signUpForm.age,
+            pronoun: signUpForm.pronoun,
+            department_id: signUpForm.department,
+            email: user.user.email
+          })
+            .then(client => {
+              console.log("after create client ===>", client);
+              setClientStateValue({
+                currentClient: client.data
+              })
             });
         }
       }

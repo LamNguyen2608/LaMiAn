@@ -20,12 +20,17 @@ type deleteProps = {
   hideModal: any;
   loading: boolean;
   confirmModal: () => void;
+  CategoryData?: {
+    id?: number;
+    name: string;
+  };
 };
 const DeleteConfirmationModal: React.FC<deleteProps> = ({
   showModal,
   hideModal,
   confirmModal,
   loading,
+  CategoryData,
 }) => {
   return (
     <>

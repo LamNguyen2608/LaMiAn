@@ -1,4 +1,4 @@
-import { Flex, Icon, Image, Stack, Text } from '@chakra-ui/react';
+import { Badge, Flex, Icon, Image, Spinner, Stack, Text } from '@chakra-ui/react';
 import { TriangleDownIcon, TriangleUpIcon, ChatIcon, StarIcon } from '@chakra-ui/icons'
 import { RiShareForwardLine } from 'react-icons/ri'
 import React from 'react';
@@ -6,9 +6,15 @@ import moment from 'moment';
 import { Idea, myVote } from '@/atoms/ideaAtom';
 import useIdeas from '@/hooks/useIdeas';
 import { useRouter } from 'next/router';
+import { auth } from '@/Firebase/clientApp';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { AiOutlineDelete, AiOutlineEdit } from 'react-icons/ai';
+
+const badgeColors = ["red", "orange", "yellow", "green", "teal", "blue", "cyan", "purple", "pink", "linkedin", "facebook", "messenger", "whatsapp", "twitter", "telegram"];
 
 type IdeaItemProps = {
     idea: Idea;
+    index: number;
     // userIsCreator: boolean;
     // userVoteValue?: number;
     // onVote: () => {};
@@ -18,18 +24,15 @@ type IdeaItemProps = {
 
 const IdeaItem: React.FC<IdeaItemProps> = ({
     idea,
-    // userIsCreator,
-    // userVoteValue,
-    // onVote,
-    // onDeletePost,
-    // onSelectPost
+    index
 }) => {
-    const { ideaStateValue, setIdeaStateValue, onVote } = useIdeas();
+    const { ideaStateValue, setIdeaStateValue, onVote, setUpdateIdea } = useIdeas();
     const isVoted: myVote | undefined = ideaStateValue.IdeaVotes.find(
         (item) => (item.idea_id === idea.id)
     );
     const router = useRouter();
     const { topicId, ideaid } = router.query;
+    const [user, loadingUser] = useAuthState(auth);
     console.log("Idea ID: " + idea.id + "====> is vote: " + isVoted);
     return (
         <Flex
@@ -121,16 +124,21 @@ const IdeaItem: React.FC<IdeaItemProps> = ({
                     if (!ideaid) {
                         setIdeaStateValue((prev) => ({
                             ...prev,
-                            selectedIdea: idea
+                            selectedIdea: idea,
+                            selectedIdeaIndex: index
                         }))
-                        router.push('/topic/' + topicId + '/ideas/' + idea.id)
+                        router.push('/topic/' + idea.topic.id + '/ideas/' + idea.id)
                     }
                 }}>
                 <Stack spacing={1} p="10px">
-                    <Stack direction="row" spacing={0.6} align="center" fontSize="9pt">
+                    <Stack direction="column" spacing={0.6} align="left" fontSize="9pt">
                         {/*Home Page Check */}
-                        <Text>Posted by {idea.isAnonymous ? "Anonymous" : idea.client.firstname + " " + idea.client.lastname} {" "}
+                        <Text>Posted by
+                            <b> {" "} {idea.isAnonymous ? "Anonymous" : idea.client.firstname + " " + idea.client.lastname} {" "}</b>
                             {moment(new Date(idea.modify_date)).fromNow()}
+                        </Text>
+                        <Text color="brand.900" fontSize="10px">
+                            Topic: {" "}{idea.topic.name}
                         </Text>
                     </Stack>
                     <Text fontSize="12pt" fontWeight={600}>
@@ -139,6 +147,11 @@ const IdeaItem: React.FC<IdeaItemProps> = ({
                     <Text fontSize="10pt" fontWeight={500}>
                         {idea.body}
                     </Text>
+                    <Stack direction='row'>
+                        {idea.idea_cate.map((cate, index) => (
+                            <Badge colorScheme={badgeColors[index]}>{cate.cate_id.name}</Badge>
+                        ))}
+                    </Stack>
                     <Flex justify="center" align="center" p={2}>
                         <Image
                             src={idea.attached_path}
@@ -173,7 +186,56 @@ const IdeaItem: React.FC<IdeaItemProps> = ({
                         <StarIcon mr={2} color="gray.300" />
                         <Text fontSize="9pt">Save</Text>
                     </Flex>
+                    {idea.client.id === user?.uid && (
+                        <>
+                            <Flex
+                                align="center"
+                                p="8px 10px"
+                                borderRadius={4}
+                                _hover={{ bg: "gray.200" }}
+                                cursor="pointer"
+                            //onClick={}
+                            >
+                                {false ? (
+                                    <Spinner size="sm" />
+                                ) : (
+                                    <>
+                                        <Icon as={AiOutlineDelete} mr={2} />
+                                        <Text fontSize="9pt">Delete</Text>
+                                    </>
+                                )}
 
+                            </Flex>
+                            <Flex
+                                align="center"
+                                p="8px 10px"
+                                borderRadius={4}
+                                _hover={{ bg: "gray.200" }}
+                                cursor="pointer"
+                                onClick={() => {
+                                    setIdeaStateValue((prev) => ({
+                                        ...prev,
+                                        selectedIdea: ideaStateValue.Ideas[index]
+                                    }))
+                                    router.push('/topic/' + idea.topic.id + '/ideas/update');
+                                }}
+                            >
+                                {
+                                    false ? (
+                                        <Spinner size="sm" />
+                                    ) : (
+                                        <>
+                                            <Icon as={AiOutlineEdit} mr={2} />
+                                            <Text fontSize="9pt">Edit</Text>
+                                        </>
+                                    )
+                                }
+
+                            </Flex>
+                        </>
+
+
+                    )}
                 </Flex>
 
             </Flex>
@@ -181,3 +243,4 @@ const IdeaItem: React.FC<IdeaItemProps> = ({
     )
 }
 export default IdeaItem;
+

@@ -13,6 +13,15 @@ export interface Topic {
   ideas?: Idea[];
 }
 
+export type TopTopic = {
+  topic_id: number;
+  topic_name: string;
+  numOfFollowers: number;
+  idea_closure_date: string;
+  final_closure_date: string;
+  image_url: string;
+};
+
 export type ClientFollow = {
   client_id: {
     id: string;

@@ -12,28 +12,40 @@ import { authModalState } from "../../../atoms/authModalAtom";
 import CommentItem, { Comment } from "./CommentItem";
 import CommentInput from "./Input";
 import { User } from "firebase/auth";
-import { IdeaDetails } from "@/atoms/ideaAtom";
+import { Idea, IdeaDetails } from "@/atoms/ideaAtom";
 import axios from "axios";
+import useIdeas from "@/hooks/useIdeas";
+import useTopics from "@/hooks/useTopics";
 
 type CommentsProps = {
     user?: User | null;
-    selectedIdea: IdeaDetails;
+    selectedIdea: Idea;
     topic: string;
-    fetchIdea: (idea_id: string) => void
+    //fetchIdea: (idea_id: string) => void
 };
+
 
 const Comments: React.FC<CommentsProps> = ({
     user,
     selectedIdea,
     topic,
-    fetchIdea
+    // fetchIdea
 }) => {
     const [comment, setComment] = useState("");
-    const [comments, setComments] = useState<Comment[] | null>([]);
+    const [comments, setComments] = useState<Comment[]>([]);
+    const [commentAnonymous, setCommentAnonymous] = useState(false);
     const [commentFetchLoading, setCommentFetchLoading] = useState(false);
     const [commentCreateLoading, setCommentCreateLoading] = useState(false);
     const [deleteLoading, setDeleteLoading] = useState("");
     const setAuthModalState = useSetRecoilState(authModalState);
+    const { ideaStateValue, setIdeaStateValue, onVote } = useIdeas();
+    const { topicStateValue } = useTopics();
+
+    const isDeadline: boolean = new Date(topicStateValue.currentTopic?.final_closure_date).getTime() > new Date().getTime()
+
+    const setAnonymous = () => {
+        setCommentAnonymous(!commentAnonymous);
+    }
 
     const onCreateComment = async (comment: string) => {
         if (!user) {
@@ -43,25 +55,31 @@ const Comments: React.FC<CommentsProps> = ({
 
         setCommentCreateLoading(true);
         try {
-
+            console.log("anonymous ===========>", commentAnonymous);
             axios.post('http://localhost:8080/idea/comment', {
                 "comment": comment,
                 "client_id": user.uid,
-                "idea_id": selectedIdea.id
-            }).then(async res => {
+                "idea_id": selectedIdea.id,
+                "isAnonymous": commentAnonymous
+            }).then(res => {
                 setComment("");
                 setCommentCreateLoading(false);
-                await fetchIdea(selectedIdea.id.toString());
+                let updatedComments = JSON.parse(JSON.stringify(ideaStateValue.Ideas));
+                updatedComments[ideaStateValue.selectedIdeaIndex].comments.push(res.data);
+                setIdeaStateValue(prev => ({
+                    ...prev,
+                    Ideas: updatedComments
+                }))
+                //await fetchIdea(selectedIdea.id.toString());
             })
         } catch (error) {
-
+            console.log(error)
         };
     }
 
 
+
     useEffect(() => {
-        //console.log("HERE IS SELECTED POST", selectedPost.id);
-        // getPostComments();
         if (selectedIdea) {
             setComments(selectedIdea.comments)
         }
@@ -77,14 +95,17 @@ const Comments: React.FC<CommentsProps> = ({
                 fontSize="10pt"
                 width="100%"
             >
-                {/* Add validation to hide comment input section */}
-                <CommentInput
-                    comment={comment}
-                    setComment={setComment}
-                    loading={commentCreateLoading}
-                    user={user}
-                    onCreateComment={onCreateComment}
-                />
+                {isDeadline && (
+                    <CommentInput
+                        comment={comment}
+                        setComment={setComment}
+                        loading={commentCreateLoading}
+                        user={user}
+                        onCreateComment={onCreateComment}
+                        isAnonymous={commentAnonymous}
+                        setAnonymous={setAnonymous}
+                    />
+                )}
             </Flex>
             <Stack spacing={6} p={2}>
                 {commentFetchLoading ? (
@@ -131,3 +152,4 @@ const Comments: React.FC<CommentsProps> = ({
     );
 };
 export default Comments;
+

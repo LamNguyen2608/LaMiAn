@@ -1,5 +1,6 @@
-import { Timestamp } from 'firebase/firestore';
 import { atom } from 'recoil';
+
+
 
 export interface Idea {
   id: number;
@@ -26,7 +27,13 @@ export interface IdeaDetails {
   topic: { id: number; name: string }[];
   client: { id: string; firstname: string; lastname: string }[];
   reactions: any[];
-  comments: { id: number; comment: string; modify_date: string }[];
+  comments: {
+    id: number;
+    comment: string;
+    modify_date: string;
+    client: { id: string; firstname: string; lastname: string };
+    isAnonymous: boolean;
+  }[];
   idea_cate: any[];
 }
 
@@ -39,14 +46,14 @@ export interface IdeaState {
   selectedIdea: Idea | null;
   Ideas: Idea[];
   IdeaVotes: myVote[];
-  selectedIdeaDetails: IdeaDetails | null;
+  selectedIdeaIndex: number;
 }
 
 const defaultIdeaState: IdeaState = {
   IdeaVotes: [],
   selectedIdea: null,
   Ideas: [],
-  selectedIdeaDetails: null,
+  selectedIdeaIndex: -1,
 };
 
 export const ideaState = atom<IdeaState>({

@@ -8,7 +8,7 @@ import axios from "axios";
 
 type CategoryProps = {
   setSelectedTab: (value: string) => void;
-  selectedCategory?: { value: string; label: string }[];
+  selectedCategory: { value: string; label: string }[];
   setSelectedCategory: (value: { value: string; label: string }[]) => void;
 };
 
@@ -19,11 +19,22 @@ const CategorySelection: React.FC<CategoryProps> = ({ setSelectedTab, selectedCa
 
   useEffect(() => {
     axios.get('http://localhost:8080/cate').then(response => {
-      console.log("Get all categories ===>", response.data)
-      setCatSelections(response.data.map((item: { id: number; name: string; }) => ({
+      console.log("Get all categories ===>", response.data);
+      let listCategories = response.data.map((item: { id: number; name: string; }) => ({
         value: item.id.toString(),
         label: item.name
-      })));
+      }));
+      let listOfindices: number[] = [];
+      setCatSelections(listCategories);
+      if (selectedCategory.length > 0) {
+        selectedCategory.forEach(cat => {
+          let index = listCategories.findIndex(item => item.value == cat.value);
+          if (index !== -1) {
+            listOfindices.push(index);
+          }
+        })
+        setSelectedCategory(listOfindices.map(index => listCategories[index]))
+      }
       setLoadingCat(false);
     });
   }, [])
@@ -42,7 +53,7 @@ const CategorySelection: React.FC<CategoryProps> = ({ setSelectedTab, selectedCa
           size="md"
           options={catSelections}
           value={selectedCategory}
-          onChange={(value) => { setSelectedCategory(value) }}
+          onChange={setSelectedCategory}
           closeMenuOnSelect={false}
         ></Select>
       </Flex>

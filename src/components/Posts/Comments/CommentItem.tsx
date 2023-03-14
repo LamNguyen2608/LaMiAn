@@ -65,7 +65,7 @@ const CommentItem: React.FC<CommentItemProps> = ({
                         fontWeight={700}
                         _hover={{ textDecoration: "underline", cursor: "pointer" }}
                     >
-                        {comment.client.firstname + " " + comment.client.lastname}
+                        {comment.isAnonymous ? "Anonymous" : comment.client.firstname + " " + comment.client.lastname}
                     </Text>
                     {comment.modify_date && (
                         <Text color="gray.600">
@@ -88,12 +88,12 @@ const CommentItem: React.FC<CommentItemProps> = ({
                         <>
                             <Text
                                 fontSize="9pt"
-                                _hover={{ color: "blue.500" }}>
+                                _hover={{ color: "brand.900" }}>
                                 Edit
                             </Text>
                             <Text
                                 fontSize="9pt"
-                                _hover={{ color: "blue.500" }}
+                                _hover={{ color: "brand.900" }}
                                 onClick={() => { }}
                             >
                                 Delete

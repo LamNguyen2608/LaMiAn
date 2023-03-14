@@ -11,39 +11,45 @@ import TopicRHS from '@/components/Topic/TopicRHS';
 import IdeaItem from '@/components/Posts/IdeaItem';
 import useIdeas from '@/hooks/useIdeas';
 import { ideaState } from '@/atoms/ideaAtom';
+import About from '@/components/Topic/About';
+import useTopics from '@/hooks/useTopics';
 
 type TopicPageProps = {
     topicData: Topic;
 };
 
 const TopicPage: React.FC<TopicPageProps> = ({ topicData }) => {
+    const { topicStateValue, setTopicStateValue } = useTopics();
     console.log("===>", topicData.ideas);
     const { ideaStateValue, setIdeaStateValue } = useIdeas();
     useEffect(() => {
         setIdeaStateValue((prev) => ({
             ...prev,
             Ideas: topicData.ideas
-        }))
+        }));
+        setTopicStateValue((prev) => ({
+            ...prev,
+            currentTopic: topicData
+        }));
     }, [])
     return (
         <>
             <Header topicData={topicData} />
             <PageContent>
                 <>
-                    {new Date(topicData.topic_closure_date).getTime() > new Date().getTime()
-                        ? (<CreatePostForm />) : null}
-                    {ideaStateValue.Ideas.map((item) => (
-                        <IdeaItem idea={item} />
+                    {/* {new Date(topicData.topic_closure_date).getTime() > new Date().getTime()
+                        ? (<CreatePostForm />) : null} */}
+                    <CreatePostForm />
+                    {ideaStateValue.Ideas.map((item, index) => (
+                        <IdeaItem idea={item} index={index} />
                     ))}
                 </>
-                <><TopicRHS topicData={topicData} /></>
+                <><About topicData={topicData} /></>
             </PageContent>
         </>
     )
 }
 export async function getServerSideProps(context: GetServerSidePropsContext) {
-    //get topic data and pass it to cline
-    //context.query.topicId as string => getting id from route
     try {
         const response = await axios.get(process.env.REACT_APP_BACKEND_ENDPOINT + 'topic/' + context.query.topicId as string);
         console.log(response.data);
