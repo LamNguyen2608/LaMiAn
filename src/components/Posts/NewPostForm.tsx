@@ -1,34 +1,7 @@
-<<<<<<< HEAD
-import React, { useEffect, useRef, useState } from "react";
-import PageContent from "@/components/Layout/PageContent";
-import { Flex, Icon } from "@chakra-ui/react";
 
-import TabItems from "./TabItems";
-import { async } from "@firebase/util";
-import TextInput from "./PostForm/TextInput";
-import { MdCategory } from "react-icons/md";
-import { BsFillFileImageFill } from "react-icons/bs";
-import { AiFillFileText } from "react-icons/ai"
-import { FaPollH } from "react-icons/fa";
-import ImageUpload from "./PostForm/ImageUpload";
-import { User } from "firebase/auth";
-import { useRouter } from "next/router";
-import { addDoc, collection, serverTimestamp, Timestamp, updateDoc } from "firebase/firestore";
-import { firestore, storage } from "@/Firebase/clientApp";
-import { getDownloadURL, ref, uploadString } from "firebase/storage";
-import { Idea } from "@/atoms/ideaAtom";
-import uuid from "react-uuid";
-import axios from "axios";
-import CategorySelection from "./PostForm/CategorySelection";
-import AgreeAndSubmit from "./PostForm/Agreement_and_Submit";
-=======
-import React, { useRef, useState } from 'react';
-import PageContent from '@/components/Layout/PageContent';
+import React, { useEffect, useRef, useState } from 'react';
 import { Flex, Icon } from '@chakra-ui/react';
->>>>>>> eb6ff55ff7eedb9163f440e4a7dd37d2f3937310
-
 import TabItems from './TabItems';
-import { async } from '@firebase/util';
 import TextInput from './PostForm/TextInput';
 import { MdCategory } from 'react-icons/md';
 import { BsFillFileImageFill } from 'react-icons/bs';
@@ -37,20 +10,14 @@ import { FaPollH } from 'react-icons/fa';
 import ImageUpload from './PostForm/ImageUpload';
 import { User } from 'firebase/auth';
 import { useRouter } from 'next/router';
-import {
-  addDoc,
-  collection,
-  serverTimestamp,
-  Timestamp,
-  updateDoc,
-} from 'firebase/firestore';
-import { firestore, storage } from '@/Firebase/clientApp';
+import { storage } from '@/Firebase/clientApp';
 import { getDownloadURL, ref, uploadString } from 'firebase/storage';
 import { Idea } from '@/atoms/ideaAtom';
 import uuid from 'react-uuid';
 import axios from 'axios';
 import CategorySelection from './PostForm/CategorySelection';
 import AgreeAndSubmit from './PostForm/Agreement_and_Submit';
+import useIdeas from '@/hooks/useIdeas';
 
 type NewPostForm = {
   user: User;
@@ -95,6 +62,7 @@ const NewPostForm: React.FC<NewPostForm> = ({ user, updateIdea }) => {
   const [agree, setAgree] = useState(false);
   const [anonymous, isAnonymous] = useState(false);
   const [loading, setLoading] = useState(false);
+  const { ideaStateValue, setIdeaStateValue } = useIdeas();
   const handleCreatePost = async () => {
     setLoading(true);
     console.log("first", selectedCategory.map(item => item.value))
@@ -121,67 +89,24 @@ const NewPostForm: React.FC<NewPostForm> = ({ user, updateIdea }) => {
             axios.post('http://localhost:8080/idea/create', newPost)
               .then(response => {
                 console.log("after creating idea ===>", response);
-<<<<<<< HEAD
                 setLoading(false);
                 router.back();
-=======
-                if (selectedCategory.length > 0) {
-                  axios.post('http://localhost:8080/idea/cate_idea', {
-                    categories: selectedCategory?.map((item) => (item.value)),
-                    idea_id: response.data.id
-                  })
-                    .then(response => {
-                      console.log("after adding category for idea", response)
-                      setLoading(false);
-                      router.back();
-                    });
-                } else {
-                  setLoading(false);
-                  router.back();
-                }
->>>>>>> eb6ff55ff7eedb9163f440e4a7dd37d2f3937310
               });
           });
         });
       } else {
-<<<<<<< HEAD
         console.log("newPost===>", newPost);
         axios.post('http://localhost:8080/idea/create', newPost)
           .then(response => {
             console.log("after creating idea ===>", response);
             setLoading(false);
             router.back();
-=======
-        console.log('newPost===>', newPost);
-        axios
-          .post('http://localhost:8080/idea/create', newPost)
-          .then((response) => {
-            console.log('after creating idea ===>', response);
-            if (selectedCategory?.length !== 0) {
-              axios
-                .post('http://localhost:8080/idea/cate_idea', {
-                  categories: selectedCategory?.map((item) => item.value),
-                  idea_id: response.data.id,
-                })
-                .then((response) => {
-                  console.log('after adding category for idea', response);
-                  setLoading(false);
-                  router.back();
-                });
-            } else {
-              setLoading(false);
-              router.back();
-            }
->>>>>>> eb6ff55ff7eedb9163f440e4a7dd37d2f3937310
           });
       }
     } catch (error: any) {
       console.log('handleCreatePost error check', error.message);
       setLoading(false);
     }
-
-    //redirect the user back to the home page using the router
-    // router.back();
   };
 
   const handleUpdatePost = async () => {
@@ -200,6 +125,7 @@ const NewPostForm: React.FC<NewPostForm> = ({ user, updateIdea }) => {
 
     try {
       //image URL
+      let updatedIdea = JSON.parse(JSON.stringify(ideaStateValue.Ideas));
       if (selectedFile && !selectedFile.startsWith("http")) {
         const imageRef = ref(storage, `Ideas/` + uuid());
         uploadString(imageRef, selectedFile, 'data_url').then((result) => {
@@ -210,8 +136,11 @@ const NewPostForm: React.FC<NewPostForm> = ({ user, updateIdea }) => {
             axios.put('http://localhost:8080/idea/update', updatePost)
               .then(response => {
                 console.log("after creating idea ===>", response);
-                setLoading(false);
-                router.back();
+                updatedIdea[ideaStateValue.selectedIdeaIndex] = response.data;
+                setIdeaStateValue((prev) => ({
+                  ...prev,
+                  Ideas: updatedIdea
+                }));
               });
           });
 
@@ -221,14 +150,20 @@ const NewPostForm: React.FC<NewPostForm> = ({ user, updateIdea }) => {
         axios.put('http://localhost:8080/idea/update', updatePost)
           .then(response => {
             console.log("after creating idea ===>", response);
-            setLoading(false);
-            router.back();
+            updatedIdea[ideaStateValue.selectedIdeaIndex] = response.data;
+            setIdeaStateValue((prev) => ({
+              ...prev,
+              Ideas: updatedIdea
+            }));
           });
       }
     } catch (error: any) {
       console.log("handleCreatePost error check", error.message)
       setLoading(false);
+      //router.back();
     };
+    setLoading(false);
+    router.back();
   };
 
   const onSelectImage = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -259,7 +194,6 @@ const NewPostForm: React.FC<NewPostForm> = ({ user, updateIdea }) => {
   };
   const anonymousHandler = () => {
     isAnonymous(!anonymous);
-<<<<<<< HEAD
   }
 
   useEffect(() => {
@@ -272,9 +206,6 @@ const NewPostForm: React.FC<NewPostForm> = ({ user, updateIdea }) => {
       isAnonymous(updateIdea.isAnonymous);
     }
   }, [])
-=======
-  };
->>>>>>> eb6ff55ff7eedb9163f440e4a7dd37d2f3937310
   return (
     <Flex direction="column" bg="white" borderRadius={4} mt={2}>
       <Flex width="100%">

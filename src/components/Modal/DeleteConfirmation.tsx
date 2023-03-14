@@ -16,9 +16,8 @@ import {
 import React, { useEffect } from 'react';
 
 type deleteProps = {
-  showModal: boolean;
+  showModal: any;
   hideModal: any;
-  deleteWhat?: string;
   loading: boolean;
   confirmModal: () => void;
   CategoryData?: {
@@ -33,40 +32,30 @@ const DeleteConfirmationModal: React.FC<deleteProps> = ({
   loading,
   CategoryData,
 }) => {
-  const DeleteConfirmationModal: React.FC<deleteProps> = ({ showModal, hideModal, confirmModal, deleteWhat }) => {
-
-
-    return (
+  return (
     <>
-        <Modal closeOnOverlayClick={false} isOpen={showModal} onClose={hideModal}>
-          <ModalOverlay />
-          <ModalContent>
-            <ModalHeader>Delete Confirmation</ModalHeader>
-            <ModalBody pb={6}>
-              Are you sure you want to delete this {deleteWhat}?
-            </ModalBody>
-            <Modal closeOnOverlayClick={false} isOpen={showModal} onClose={hideModal}>
-              <ModalOverlay />
-              <ModalContent>
-                <ModalHeader>Delete Confirmation</ModalHeader>
-                <ModalBody pb={6}>Are you sure you want to delete this?</ModalBody>
+      <Modal closeOnOverlayClick={false} isOpen={showModal} onClose={hideModal}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Delete Confirmation</ModalHeader>
+          <ModalBody pb={6}>Are you sure you want to delete this?</ModalBody>
 
-                <ModalFooter>
-                  <Button
-                    colorScheme="red"
-                    mr={3}
-                    spinnerPlacement="start"
-                    isLoading={loading}
-                    _loading={{ opacity: 2 }}
-                    onClick={() => confirmModal()}
-                  >
-                    Confirm
-                  </Button>
-                  <Button onClick={hideModal}>Cancel</Button>
-                </ModalFooter>
-              </ModalContent>
-            </Modal>
-          </>
-          );
+          <ModalFooter>
+            <Button
+              colorScheme="red"
+              mr={3}
+              spinnerPlacement="start"
+              isLoading={loading}
+              _loading={{ opacity: 2 }}
+              onClick={() => confirmModal()}
+            >
+              Confirm
+            </Button>
+            <Button onClick={hideModal}>Cancel</Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+    </>
+  );
 };
-          export default DeleteConfirmationModal;
+export default DeleteConfirmationModal;

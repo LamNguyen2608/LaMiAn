@@ -37,8 +37,9 @@ const TopicPage: React.FC<TopicPageProps> = ({ topicData }) => {
             <Header topicData={topicData} />
             <PageContent>
                 <>
-                    {new Date(topicData.topic_closure_date).getTime() > new Date().getTime()
-                        ? (<CreatePostForm />) : null}
+                    {/* {new Date(topicData.topic_closure_date).getTime() > new Date().getTime()
+                        ? (<CreatePostForm />) : null} */}
+                    <CreatePostForm />
                     {ideaStateValue.Ideas.map((item, index) => (
                         <IdeaItem idea={item} index={index} />
                     ))}

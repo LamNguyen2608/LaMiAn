@@ -105,7 +105,6 @@ const Comments: React.FC<CommentsProps> = ({
                         isAnonymous={commentAnonymous}
                         setAnonymous={setAnonymous}
                     />
-
                 )}
             </Flex>
             <Stack spacing={6} p={2}>
