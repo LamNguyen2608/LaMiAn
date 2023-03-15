@@ -1,3 +1,5 @@
+import { Idea } from '@/atoms/ideaAtom';
+import { searchState } from '@/atoms/searchAtom';
 import { Topic } from '@/atoms/topicAtom';
 import { SearchIcon } from '@chakra-ui/icons';
 import {
@@ -10,23 +12,69 @@ import {
 } from '@chakra-ui/react';
 import axios from 'axios';
 import { GetServerSidePropsContext } from 'next';
+import router, { Router } from 'next/router';
 import { it } from 'node:test';
 import React, { useEffect, useState } from 'react';
+import { useRecoilState } from 'recoil';
 import safeJsonStringify from 'safe-json-stringify';
 
-type SearchInputProps = {
-  SearchData: Topic[];
-};
+type SearchInputProps = {};
 
-const SearchInput: React.FC<SearchInputProps> = ({ SearchData }) => {
-  const [filteredData, setFilteredData] = useState<Topic[]>([]);
-  const [search, setSearch] = React.useState('');
+const SearchInput: React.FC<SearchInputProps> = ({}) => {
+  const [filteredData, setFilteredData] = useState<Idea[] | undefined>([]);
+  const [search, setSearch] = useRecoilState(searchState);
+
+  const getIdea = async () => {
+    console.log('Idea');
+    try {
+      axios.get('http://localhost:8080/idea').then((res) => {
+        console.log('Get ideas', res);
+        setSearch((prev) => ({
+          ...prev,
+          allIdea: res.data,
+        }));
+      });
+    } catch (error) {
+      console.log('Get trending ideas error', error);
+    }
+  };
+  const getTopic = async () => {
+    console.log('Idea');
+    try {
+      axios.get('http://localhost:8080/topic').then((res) => {
+        console.log('Get ideas', res);
+        setSearch((prev) => ({
+          ...prev,
+          allTopic: res.data,
+        }));
+      });
+    } catch (error) {
+      console.log('Get trending ideas error', error);
+    }
+  };
   useEffect(() => {
-    setFilteredData(SearchData);
+    getIdea();
+    getTopic();
   }, []);
-  const handleFilter = (e: { target: { value: string } }) => {
-    setSearch(e.target.value);
-    console.log('data:', filteredData);
+  const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const {
+      target: { name, value },
+    } = event;
+    setSearch((prev) => ({
+      ...prev,
+      currentSearch: value,
+      idea: search.allIdea.filter((item) =>
+        item.name.toLowerCase().startsWith(search.currentSearch.toLowerCase())
+      ),
+      topic: search.allTopic.filter((item) =>
+        item.name.toLowerCase().startsWith(search.currentSearch.toLowerCase())
+      ),
+    }));
+    console.log('state value:', search.idea);
+    console.log('state value topic:', search.topic);
+  };
+  const onSearch = () => {
+    router.push('/searchResult');
   };
   return (
     <Flex flexGrow={1} mr={2} align="center" direction="column">
@@ -34,13 +82,13 @@ const SearchInput: React.FC<SearchInputProps> = ({ SearchData }) => {
         <InputLeftElement
           children={<SearchIcon color="grey" mb={1.5} />}
           cursor="pointer"
+          onClick={onSearch}
         />
         <Input
           size="sm"
           borderRadius={5}
           borderColor="grey"
-          value={search}
-          onChange={handleFilter}
+          onChange={onChange}
           fontSize="10pt"
           textColor="white"
           placeholder="Search for ideas. topic..."
@@ -52,31 +100,26 @@ const SearchInput: React.FC<SearchInputProps> = ({ SearchData }) => {
           }}
         />
       </InputGroup>
-      {filteredData?.map((item) => (
-        <Flex flexGrow={1} bg="gray.900" height={20}>
-          <Box>
-            <Text>{item.name}</Text>
-          </Box>
-        </Flex>
-      ))}
+      {search.topic && search.idea && search.currentSearch.length > 0 ? (
+        <>
+          {search.idea.map((item) => (
+            <Flex flexGrow={1} height={20}>
+              <Box>
+                <Text>{item.name}</Text>
+              </Box>
+            </Flex>
+          ))}
+          {search.topic.map((item) => (
+            <Flex flexGrow={1} height={20}>
+              <Box>
+                <Text>{item.name}</Text>
+              </Box>
+            </Flex>
+          ))}
+        </>
+      ) : undefined}
     </Flex>
   );
 };
-export async function getServerSideProps(context: GetServerSidePropsContext) {
-  //get topic data and pass it to cline
-  //context.query.topicId as string => getting id from route
-  try {
-    const response = await axios.get('http://localhost:8080/topic');
-    console.log(response.data);
-    return {
-      props: {
-        SearchData: JSON.parse(safeJsonStringify([...response.data])),
-      },
-    };
-  } catch (error) {
-    console.log(error);
-    return error;
-  }
-}
 
 export default SearchInput;
