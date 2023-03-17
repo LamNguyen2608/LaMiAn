@@ -75,16 +75,6 @@ const TopicPage: React.FC = ({ }) => {
                             rotation: 0
                         },
                     },
-                },
-                // series: {
-                //     column: {
-                //         stroke: "rgba(159,126,254,255)"
-                //     }
-                // }
-            },
-            pie: {
-                series: {
-                    strokes: ["#9280ff", "#f374f9", "#ff9cac"]
                 }
             }
         };

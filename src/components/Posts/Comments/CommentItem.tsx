@@ -2,11 +2,13 @@ import React, { useCallback, useState } from "react";
 import {
     Avatar,
     Box,
+    Button,
     Flex,
     Icon,
     Spinner,
     Stack,
     Text,
+    Textarea,
 } from "@chakra-ui/react";
 import moment from "moment";
 import { FaReddit } from "react-icons/fa";
@@ -14,8 +16,11 @@ import {
     IoArrowDownCircleOutline,
     IoArrowUpCircleOutline,
 } from "react-icons/io5";
+import update from "@/pages/topic/[topicId]/ideas/update";
+import axios from "axios";
 
 export type Comment = {
+    length: number;
     "id": number,
     "comment": string,
     "modify_date": string,
@@ -25,34 +30,36 @@ export type Comment = {
 
 type CommentItemProps = {
     comment: Comment;
-    // onDeleteComment: (comment: Comment) => void;
-    // isLoading: boolean;
+    setComments: (cmts: Comment[]) => void;
+    comments: Comment[];
     userId?: string;
+    index: number
 };
 
 const CommentItem: React.FC<CommentItemProps> = ({
     comment,
-    // onDeleteComment,
-    // isLoading,
     userId,
+    setComments,
+    comments,
+    index
 }) => {
     const [loading, setLoading] = useState(false);
+    const [isEdit, setIsEdit] = useState(false);
+    const [editComment, setEditComment] = useState(comment.comment);
 
-    // const handleDelete = useCallback(async () => {
-    //   setLoading(true);
-    //   try {
-    //     const success = await onDeleteComment(comment);
-
-    //     if (!success) {
-    //       throw new Error("Error deleting comment");
-    //     }
-    //   } catch (error: any) {
-    //     console.log(error.message);
-    //     // setError
-    //     setLoading(false);
-    //   }
-    // }, [setLoading]);
-
+    function onCreateComment() {
+        let updateComment = JSON.parse(JSON.stringify(comments));
+        axios.put('http://localhost:8080/idea/comment/update', {
+            id: comment.id,
+            comment: editComment,
+            isAnonymous: comment.isAnonymous
+        })
+            .then(res => {
+                updateComment[index] = res.data
+                setComments(updateComment);
+                setIsEdit(false);
+            })
+    }
 
     return (
         <Flex>
@@ -74,7 +81,45 @@ const CommentItem: React.FC<CommentItemProps> = ({
                     )}
                     {/* {isLoading && <Spinner size="sm" />} */}
                 </Stack>
-                <Text fontSize="10pt">{comment.comment}</Text>
+                {isEdit ? (
+                    <><Textarea
+                        value={editComment}
+                        onChange={(event) => setEditComment(event.target.value)}
+                        fontSize="10pt"
+                        borderRadius={4}
+                        minHeight="100px"
+                        width="500px"
+                        pb={10}
+                        _placeholder={{ color: "gray.500" }}
+                        _focus={{
+                            outline: "none",
+                            bg: "white",
+                            border: "1px solid black",
+                        }} />
+                        <Flex direction="row" >
+                            <Button
+                                height="26px"
+                                isDisabled={editComment.length === 0 ? true : false}
+                                isLoading={loading}
+                                onClick={() => onCreateComment()}
+                                right={0.1}
+                            >
+                                Edit
+                            </Button>
+                            <Button
+                                height="26px"
+                                isDisabled={editComment.length === 0 ? true : false}
+                                isLoading={loading}
+                                onClick={() => setIsEdit(false)}
+                                right={0.1}
+                            >
+                                Cancel
+                            </Button>
+                        </Flex>
+                    </>
+                ) : (
+                    <Text fontSize="10pt">{comment.comment}</Text>
+                )}
                 <Stack
                     direction="row"
                     align="center"
@@ -84,11 +129,12 @@ const CommentItem: React.FC<CommentItemProps> = ({
                 >
                     <Icon as={IoArrowUpCircleOutline} />
                     <Icon as={IoArrowDownCircleOutline} />
-                    {userId === comment.client.id && (
+                    {userId === comment.client.id && isEdit == false && (
                         <>
                             <Text
                                 fontSize="9pt"
-                                _hover={{ color: "brand.900" }}>
+                                _hover={{ color: "brand.900" }}
+                                onClick={() => setIsEdit(true)}>
                                 Edit
                             </Text>
                             <Text
