@@ -89,7 +89,19 @@ const useIdeas = () => {
     }
 
 
-    const onDeleteIdea = async () => {
+    const onDeleteIdea = async (index: number, topicId: string) => {
+        let deletedIdea = [...ideaStateValue.Ideas];
+        try {
+            axios.delete('http://localhost:8080/idea/delete/' + deletedIdea.splice(index, 1)[0].id).then(res => {
+                setIdeaStateValue((prev) => ({
+                    ...prev,
+                    Ideas: deletedIdea
+                }))
+                router.push('/topic/' + topicId);
+            })
+        } catch (error) {
+            console.log("Delete Idea Error =>", error);
+        }
 
     }
 
@@ -116,6 +128,7 @@ const useIdeas = () => {
         setIdeaStateValue,
         setUpdateIdea,
         updateIdea,
+        onDeleteIdea,
         onVote
     }
 }
