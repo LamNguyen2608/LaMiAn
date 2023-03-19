@@ -6,7 +6,7 @@ import React from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { BiUserPin } from 'react-icons/bi';
 import { BsLink45Deg } from 'react-icons/bs';
-import { FaReddit } from 'react-icons/fa';
+import { FaReddit, FaUserAstronaut } from 'react-icons/fa';
 import { IoImageOutline } from 'react-icons/io5';
 import { useSetRecoilState } from 'recoil';
 
@@ -36,7 +36,7 @@ const CreatePostForm: React.FC<CreatePostProps> = () => {
       p={2}
       mb={4}
     >
-      <Icon as={BiUserPin} fontSize={36} color="gray.300" mr={4} />
+      <Icon as={FaUserAstronaut} fontSize={36} color="gray.300" mr={4} />
       <Box
         placeholder="Create Post"
         fontSize="10pt"

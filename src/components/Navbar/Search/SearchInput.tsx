@@ -21,7 +21,7 @@ import safeJsonStringify from 'safe-json-stringify';
 type SearchInputProps = {};
 
 const SearchInput: React.FC<SearchInputProps> = ({}) => {
-  const [filteredData, setFilteredData] = useState<Idea[] | undefined>([]);
+  const [value, setValue] = useState('');
   const [search, setSearch] = useRecoilState(searchState);
 
   const getIdea = async () => {
@@ -67,28 +67,34 @@ const SearchInput: React.FC<SearchInputProps> = ({}) => {
         item.name.toLowerCase().startsWith(search.currentSearch.toLowerCase())
       ),
       topic: search.allTopic.filter((item) =>
-        item.name.toLowerCase().startsWith(search.currentSearch.toLowerCase())
+        item.name.toLowerCase().match(search.currentSearch.toLowerCase())
       ),
     }));
     console.log('state value:', search.idea);
     console.log('state value topic:', search.topic);
   };
   const onSearch = () => {
-    router.push('/searchResult');
+    router.push('/Search/searchResult');
   };
   return (
-    <Flex flexGrow={1} mr={2} align="center" direction="column">
+    <Flex
+      flexGrow={1}
+      mr={2}
+      align="center"
+      direction="column"
+      onClick={onSearch}
+    >
       <InputGroup>
         <InputLeftElement
           children={<SearchIcon color="grey" mb={1.5} />}
           cursor="pointer"
-          onClick={onSearch}
         />
         <Input
           size="sm"
           borderRadius={5}
           borderColor="grey"
           onChange={onChange}
+          value={search.currentSearch}
           fontSize="10pt"
           textColor="white"
           placeholder="Search for ideas. topic..."
@@ -100,24 +106,6 @@ const SearchInput: React.FC<SearchInputProps> = ({}) => {
           }}
         />
       </InputGroup>
-      {search.topic && search.idea && search.currentSearch.length > 0 ? (
-        <>
-          {search.idea.map((item) => (
-            <Flex flexGrow={1} height={20}>
-              <Box>
-                <Text>{item.name}</Text>
-              </Box>
-            </Flex>
-          ))}
-          {search.topic.map((item) => (
-            <Flex flexGrow={1} height={20}>
-              <Box>
-                <Text>{item.name}</Text>
-              </Box>
-            </Flex>
-          ))}
-        </>
-      ) : undefined}
     </Flex>
   );
 };
