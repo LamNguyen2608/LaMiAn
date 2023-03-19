@@ -22,7 +22,8 @@ export type Notification = {
     "noti_id": number,
     "content": string,
     "noti_time": string,
-    "status": boolean
+    "status": boolean,
+    "client_noti_title": string
 }
 
 const Notifications: React.FC<NotificationsProps> = ({ user }) => {
@@ -33,7 +34,8 @@ const Notifications: React.FC<NotificationsProps> = ({ user }) => {
         "noti_id": -1,
         "content": "No notification selected",
         "noti_time": "null",
-        "status": false
+        "status": false,
+        "client_noti_title": ""
     });
     const [notiModal, setNotiModal] = useState(false);
     const getUserNotification = async () => {
@@ -52,7 +54,7 @@ const Notifications: React.FC<NotificationsProps> = ({ user }) => {
     }
     useEffect(() => {
         getUserNotification();
-    }, [window])
+    }, [])
     return (
         <><Menu>
             <MenuButton>
@@ -79,7 +81,7 @@ const Notifications: React.FC<NotificationsProps> = ({ user }) => {
                                 _hover={{ bg: "gray.200", color: "brand.800" }}
                                 onClick={() => { setNotiModal(true); setSelectedNoti(noti); }}>
                                 <Flex align="center">
-                                    {noti.content}
+                                    {noti.client_noti_title ? noti.client_noti_title : "You have a notification!"}
                                 </Flex>
                             </MenuItem>
                         ))}

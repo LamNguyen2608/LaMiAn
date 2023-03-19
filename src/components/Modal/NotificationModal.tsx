@@ -14,7 +14,7 @@ const NotificationModal: React.FC<NotificationModalProps> = ({ noti, showModal, 
             <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
                 <ModalOverlay />
                 <ModalContent>
-                    <ModalHeader>Noti Header</ModalHeader>
+                    <ModalHeader>{noti.client_noti_title ? noti.client_noti_title : "You have a notification!"}</ModalHeader>
                     <ModalCloseButton />
                     <ModalBody>
                         <Text fontWeight='bold' mb='1rem'>

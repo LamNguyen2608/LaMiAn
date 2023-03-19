@@ -18,6 +18,8 @@ import {
 } from "react-icons/io5";
 import update from "@/pages/topic/[topicId]/ideas/update";
 import axios from "axios";
+import useIdeas from "@/hooks/useIdeas";
+import DeleteCommentModal from "@/components/Modal/DeleteComment";
 
 export type Comment = {
     length: number;
@@ -45,20 +47,25 @@ const CommentItem: React.FC<CommentItemProps> = ({
 }) => {
     const [loading, setLoading] = useState(false);
     const [isEdit, setIsEdit] = useState(false);
+    const [deleteModal, showDeleteModal] = useState(false);
     const [editComment, setEditComment] = useState(comment.comment);
+    let updateComment = JSON.parse(JSON.stringify(comments));
+    const { onEditComment, onDeleteComment } = useIdeas();
 
-    function onCreateComment() {
-        let updateComment = JSON.parse(JSON.stringify(comments));
-        axios.put('http://localhost:8080/idea/comment/update', {
-            id: comment.id,
-            comment: editComment,
-            isAnonymous: comment.isAnonymous
-        })
-            .then(res => {
-                updateComment[index] = res.data
-                setComments(updateComment);
-                setIsEdit(false);
-            })
+    async function onUpdateComment() {
+        setIsEdit(true);
+        await onEditComment(comment, editComment, index);
+        setIsEdit(false);
+    }
+
+    async function deleteComment() {
+        updateComment.splice(index, 1);
+        await onDeleteComment(comment, index);
+
+    }
+
+    function showModal() {
+        showDeleteModal(false);
     }
 
     return (
@@ -79,7 +86,6 @@ const CommentItem: React.FC<CommentItemProps> = ({
                             {moment(new Date(comment.modify_date)).fromNow()}
                         </Text>
                     )}
-                    {/* {isLoading && <Spinner size="sm" />} */}
                 </Stack>
                 {isEdit ? (
                     <><Textarea
@@ -101,7 +107,7 @@ const CommentItem: React.FC<CommentItemProps> = ({
                                 height="26px"
                                 isDisabled={editComment.length === 0 ? true : false}
                                 isLoading={loading}
-                                onClick={() => onCreateComment()}
+                                onClick={() => onUpdateComment()}
                                 right={0.1}
                             >
                                 Edit
@@ -140,7 +146,7 @@ const CommentItem: React.FC<CommentItemProps> = ({
                             <Text
                                 fontSize="9pt"
                                 _hover={{ color: "brand.900" }}
-                                onClick={() => { }}
+                                onClick={() => { showDeleteModal(true) }}
                             >
                                 Delete
                             </Text>
@@ -148,6 +154,7 @@ const CommentItem: React.FC<CommentItemProps> = ({
                     )}
                 </Stack>
             </Stack>
+            <DeleteCommentModal showModal={deleteModal} hideModal={showModal} confirmModal={deleteComment} />
         </Flex>
     );
 };
