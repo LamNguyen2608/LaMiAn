@@ -65,9 +65,6 @@ const AdminButtonFunc: React.FC = () => {
             fontSize={{ base: '11px', sm: '13px' }}
             height={{ base: '80px', sm: '110px', md: '150px' }}
             width={{ base: '80px', sm: '110px', md: '150px', xl: '200px' }}
-
-            width={{ base: '80px', sm: '110px', md: '200px' }}
-
             borderRadius="20px"
             bgGradient="linear(to-r, brand.900, brand.800)"
             _hover={{
