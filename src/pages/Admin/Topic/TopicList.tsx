@@ -95,8 +95,8 @@ const TopicList: React.FC<topicProps> = ({ TopicData }) => {
                 <Tr>
                   <Td fontWeight={900}>{item.name}</Td>
                   <Td>{item.modifyDate}</Td>
-                  <Td>{item.topic_closure_date.split('T').join(' ')}</Td>
-                  <Td>{item.final_closure_date.split('T').join(' ')}</Td>
+                  <Td>{item.topic_closure_date?.split('T').join(' ')}</Td>
+                  <Td>{item.final_closure_date?.split('T').join(' ')}</Td>
                   <Td>Open</Td>
                   <Td justifyItems="center">
                     <Icon

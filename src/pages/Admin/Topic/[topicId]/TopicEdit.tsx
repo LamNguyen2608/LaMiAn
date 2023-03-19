@@ -40,6 +40,7 @@ const TopicEdit: React.FC<detailsProps> = ({ TopicData }) => {
       ...prev,
       [name]: value,
     }));
+    console.log('data:', topicForm);
   };
 
   const onSelectImage = (event: React.ChangeEvent<HTMLInputElement>) => {

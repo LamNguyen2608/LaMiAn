@@ -1,197 +1,175 @@
+import React, { useEffect, useState } from 'react';
+import { GetServerSidePropsContext } from 'next';
+import safeJsonStringify from 'safe-json-stringify';
+import { stringify } from 'querystring';
+import axios from 'axios';
+import Header from '@/components/Topic/Header';
+import PageContent from '@/components/Layout/PageContent';
+import { Topic } from '@/atoms/topicAtom';
+import CreatePostForm from '@/components/Posts/CreatePostForm';
+import TopicRHS from '@/components/Topic/TopicRHS';
+import IdeaItem from '@/components/Posts/IdeaItem';
+import useIdeas from '@/hooks/useIdeas';
+import { ideaState } from '@/atoms/ideaAtom';
+import useTopics from '@/hooks/useTopics';
+import { Client, clientState } from '@/atoms/clientAtom';
+import UserHeader from '@/components/UserProfile/UserHeader';
+import About from '@/components/UserProfile/About';
+import { ArrowForwardIcon, ArrowBackIcon } from '@chakra-ui/icons';
+import { Stack } from '@chakra-ui/react';
+import ReactPaginate from 'react-paginate';
+import { useUpdateProfile } from 'react-firebase-hooks/auth';
+import { auth } from '@/Firebase/clientApp';
+import { useRecoilState } from 'recoil';
+import UpdateUserInfo from '@/components/UserProfile/UpdateUserInfo';
 
-import { authModalState } from "@/atoms/authModalAtom";
-import { auth } from "@/Firebase/clientApp";
-import { Input, Button, Text, Flex, Select, Box } from "@chakra-ui/react";
-import axios from "axios";
-import router, { Router } from "next/router";
-import React, { useEffect, useState } from "react";
-import { useCreateUserWithEmailAndPassword } from "react-firebase-hooks/auth";
-import { useSetRecoilState } from "recoil";
+type ProfilePageProps = {
+  clientData: Client;
+  showModal: any;
+};
 
-
-type Department = {
-  "id": number,
-  "name": string,
-  "department_info": string,
-  "isDeleted": boolean
-}
-const UpdateClientProfileForm: React.FC = () => {
-  const [updateRoleForm, setUpdateRoleForm] = useState({
-    email: "",
-    password: "",
-    confirmPass: "",
-    firstname: "",
-    lastname: "",
-    age: "",
-    pronoun: "",
-    department: ""
-  });
-  const [formError, setformError] = useState("");
-  const [allDepartments, setAllDepartments] = useState<Department>();
-  const [
-    createUserWithEmailAndPassword,
-    user,
-    loading,
-    userError,
-  ] = useCreateUserWithEmailAndPassword(auth);
-
+const TopicPage: React.FC<ProfilePageProps> = ({ clientData }) => {
+  const { ideaStateValue, setIdeaStateValue } = useIdeas();
   useEffect(() => {
-    axios.get("http://localhost:8080/department").then(
-      response => {
-        console.log("get all departments: ", response);
-        setAllDepartments(response.data);
-      }
-    )
-  }, [])
+    setIdeaStateValue((prev) => ({
+      ...prev,
+      Ideas: clientData.ideas,
+    }));
+  }, []);
+  const [itemOffset, setItemOffset] = useState(0);
+  const itemsPerPage = 5;
+  const endOffset = itemOffset + itemsPerPage;
+  console.log(`Loading items from ${itemOffset} to ${endOffset}`);
+  const currentItems = ideaStateValue.Ideas.slice(itemOffset, endOffset);
+  const pageCount = Math.ceil(ideaStateValue.Ideas.length / itemsPerPage);
 
-  //Firebase 
+  // Invoke when user click to request another page.
+  const handlePageClick = (event: any) => {
+    const newOffset =
+      (event.selected * itemsPerPage) % ideaStateValue.Ideas.length;
+    console.log(
+      `User requested page number ${event.selected}, which is offset ${newOffset}`
+    );
+    setItemOffset(newOffset);
+    window.scrollTo(0, 0);
+  };
+
+  //hand update user
+  const [displayUpdateUserModal, setDisplayUpdateUserModal] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [signUpForm, setSignUpForm] = useState({
+    email: '',
+    password: '',
+    confirmPass: '',
+    firstname: '',
+    lastname: '',
+    age: '',
+    pronoun: '',
+    department: '',
+  });
+  const [formError, setformError] = useState('');
+  const [allDepartments, setAllDepartments] = useState<Department[]>([]);
+  const [clientStateValue, setClientStateValue] = useRecoilState(clientState);
+  useEffect(() => {
+    axios.get('http://localhost:8080/department').then((response) => {
+      console.log('get all departments: ', response);
+      setAllDepartments(response.data);
+    });
+  }, []);
+
   const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     //set Error
-    console.log(updateRoleForm);
-    if (formError) setformError("");
-    if (updateRoleForm.password !== updateRoleForm.confirmPass) {
-      setformError("Password does not match");
+    console.log(signUpForm);
+    if (formError) setformError('');
+    if (signUpForm.password !== signUpForm.confirmPass) {
+      setformError('Password does not match');
       return;
     }
     //password matching
-    createUserWithEmailAndPassword(updateRoleForm.email, updateRoleForm.password)
-      .then((user) => {
-        if (user) {
-          console.log("====>", user.user.uid);
-          axios.post('http://localhost:8080/client/signup', {
-            id: user.user.uid,
-            firstname: updateRoleForm.firstname,
-            lastname: updateRoleForm.lastname,
-            age: updateRoleForm.age,
-            pronoun: updateRoleForm.pronoun,
-            department_id: updateRoleForm.department,
-            email: user.user.email
-          })
-            .then(response => {
-              console.log("after create client ===>", response);
-            });
-        }
-      }
-      );
-
   };
 
-  const onChange = (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const onChange = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     //update form state
-    setUpdateRoleForm((prev) => ({
+    setSignUpForm((prev) => ({
       ...prev,
-      [event.target.name]: event.target.value
+      [event.target.name]: event.target.value,
     }));
   };
-  const setAuthModalState = useSetRecoilState(authModalState);
+  const showUpdateUserModal = () => {
+    setDisplayUpdateUserModal(true);
+  };
+  const hideUpdateUserModal = () => {
+    setDisplayUpdateUserModal(false);
+  };
   return (
-    <Flex
-    justify="center"
-    p="10px 50px"
-    direction="column">
-    <Box p="14px 8px" >
-          <Text fontSize={25} fontWeight={900} >Update role</Text>
-        </Box>
-    <form >
-    <Flex  direction="row">
-   <Input
-   required
-   name="firstname"
-   placeholder="First Name"
-   type="text"
-   mb={2}
-   mr="3pt"
-   onChange={onChange}
-   fontSize ="13pt"
-   height="45px"
-   _hover={{
-     bg: "white",
-     border:"2px solid", 
-     borderColor: "brand.500", 
-   }}
-   _focus ={{
-     outline: "none",
-     bg:"white",
-     border: "1px solid", 
-     borderColor: "brand.900"
-   }}
-   bg="gray.50"
-   >
-   </Input>
-   <Input
-   required
-   name="lastname"
-   placeholder="Last Name"
-   type="text"
-   mb={2}
-   onChange={onChange}
-   fontSize ="13pt"
-   height="45px"
-   _hover={{
-     bg: "white",
-     border:"2px solid", 
-     borderColor: "brand.500", 
-   }}
-   _focus ={{
-     outline: "none",
-     bg:"white",
-     border: "1px solid", 
-     borderColor: "brand.900"
-   }}
-   bg="gray.50"
-   >
-   </Input>
-   </Flex>
-   
-  <Input
-   required
-   name="email"
-   placeholder="Email"
-   type="email"
-   mb={2}
-   onChange={onChange}
-   fontSize ="13pt"
-   height="45px"
-   _hover={{
-     bg: "white",
-     border:"2px solid", 
-     borderColor: "brand.500", 
-   }}
-   _focus ={{
-     outline: "none",
-     bg:"white",
-     border: "1px solid", 
-     borderColor: "brand.900"
-   }}
-   bg="gray.50"
-   >
-   </Input>
-  
-   <Flex direction="column" fontSize="9pt" justifyContent="center" alignItems="center">
-   <Button 
-   height="40px" 
-   width="60%"
-   variant="primary" 
-   type="submit" 
-  //  isLoading={loading}
-   loadingText='Signing up'
-   spinnerPlacement="start"
-   _loading= {{opacity:2}}>Update </Button>
-   <Flex fontSize="9pt" justifyContent="center">
-     <Text
-     color="brand.500"
-     fontWeight='bold'
-     mt={2}
-     cursor="pointer"
-     onClick={() =>{router.push('/index');}}>
-       Back to Home
-     </Text>
-     </Flex>
-   </Flex>
- </form>
- </Flex>
+    <>
+      <UserHeader userData={clientData} />
+      <PageContent>
+        <>
+          {currentItems.map((item, index) => (
+            <IdeaItem idea={item} index={index} />
+          ))}
+          <Stack
+            width="70%"
+            justify="space-evenly"
+            alignSelf="center"
+            display="flex"
+          >
+            <ReactPaginate
+              activeClassName={'item active '}
+              breakClassName={'item break-me '}
+              breakLabel={'...'}
+              containerClassName={'pagination'}
+              disabledClassName={'disabled-page'}
+              nextClassName={'item next '}
+              nextLabel={
+                <ArrowForwardIcon style={{ fontSize: 18, width: 150 }} />
+              }
+              pageClassName={'item pagination-page '}
+              previousClassName={'item previous'}
+              previousLabel={
+                <ArrowBackIcon style={{ fontSize: 18, width: 150 }} />
+              }
+              onPageChange={handlePageClick}
+              pageRangeDisplayed={5}
+              pageCount={pageCount}
+            />
+          </Stack>
+        </>
+        <>
+          <About userData={clientData} showModal={showUpdateUserModal} />
+        </>
+      </PageContent>
+      <UpdateUserInfo
+        userData={clientData}
+        showModal={displayUpdateUserModal}
+        hideModal={hideUpdateUserModal}
+        onChange={onChange}
+        loading={loading}
+        Update={onSubmit}
+      />
+    </>
   );
 };
- 
-export default UpdateClientProfileForm;
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+  try {
+    const response = await axios.get(
+      (process.env.REACT_APP_BACKEND_ENDPOINT +
+        'client/' +
+        context.query.userId) as string
+    );
+    console.log(response.data);
+    return {
+      props: {
+        clientData: JSON.parse(safeJsonStringify({ ...response.data })),
+      },
+    };
+  } catch (error) {
+    console.log(error);
+    return error;
+  }
+}
+export default TopicPage;
