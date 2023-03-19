@@ -64,13 +64,13 @@ const Comments: React.FC<CommentsProps> = ({
             }).then(res => {
                 setComment("");
                 setCommentCreateLoading(false);
+                setComments((prev) => [...prev, res.data])
                 let updatedComments = JSON.parse(JSON.stringify(ideaStateValue.Ideas));
                 updatedComments[ideaStateValue.selectedIdeaIndex].comments.push(res.data);
                 setIdeaStateValue(prev => ({
                     ...prev,
                     Ideas: updatedComments
                 }))
-                //await fetchIdea(selectedIdea.id.toString());
             })
         } catch (error) {
             console.log(error)
@@ -121,12 +121,13 @@ const Comments: React.FC<CommentsProps> = ({
                     <>
                         {!!comments.length ? (
                             <>
-                                {comments.map((item: Comment) => (
+                                {comments.map((item: Comment, index) => (
                                     <CommentItem
                                         key={item.id}
                                         comment={item}
-                                        //onDeleteComment={onDeleteComment}
-                                        //isLoading={deleteLoading === (item.id as string)}
+                                        comments={comments}
+                                        setComments={setComments}
+                                        index={index}
                                         userId={user?.uid}
                                     />
                                 ))}

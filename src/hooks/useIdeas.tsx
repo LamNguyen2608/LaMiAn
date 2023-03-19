@@ -9,6 +9,7 @@ import { auth } from "@/Firebase/clientApp";
 import { useRouter } from "next/router";
 import axios from 'axios';
 import Ideas from '@/components/Posts/Ideas';
+import { Comment } from '@/components/Posts/Comments/CommentItem';
 
 
 const useIdeas = () => {
@@ -89,7 +90,19 @@ const useIdeas = () => {
     }
 
 
-    const onDeleteIdea = async () => {
+    const onDeleteIdea = async (index: number, topicId: string) => {
+        let deletedIdea = [...ideaStateValue.Ideas];
+        try {
+            axios.delete('http://localhost:8080/idea/delete/' + deletedIdea.splice(index, 1)[0].id).then(res => {
+                setIdeaStateValue((prev) => ({
+                    ...prev,
+                    Ideas: deletedIdea
+                }))
+                router.push('/topic/' + topicId);
+            })
+        } catch (error) {
+            console.log("Delete Idea Error =>", error);
+        }
 
     }
 
@@ -107,6 +120,37 @@ const useIdeas = () => {
             setLoading(false);
         }
     }
+
+    async function onEditComment(comment: Comment, editComment: string, index: number) {
+        let updateComment = JSON.parse(JSON.stringify(ideaStateValue.Ideas));
+
+        axios.put('http://localhost:8080/idea/comment/update', {
+            id: comment.id,
+            comment: editComment,
+            isAnonymous: comment.isAnonymous
+        })
+            .then(res => {
+                updateComment[ideaStateValue.selectedIdeaIndex].comments[index] = res.data;
+                setIdeaStateValue((prev) => ({
+                    ...prev,
+                    Ideas: updateComment
+                }))
+            })
+    }
+
+    async function onDeleteComment(comment: Comment, index: number) {
+        let updateComment = JSON.parse(JSON.stringify(ideaStateValue.Ideas));
+
+        axios.delete('http://localhost:8080/idea/comment/delete/' + comment.id)
+            .then(res => {
+                updateComment[ideaStateValue.selectedIdeaIndex].comments.splice(index, 1);
+                setIdeaStateValue((prev) => ({
+                    ...prev,
+                    Ideas: updateComment
+                }));
+            })
+    }
+
     useEffect(() => {
         if (!user) return;
         getMyReactions();
@@ -116,6 +160,9 @@ const useIdeas = () => {
         setIdeaStateValue,
         setUpdateIdea,
         updateIdea,
+        onDeleteIdea,
+        onEditComment,
+        onDeleteComment,
         onVote
     }
 }

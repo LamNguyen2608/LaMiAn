@@ -1,7 +1,7 @@
 import { Badge, Flex, Icon, Image, Spinner, Stack, Text } from '@chakra-ui/react';
 import { TriangleDownIcon, TriangleUpIcon, ChatIcon, StarIcon } from '@chakra-ui/icons'
 import { RiShareForwardLine } from 'react-icons/ri'
-import React from 'react';
+import React, { useState } from 'react';
 import moment from 'moment';
 import { Idea, myVote } from '@/atoms/ideaAtom';
 import useIdeas from '@/hooks/useIdeas';
@@ -9,6 +9,8 @@ import { useRouter } from 'next/router';
 import { auth } from '@/Firebase/clientApp';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { AiOutlineDelete, AiOutlineEdit } from 'react-icons/ai';
+import DeleteConfirmationModal from '../Modal/DeleteConfirmation';
+import DeleteIdeaModal from '../Modal/DeleteIdeaModal';
 
 const badgeColors = ["red", "orange", "yellow", "green", "teal", "blue", "cyan", "purple", "pink", "linkedin", "facebook", "messenger", "whatsapp", "twitter", "telegram"];
 
@@ -26,7 +28,11 @@ const IdeaItem: React.FC<IdeaItemProps> = ({
     idea,
     index
 }) => {
-    const { ideaStateValue, setIdeaStateValue, onVote, setUpdateIdea } = useIdeas();
+    const { ideaStateValue, setIdeaStateValue, onVote, setUpdateIdea, onDeleteIdea } = useIdeas();
+    const [deleteModal, setDeleteModal] = useState(false);
+    const hideDelete = () => {
+        setDeleteModal(false);
+    }
     const isVoted: myVote | undefined = ideaStateValue.IdeaVotes.find(
         (item) => (item.idea_id === idea.id)
     );
@@ -120,17 +126,18 @@ const IdeaItem: React.FC<IdeaItemProps> = ({
                 <Text fontSize="9pt">{idea.reactions?.filter((item) => item.reaction === false).length}</Text>
             </Flex>
             <Flex direction="column" width="100%"
-                onClick={() => {
-                    if (!ideaid) {
-                        setIdeaStateValue((prev) => ({
-                            ...prev,
-                            selectedIdea: idea,
-                            selectedIdeaIndex: index
-                        }))
-                        router.push('/topic/' + idea.topic.id + '/ideas/' + idea.id)
-                    }
-                }}>
-                <Stack spacing={1} p="10px">
+            >
+                <Stack spacing={1} p="10px"
+                    onClick={() => {
+                        if (!ideaid) {
+                            setIdeaStateValue((prev) => ({
+                                ...prev,
+                                selectedIdea: idea,
+                                selectedIdeaIndex: index
+                            }))
+                            router.push('/topic/' + idea.topic.id + '/ideas/' + idea.id)
+                        }
+                    }}>
                     <Stack direction="column" spacing={0.6} align="left" fontSize="9pt">
                         {/*Home Page Check */}
                         <Text>Posted by
@@ -194,7 +201,7 @@ const IdeaItem: React.FC<IdeaItemProps> = ({
                                 borderRadius={4}
                                 _hover={{ bg: "gray.200" }}
                                 cursor="pointer"
-                            //onClick={}
+                                onClick={() => { setDeleteModal(true) }}
                             >
                                 {false ? (
                                     <Spinner size="sm" />
@@ -239,6 +246,7 @@ const IdeaItem: React.FC<IdeaItemProps> = ({
                 </Flex>
 
             </Flex>
+            <DeleteIdeaModal idea={idea} index={index} showModal={deleteModal} hideModal={hideDelete} confirmModal={onDeleteIdea} />
         </Flex >
     )
 }
