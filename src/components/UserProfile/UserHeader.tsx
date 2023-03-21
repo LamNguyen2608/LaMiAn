@@ -52,7 +52,7 @@ const UserHeader: React.FC<HeaderProps> = ({ userData }) => {
   const upload = async () => {
     setLoading(true);
     if (selectedFile != user?.photoURL && selectedFile != '') {
-      const imageRef = ref(storage, 'ProfilePhoto/' + user?.uid);
+      const imageRef = ref(storage, `ProfilePhoto/` + user?.uid);
       uploadString(imageRef, selectedFile, 'data_url').then(async (result) => {
         console.log('result of uploading image ====>', user?.uid);
         const photoURL = await getDownloadURL(imageRef);

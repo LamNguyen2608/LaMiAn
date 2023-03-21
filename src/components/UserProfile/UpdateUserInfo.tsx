@@ -34,7 +34,7 @@ type updateUserProps = {
   ) => void;
   loading: boolean;
   Update: (event: React.FormEvent<HTMLFormElement>) => void;
-  userData?: Client;
+  userData: Client;
 };
 const UpdateUserInfo: React.FC<updateUserProps> = ({
   showModal,
@@ -60,144 +60,107 @@ const UpdateUserInfo: React.FC<updateUserProps> = ({
           <ModalBody pb={6}>
             <form onSubmit={Update}>
               <Flex direction="row">
-                <Input
-                  required
-                  name="firstname"
-                  placeholder="First Name"
-                  type="text"
-                  defaultValue={userData?.firstname}
-                  mb={2}
-                  mr="3pt"
-                  onChange={onChange}
-                  fontSize="10pt"
-                  height="35px"
-                  _hover={{
-                    bg: 'white',
-                    border: '2px solid',
-                    borderColor: 'brand.500',
-                  }}
-                  _focus={{
-                    outline: 'none',
-                    bg: 'white',
-                    border: '1px solid',
-                    borderColor: 'brand.900',
-                  }}
-                  bg="gray.50"
-                ></Input>
-
-                <Input
-                  required
-                  name="lastname"
-                  placeholder="Last Name"
-                  type="text"
-                  mb={2}
-                  defaultValue={userData?.lastname}
-                  onChange={onChange}
-                  fontSize="10pt"
-                  height="35px"
-                  _hover={{
-                    bg: 'white',
-                    border: '2px solid',
-                    borderColor: 'brand.500',
-                  }}
-                  _focus={{
-                    outline: 'none',
-                    bg: 'white',
-                    border: '1px solid',
-                    borderColor: 'brand.900',
-                  }}
-                  bg="gray.50"
-                ></Input>
+                <Flex direction="column">
+                  <Text
+                    mb={2}
+                    mt={2}
+                    fontSize={20}
+                    fontWeight={900}
+                    color="blackAlpha.600"
+                  >
+                    First name:
+                  </Text>
+                  <Input
+                    name="firstname"
+                    onChange={onChange}
+                    defaultValue={userData.firstname}
+                    fontSize="14pt"
+                    placeholder="Firstname"
+                    borderRadius={4}
+                    bg="gray.50"
+                    _placeholder={{ color: 'gray.500' }}
+                    focusBorderColor="black"
+                    _hover={{
+                      bg: 'white',
+                      border: '2px solid',
+                      borderColor: 'brand.600',
+                    }}
+                    _focus={{
+                      outline: 'none',
+                      bg: 'white',
+                      border: '1px solid',
+                      borderColor: 'black',
+                    }}
+                  />
+                </Flex>
+                <Flex direction="column">
+                  <Text
+                    mb={2}
+                    mt={2}
+                    fontSize={20}
+                    fontWeight={900}
+                    color="blackAlpha.600"
+                  >
+                    Last name:
+                  </Text>
+                  <Input
+                    name="lastname"
+                    onChange={onChange}
+                    defaultValue={userData.lastname}
+                    fontSize="14pt"
+                    placeholder="Lastname"
+                    ml={4}
+                    borderRadius={4}
+                    bg="gray.50"
+                    _placeholder={{ color: 'gray.500' }}
+                    focusBorderColor="black"
+                    _hover={{
+                      bg: 'white',
+                      border: '2px solid',
+                      borderColor: 'brand.600',
+                    }}
+                    _focus={{
+                      outline: 'none',
+                      bg: 'white',
+                      border: '1px solid',
+                      borderColor: 'black',
+                    }}
+                  />
+                </Flex>
               </Flex>
-              <Flex direction="row">
-                <Input
-                  required
-                  name="age"
-                  placeholder="Age"
-                  type="number"
-                  mb={2}
-                  mr={1}
-                  flex={0.72}
-                  onChange={onChange}
-                  defaultValue={userData?.age}
-                  fontSize="10pt"
-                  height="35px"
-                  _hover={{
-                    bg: 'white',
-                    border: '2px solid',
-                    borderColor: 'brand.500',
-                  }}
-                  _focus={{
-                    outline: 'none',
-                    bg: 'white',
-                    border: '1px solid',
-                    borderColor: 'brand.900',
-                  }}
-                  bg="gray.50"
-                ></Input>
-                <Select
-                  placeholder="Pronoun"
-                  mb={2}
-                  flex={1}
-                  name="pronoun"
-                  fontSize="10pt"
-                  height="35px"
-                  defaultValue={userData?.pronoun}
-                  onChange={onChange}
-                  _hover={{
-                    bg: 'white',
-                    border: '2px solid',
-                    borderColor: 'brand.500',
-                  }}
-                  _focus={{
-                    outline: 'none',
-                    bg: 'white',
-                    border: '1px solid',
-                    borderColor: 'brand.900',
-                  }}
-                  bg="gray.50"
-                  color="gray.500"
-                >
-                  <option value="HE_HIM">He/Him</option>
-                  <option value="SHE_HER">She/Her</option>
-                  <option value="THEY_THEM">They/Them</option>
-                </Select>
-              </Flex>
-              <Select
-                placeholder="Select Department"
+              <Text
                 mb={2}
-                name="department"
+                mt={2}
+                fontSize={20}
+                fontWeight={900}
+                color="blackAlpha.600"
+              >
+                Age:
+              </Text>
+              <Input
+                name="age"
                 onChange={onChange}
-                defaultValue={userData?.department?.id}
-                fontSize="10pt"
-                height="35px"
+                defaultValue={userData.age}
+                fontSize="14pt"
+                placeholder="Age"
+                width="40%"
+                mb={4}
+                borderRadius={4}
+                bg="gray.50"
+                _placeholder={{ color: 'gray.500' }}
+                focusBorderColor="black"
                 _hover={{
                   bg: 'white',
                   border: '2px solid',
-                  borderColor: 'brand.500',
+                  borderColor: 'brand.600',
                 }}
                 _focus={{
                   outline: 'none',
                   bg: 'white',
                   border: '1px solid',
-                  borderColor: 'brand.900',
+                  borderColor: 'black',
                 }}
-                bg="gray.50"
-                color="gray.500"
-              >
-                {allDepartments.map((item) => (
-                  <option value={item.id}>{item.name}</option>
-                ))}
-              </Select>
-
-              {/* {(formError || userError) && (
-                <Text textAlign="center" color="red" fontSize="10pt" mb={2}>
-                  {formError ||
-                    FIREBASE_ERROR[
-                      userError?.message as keyof typeof FIREBASE_ERROR
-                    ]}
-                </Text>
-              )} */}
+              />
               <Flex
                 direction="column"
                 fontSize="9pt"

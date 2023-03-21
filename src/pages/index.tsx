@@ -52,16 +52,16 @@ const Home: NextPage = () => {
   const [itemOffset, setItemOffset] = useState(0);
   const itemsPerPage = 5;
   const endOffset = itemOffset + itemsPerPage;
-  console.log('Loading items from ${itemOffset} to ${endOffset}');
+  console.log(`Loading items from ${itemOffset} to ${endOffset}`);
   // const currentItems = ideaStateValue.Ideas.slice(itemOffset, endOffset);
-  const pageCount = Math.ceil(ideaStateValue.Ideas.length / itemsPerPage);
+  const pageCount = Math.ceil(ideaStateValue.Ideas?.length / itemsPerPage);
 
   // Invoke when user click to request another page.
   const handlePageClick = (event: any) => {
     const newOffset =
       (event.selected * itemsPerPage) % ideaStateValue.Ideas.length;
     console.log(
-      'User requested page number ${event.selected}, which is offset ${newOffset}'
+      `User requested page number ${event.selected}, which is offset ${newOffset}`
     );
     setItemOffset(newOffset);
     window.scrollTo(0, 0);
@@ -94,7 +94,6 @@ const Home: NextPage = () => {
   useEffect(() => {
     getTrendingPosts();
   }, []);
-
 
   return (
     <PageContentLayout>

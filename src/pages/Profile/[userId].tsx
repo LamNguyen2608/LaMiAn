@@ -18,7 +18,7 @@ import About from '@/components/UserProfile/About';
 import { ArrowForwardIcon, ArrowBackIcon } from '@chakra-ui/icons';
 import { Stack } from '@chakra-ui/react';
 import ReactPaginate from 'react-paginate';
-import { useUpdateProfile } from 'react-firebase-hooks/auth';
+import { useAuthState, useUpdateProfile } from 'react-firebase-hooks/auth';
 import { auth } from '@/Firebase/clientApp';
 import { useRecoilState } from 'recoil';
 import UpdateUserInfo from '@/components/UserProfile/UpdateUserInfo';
@@ -57,47 +57,55 @@ const userPage: React.FC<ProfilePageProps> = ({ clientData }) => {
   //hand update user
   const [displayUpdateUserModal, setDisplayUpdateUserModal] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [signUpForm, setSignUpForm] = useState({
-    email: '',
-    password: '',
-    confirmPass: '',
-    firstname: '',
-    lastname: '',
-    age: '',
-    pronoun: '',
-    department: '',
-  });
-  const [formError, setformError] = useState('');
-  const [allDepartments, setAllDepartments] = useState<Department[]>([]);
-  const [clientStateValue, setClientStateValue] = useRecoilState(clientState);
-  useEffect(() => {
-    axios.get('http://localhost:8080/department').then((response) => {
-      console.log('get all departments: ', response);
-      setAllDepartments(response.data);
-    });
-  }, []);
-
-  const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    //set Error
-    console.log(signUpForm);
-    if (formError) setformError('');
-    if (signUpForm.password !== signUpForm.confirmPass) {
-      setformError('Password does not match');
-      return;
-    }
-    //password matching
-  };
-
+  const [updateForm, setUpdateForm] = useState<Client>();
   const onChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
     //update form state
-    setSignUpForm((prev) => ({
+    setUpdateForm((prev) => ({
       ...prev,
       [event.target.name]: event.target.value,
     }));
   };
+  const [user] = useAuthState(auth);
+  const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setLoading(true);
+    console.log('email', clientData.email);
+    setLoading(true);
+    try {
+      if (updateForm) {
+        {
+          axios
+            .put('http://localhost:8080/client/update', {
+              id: clientData.id,
+              firstname: updateForm?.firstname,
+              lastname: updateForm?.lastname,
+              age: updateForm?.age,
+              client_info: clientData?.client_info,
+              role: clientData?.role,
+              email: clientData?.email,
+              pronoun: clientData.pronoun,
+              department: clientData.department,
+              isDeleted: clientData.isDeleted,
+            })
+            .then((response) => {
+              console.log('after updateTopic ===>', response);
+              window.location.reload();
+              setLoading(false);
+              hideUpdateUserModal();
+            });
+        }
+      } else {
+        setLoading(false);
+        hideUpdateUserModal();
+      }
+    } catch (error: any) {
+      console.log('handleUpdatePost error check', error.message);
+      setLoading(false);
+    }
+  };
+
   const showUpdateUserModal = () => {
     setDisplayUpdateUserModal(true);
   };
@@ -165,9 +173,7 @@ const userPage: React.FC<ProfilePageProps> = ({ clientData }) => {
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   try {
     const response = await axios.get(
-      (process.env.REACT_APP_BACKEND_ENDPOINT +
-        'client/' +
-        context.query.userId) as string
+      ('http://localhost:8080/client/' + context.query.userId) as string
     );
     console.log(response.data);
     return {
