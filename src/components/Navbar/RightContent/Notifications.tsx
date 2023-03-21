@@ -39,25 +39,30 @@ const Notifications: React.FC<NotificationsProps> = ({ user }) => {
     });
     const [notiModal, setNotiModal] = useState(false);
     const getUserNotification = async () => {
+        console.log(myNotis);
         if (user) {
-            try {
-                axios.get('http://localhost:8080/client/notification/' + user.uid)
-                    .then(res => {
-                        console.log("My notis ==>", res.data);
-                        setMyNotis(res.data);
-                        setVisibleNotis(myNotis.splice(0, 7))
-                    });
-            } catch (error) {
-                console.log(error);
+            if (myNotis.length == 0) {
+                try {
+                    axios.get('http://localhost:8080/client/notification/' + user.uid)
+                        .then(res => {
+                            console.log("My notis ==>", res.data);
+                            setMyNotis(res.data);
+                            setVisibleNotis(myNotis.splice(0, 7))
+                        });
+                } catch (error) {
+                    console.log(error);
+                }
+            } else {
+                setMyNotis(myNotis);
             }
         }
     }
     useEffect(() => {
         getUserNotification();
-    }, [])
+    })
     return (
         <><Menu>
-            <MenuButton>
+            <MenuButton onClick={() => getUserNotification()}>
                 {user && (
 
                     <Flex display="flex" align="center">
@@ -72,9 +77,9 @@ const Notifications: React.FC<NotificationsProps> = ({ user }) => {
                 )}
             </MenuButton>
             <MenuList width={3} mt="6px">
-                {visibleNotis.length !== 0 ? (
+                {myNotis.length !== 0 ? (
                     <>
-                        {visibleNotis.map(noti => (
+                        {myNotis.slice(0, 7).map(noti => (
                             <MenuItem
                                 fontSize="10pt"
                                 fontWeight={700}

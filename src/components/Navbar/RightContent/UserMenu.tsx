@@ -16,13 +16,13 @@ import React from 'react';
 import { BsPersonCircle } from 'react-icons/bs';
 import { FiMenu } from 'react-icons/fi';
 import { ImProfile } from 'react-icons/im';
-import { BiUserPlus, BiLogIn, BiLogOut } from 'react-icons/bi';
+import { BiUserPlus, BiLogIn, BiLogOut, BiData } from 'react-icons/bi';
 import { auth } from '@/Firebase/clientApp';
 import { authModalState } from '@/atoms/authModalAtom';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import router from 'next/router';
-import { Client, clientState } from '@/atoms/clientAtom';
 import { FaUserAstronaut } from 'react-icons/fa';
+import useClient from '@/hooks/useClient';
 
 type UserMenuProps = {
   user?: User | null;
@@ -30,10 +30,11 @@ type UserMenuProps = {
 
 const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
   const setAuthModalState = useSetRecoilState(authModalState);
+  const { clientStateValue, resetUserInfo } = useClient();
 
   return (
     <Menu>
-      <MenuButton>
+      <MenuButton onClick={() => resetUserInfo()}>
         {user ? (
           <Flex display="flex" align="center">
             <Flex align="center">
@@ -105,6 +106,22 @@ const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
               </Flex>
             </MenuItem>
             <MenuDivider />
+            {clientStateValue.currentClient?.role == 'ROLE_ADMIN' ? (
+              <><MenuItem
+                fontSize="10pt"
+                fontWeight={700}
+                _hover={{ bg: 'gray.200', color: 'brand.800' }}
+                onClick={() => router.push('/Admin')}
+              >
+                <Flex align="center">
+                  <Icon fontSize={30} mr={2} as={BiData} />
+                  Admin Page
+                </Flex>
+              </MenuItem>
+                <MenuDivider /></>
+            ) : (
+              <MenuDivider />
+            )}
             <MenuItem
               fontSize="10pt"
               fontWeight={700}

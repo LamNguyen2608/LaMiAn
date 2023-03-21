@@ -68,30 +68,8 @@ const searchResult: React.FC<SearchInputProps> = ({ SearchData }) => {
   const [ideaStateValue, setIdeaStateValue] = useState<Idea[]>([]);
   const currentSearch = useRecoilValue(searchState);
 
-  // const getTrendingPosts = async () => {
-  //   setLoading(true)
-  //   console.log("Search Post");
-  //   try {
-  //     axios.get('http://localhost:8080/idea').then(res => {
-  //       console.log("Get trending ideas", res);
-  //       setIdeaStateValue((prev) => ({
-  //         ...prev,
-  //         Ideas: res.data
-  //       }));
-  //     })
-  //   } catch (error) {
-  //     console.log("Get trending ideas error", error);
-  //   }
-  //   setLoading(false);
-  // };
 
-  // const getNoUserHomePosts = async () => {
-  //   console.log("GETTING NO USER FEED");
-  //   //setLoading(true);
-  //   //setLoading(false);
-  // };
-
-  const getUserPostVotes = async () => {};
+  const getUserPostVotes = async () => { };
 
   useEffect(() => {
     setIdeaStateValue(SearchData);
@@ -113,7 +91,7 @@ const searchResult: React.FC<SearchInputProps> = ({ SearchData }) => {
                   </Heading>
                   <>
                     {currentSearch.idea.length != 0 &&
-                    currentSearch.currentSearch.length > 0 ? (
+                      currentSearch.currentSearch.length > 0 ? (
                       <>
                         {currentSearch.idea.map((idea: Idea, index) => (
                           <IdeaItem idea={idea} index={index} />
@@ -135,7 +113,7 @@ const searchResult: React.FC<SearchInputProps> = ({ SearchData }) => {
                   </Heading>
                   <>
                     {currentSearch.topic.length != 0 &&
-                    currentSearch.currentSearch.length ? (
+                      currentSearch.currentSearch.length ? (
                       <>
                         {currentSearch.topic.map((topic: Topic, index) => (
                           <TopicItem topic={topic} index={index} />
