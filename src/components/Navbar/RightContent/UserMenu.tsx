@@ -126,7 +126,9 @@ const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
               fontSize="10pt"
               fontWeight={700}
               _hover={{ bg: 'gray.200', color: 'brand.800' }}
-              onClick={() => signOut(auth)}
+              onClick={() => signOut(auth).then(res => {
+                localStorage.setItem("currentClient", "");
+              })}
             >
               <Flex align="center">
                 <Icon fontSize={30} mr={2} as={BiLogOut} />

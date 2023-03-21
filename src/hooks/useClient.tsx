@@ -13,12 +13,12 @@ const useClient = () => {
     const [error, setError] = useState("");
 
     const resetUserInfo = () => {
-        console.log(JSON.parse(localStorage.getItem("currentClient")))
         if (!clientStateValue.currentClient) {
-            setClientStateValue({
-                currentClient: JSON.parse(localStorage.getItem("currentClient"))
-            })
-            console.log(clientStateValue.currentClient?.role);
+            if (localStorage.getItem("currentClient") && localStorage.getItem("currentClient") !== "") {
+                setClientStateValue({
+                    currentClient: JSON.parse(localStorage.getItem("currentClient"))
+                })
+            }
         }
 
     }
