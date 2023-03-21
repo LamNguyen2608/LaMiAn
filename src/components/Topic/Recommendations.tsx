@@ -92,36 +92,37 @@ const Recommendations: React.FC<RecommendationsProps> = () => {
                                 (snippet) => snippet.topic_id === item.topic_id
                             );
                             return (
-                                <Link key={item.topic_id} href={`/topic/${item.topic_id}`}>
-                                    <Flex
-                                        position="relative"
-                                        align="center"
-                                        fontSize="10pt"
-                                        borderBottom="1px solid"
-                                        borderColor="gray.200"
-                                        p="10px 12px"
-                                        fontWeight={600}
-                                    >
-                                        <Flex width="80%" align="center">
-                                            <Flex width="10%">
-                                                <Text>{index + 1}</Text>
-                                            </Flex>
-                                            <Flex align="center" width="80%">
-                                                {item.image_url ? (
-                                                    <Image
-                                                        borderRadius="full"
-                                                        boxSize="28px"
-                                                        src={item.image_url}
-                                                        mr={2}
-                                                    />
-                                                ) : (
-                                                    <Icon
-                                                        as={FaReddit}
-                                                        fontSize={30}
-                                                        color="brand.900"
-                                                        mr={2}
-                                                    />
-                                                )}
+                                <Flex
+                                    position="relative"
+                                    align="center"
+                                    fontSize="10pt"
+                                    borderBottom="1px solid"
+                                    borderColor="gray.200"
+                                    p="10px 12px"
+                                    fontWeight={600}
+                                >
+
+                                    <Flex width="80%" align="center">
+                                        <Flex width="10%">
+                                            <Text>{index + 1}</Text>
+                                        </Flex>
+                                        <Flex align="center" width="80%">
+                                            {item.image_url ? (
+                                                <Image
+                                                    borderRadius="full"
+                                                    boxSize="28px"
+                                                    src={item.image_url}
+                                                    mr={2}
+                                                />
+                                            ) : (
+                                                <Icon
+                                                    as={FaReddit}
+                                                    fontSize={30}
+                                                    color="brand.900"
+                                                    mr={2}
+                                                />
+                                            )}
+                                            <Link key={item.topic_id} href={`/topic/${item.topic_id}`}>
                                                 <span
                                                     style={{
                                                         whiteSpace: "nowrap",
@@ -129,23 +130,24 @@ const Recommendations: React.FC<RecommendationsProps> = () => {
                                                         textOverflow: "ellipsis",
                                                     }}
                                                 >{item.topic_name}</span>
-                                            </Flex>
+                                            </Link>
                                         </Flex>
-                                        <Box position="relative" right="5px" marginLeft={2}>
-                                            <Button
-                                                height="22px"
-                                                fontSize="8pt"
-                                                onClick={(event) => {
-                                                    event.stopPropagation();
-                                                    onFollowOrUnfollowTopic(item.topic_id, isJoined);
-                                                }}
-                                                variant={isJoined ? "secondary" : "primary"}
-                                            >
-                                                {isJoined ? "Followed" : "Follow"}
-                                            </Button>
-                                        </Box>
                                     </Flex>
-                                </Link>
+                                    <Box position="relative" right="5px" marginLeft={2}>
+                                        <Button
+                                            height="22px"
+                                            fontSize="8pt"
+                                            onClick={(event) => {
+                                                event.stopPropagation();
+                                                onFollowOrUnfollowTopic(item.topic_id, isJoined);
+                                            }}
+                                            variant={isJoined ? "secondary" : "primary"}
+                                        >
+                                            {isJoined ? "Followed" : "Follow"}
+                                        </Button>
+                                    </Box>
+                                </Flex>
+
                             );
                         })}
                         <Box p="10px 20px">

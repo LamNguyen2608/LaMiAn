@@ -25,12 +25,8 @@ import CreateCategory from '../../pages/Admin/Category/CreateCategory';
 const AdminButtonFunc: React.FC = () => {
   return (
     <>
-      <Box p="14px 8px">
-        <Text fontSize={22} fontWeight={900}>
-          Others
-        </Text>
-      </Box>
-      <Flex align="center" p="5px 0px" justify="center" direction="column">
+      <Flex align="center" height="100%" p="5px 0px" justify="center" direction="column" bg="#222629">
+
         <Flex align="center" p="5px 0px" direction="row">
           <Box
             // display={{ base: "none", sm: "none", md:"block" }}
@@ -39,8 +35,8 @@ const AdminButtonFunc: React.FC = () => {
             color="white"
             fontWeight="bold"
             fontSize={{ base: '11px', sm: '13px' }}
-            height={{ base: '80px', sm: '110px', md: '150px' }}
-            width={{ base: '80px', sm: '110px', md: '150px', xl: '200px' }}
+            height={{ base: '80px', sm: '110px', md: '130px' }}
+            width={{ base: '80px', sm: '110px', md: '130px', xl: '150px' }}
             borderRadius="20px"
             bgGradient="linear(to-r, brand.900, brand.800)"
             _hover={{
@@ -63,8 +59,8 @@ const AdminButtonFunc: React.FC = () => {
             ml={6}
             fontWeight="bold"
             fontSize={{ base: '11px', sm: '13px' }}
-            height={{ base: '80px', sm: '110px', md: '150px' }}
-            width={{ base: '80px', sm: '110px', md: '150px', xl: '200px' }}
+            height={{ base: '80px', sm: '110px', md: '130px' }}
+            width={{ base: '80px', sm: '110px', md: '130px', xl: '150px' }}
             borderRadius="20px"
             bgGradient="linear(to-r, brand.900, brand.800)"
             _hover={{
@@ -89,8 +85,8 @@ const AdminButtonFunc: React.FC = () => {
             color="white"
             fontWeight="bold"
             fontSize={{ base: '11px', sm: '13px' }}
-            height={{ base: '80px', sm: '110px', md: '150px' }}
-            width={{ base: '80px', sm: '110px', md: '150px', xl: '200px' }}
+            height={{ base: '80px', sm: '110px', md: '130px' }}
+            width={{ base: '80px', sm: '110px', md: '130px', xl: '150px' }}
             borderRadius="20px"
             bgGradient="linear(to-r, brand.900, brand.800)"
             _hover={{
@@ -113,8 +109,8 @@ const AdminButtonFunc: React.FC = () => {
             ml={6}
             fontWeight="bold"
             fontSize={{ base: '11px', sm: '13px' }}
-            height={{ base: '80px', sm: '110px', md: '150px' }}
-            width={{ base: '80px', sm: '110px', md: '150px', xl: '200px' }}
+            height={{ base: '80px', sm: '110px', md: '130px' }}
+            width={{ base: '80px', sm: '110px', md: '130px', xl: '150px' }}
             borderRadius="20px"
             bgGradient="linear(to-r, brand.900, brand.800)"
             _hover={{

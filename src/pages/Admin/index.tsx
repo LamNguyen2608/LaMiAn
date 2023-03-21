@@ -46,7 +46,7 @@ const TopicPage: React.FC = ({ }) => {
             chartDataType: 'series',
         },
         {
-            headerName: 'Topc',
+            headerName: 'Topic',
             field: 'topic_name',
             maxWidth: 160,
             filter: 'agSetColumnFilter',
@@ -76,7 +76,18 @@ const TopicPage: React.FC = ({ }) => {
                         },
                     },
                 }
-            }
+            },
+            column: {
+                height: 400
+            },
+            bar: {
+                height: 250,
+                width: 400
+            },
+            pie: {
+                height: 399,
+                width: 400,
+            },
         };
     }, []);
 
