@@ -20,7 +20,7 @@ import { BiUserPlus, BiLogIn, BiLogOut } from 'react-icons/bi';
 import { auth } from '@/Firebase/clientApp';
 import { authModalState } from '@/atoms/authModalAtom';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
-import router from 'next/router';
+import router, { Router } from 'next/router';
 import { Client, clientState } from '@/atoms/clientAtom';
 import { FaUserAstronaut } from 'react-icons/fa';
 
@@ -30,7 +30,10 @@ type UserMenuProps = {
 
 const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
   const setAuthModalState = useSetRecoilState(authModalState);
-
+  const logOut = () => {
+    signOut(auth);
+    router.push('/');
+  };
   return (
     <Menu>
       <MenuButton>
@@ -89,7 +92,7 @@ const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
               )}
 
               <Text fontSize={12} fontWeight={700}>
-                {user?.displayName || user.email}
+                {user?.displayName || user?.email?.split('@')[0]}
               </Text>
             </Flex>
             <MenuDivider />
@@ -109,7 +112,7 @@ const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
               fontSize="10pt"
               fontWeight={700}
               _hover={{ bg: 'gray.200', color: 'brand.800' }}
-              onClick={() => signOut(auth)}
+              onClick={logOut}
             >
               <Flex align="center">
                 <Icon fontSize={30} mr={2} as={BiLogOut} />
