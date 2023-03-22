@@ -30,7 +30,6 @@ const DeleteIdeaModal: React.FC<DeleteIdeaModalProps> = ({
                             colorScheme="red"
                             mr={3}
                             spinnerPlacement="start"
-                            //isLoading={loading}
                             _loading={{ opacity: 2 }}
                             onClick={() => {
                                 confirmModal(index, idea.topic.id.toString());

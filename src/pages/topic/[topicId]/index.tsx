@@ -39,7 +39,6 @@ const TopicPage: React.FC<TopicPageProps> = ({ topicData }) => {
   const itemsPerPage = 5;
   const endOffset = itemOffset + itemsPerPage;
   console.log(`Loading items from ${itemOffset} to ${endOffset}`);
-  const currentItems = ideaStateValue.Ideas.slice(itemOffset, endOffset);
   const pageCount = Math.ceil(ideaStateValue.Ideas.length / itemsPerPage);
 
   // Invoke when user click to request another page.
@@ -60,7 +59,7 @@ const TopicPage: React.FC<TopicPageProps> = ({ topicData }) => {
           {/* {new Date(topicData.topic_closure_date).getTime() > new Date().getTime()
                         ? (<CreatePostForm />) : null} */}
           <CreatePostForm />
-          {currentItems.map((item, index) => (
+          {ideaStateValue.Ideas.slice(itemOffset, endOffset).map((item, index) => (
             <IdeaItem idea={item} index={index} />
           ))}
           <Stack

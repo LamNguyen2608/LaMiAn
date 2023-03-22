@@ -1,6 +1,7 @@
 import { Idea } from '@/atoms/ideaAtom';
 import { searchState } from '@/atoms/searchAtom';
 import { Topic } from '@/atoms/topicAtom';
+import useIdeas from '@/hooks/useIdeas';
 import { SearchIcon } from '@chakra-ui/icons';
 import {
   Box,
@@ -20,9 +21,10 @@ import safeJsonStringify from 'safe-json-stringify';
 
 type SearchInputProps = {};
 
-const SearchInput: React.FC<SearchInputProps> = ({}) => {
+const SearchInput: React.FC<SearchInputProps> = ({ }) => {
   const [value, setValue] = useState('');
   const [search, setSearch] = useRecoilState(searchState);
+  const { ideaStateValue } = useIdeas();
 
   const getIdea = async () => {
     console.log('Idea');
@@ -55,7 +57,7 @@ const SearchInput: React.FC<SearchInputProps> = ({}) => {
   useEffect(() => {
     getIdea();
     getTopic();
-  }, []);
+  }, [ideaStateValue]);
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const {
       target: { name, value },
