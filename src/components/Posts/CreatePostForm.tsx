@@ -1,14 +1,14 @@
-import { authModalState } from '@/atoms/authModalAtom';
-import { auth } from '@/Firebase/clientApp';
-import { Box, Flex, Icon, Input } from '@chakra-ui/react';
-import { useRouter } from 'next/router';
-import React from 'react';
-import { useAuthState } from 'react-firebase-hooks/auth';
-import { BiUserPin } from 'react-icons/bi';
-import { BsLink45Deg } from 'react-icons/bs';
-import { FaReddit, FaUserAstronaut } from 'react-icons/fa';
-import { IoImageOutline } from 'react-icons/io5';
-import { useSetRecoilState } from 'recoil';
+import { authModalState } from "@/atoms/authModalAtom";
+import { auth } from "@/Firebase/clientApp";
+import { Flex, Icon, Input, Image } from "@chakra-ui/react";
+import { useRouter } from "next/router";
+import React from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { BsLink45Deg } from "react-icons/bs";
+import { FaReddit } from "react-icons/fa";
+import { IoImageOutline } from "react-icons/io5";
+import { useSetRecoilState } from "recoil";
+
 
 type CreatePostProps = {};
 
@@ -18,11 +18,11 @@ const CreatePostForm: React.FC<CreatePostProps> = () => {
   const setAuthModalState = useSetRecoilState(authModalState);
   const onClick = () => {
     if (!user) {
-      setAuthModalState({ open: true, view: 'login' });
+      setAuthModalState({ open: true, view: "login" });
       return;
     }
     const topicId = router.query.topicId;
-    router.push((('/topic/' + topicId) as string) + '/submit');
+    router.push('/topic/' + topicId as string + '/submit');
   };
   return (
     <Flex
@@ -36,21 +36,46 @@ const CreatePostForm: React.FC<CreatePostProps> = () => {
       p={2}
       mb={4}
     >
-      <Icon as={FaUserAstronaut} fontSize={36} color="gray.300" mr={4} />
-      <Box
+      {user?.photoURL ? (
+        <>
+          <Image
+            src={user?.photoURL}
+            height="28pt"
+            width="28pt"
+            bg="white"
+            color="brand.500"
+            borderRadius="50%"
+            mr={2}
+          />
+        </>
+      ) : (
+        <>
+          <Image
+            src="/images/defaultProfile.jpg"
+            height="28pt"
+            width="28pt"
+            bg="white"
+            color="brand.500"
+            mr={2}
+            borderRadius="50%"
+          />
+        </>
+      )}
+
+      <Input
         placeholder="Create Post"
         fontSize="10pt"
-        _placeholder={{ color: 'gray.500' }}
+        _placeholder={{ color: "gray.500" }}
         _hover={{
-          bg: 'white',
-          border: '1px solid',
-          borderColor: 'blue.500',
+          bg: "white",
+          border: "1px solid",
+          borderColor: "blue.500",
         }}
         _focus={{
-          outline: 'none',
-          bg: 'white',
-          border: '1px solid',
-          borderColor: 'blue.500',
+          outline: "none",
+          bg: "white",
+          border: "1px solid",
+          borderColor: "blue.500",
         }}
         bg="gray.50"
         borderColor="gray.200"

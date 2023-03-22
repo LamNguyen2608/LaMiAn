@@ -69,7 +69,6 @@ const searchResult: React.FC<SearchInputProps> = ({ ideaData, topicData }) => {
   const [ideaValue, setIdeaValue] = useState<Idea[]>([]);
   const [searchValue, setSearchValue] = useRecoilState(searchState);
   const currentSearch = useRecoilValue(searchState);
-
   const getUserPostVotes = async () => {};
 
   useEffect(() => {
@@ -96,7 +95,7 @@ const searchResult: React.FC<SearchInputProps> = ({ ideaData, topicData }) => {
                   </Heading>
                   <>
                     {currentSearch.idea.length != 0 &&
-                    currentSearch.currentSearch.length > 0 ? (
+                      currentSearch.currentSearch.length > 0 ? (
                       <>
                         {currentSearch.idea.map((idea: Idea, index) => (
                           <IdeaItem idea={idea} index={index} />
@@ -123,7 +122,7 @@ const searchResult: React.FC<SearchInputProps> = ({ ideaData, topicData }) => {
                   </Heading>
                   <>
                     {currentSearch.topic.length != 0 &&
-                    currentSearch.currentSearch.length ? (
+                      currentSearch.currentSearch.length ? (
                       <>
                         {currentSearch.topic.map((topic: Topic, index) => (
                           <TopicItem topic={topic} index={index} />

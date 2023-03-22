@@ -62,7 +62,7 @@ const useIdeas = () => {
                 })
             } else {
                 console.log("Update VOTE!!! ==>", newReaction);
-                //post here
+
                 axios.put('http://localhost:8080/idea/reaction/update', {
                     "reaction": newReaction.reaction,
                     "client_id": user.uid,

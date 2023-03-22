@@ -17,31 +17,28 @@ import {
 import React, { useEffect } from 'react';
 
 type deleteProps = {
-  showModal: any;
-  hideModal: any;
-  loading: boolean;
+  showModal: boolean;
+  hideModal: () => void;
   confirmModal: () => void;
 };
-const DeleteConfirmationModal: React.FC<deleteProps> = ({
+const DeleteCommentModal: React.FC<deleteProps> = ({
   showModal,
   hideModal,
-  confirmModal,
-  loading
+  confirmModal
 }) => {
   return (
     <>
       <Modal closeOnOverlayClick={false} isOpen={showModal} onClose={hideModal}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Delete Confirmation</ModalHeader>
-          <ModalBody pb={6}>Are you sure you want to delete this?</ModalBody>
+          <ModalHeader>Delete Comment Confirmation</ModalHeader>
+          <ModalBody pb={6}>Are you sure you want to delete this comment?</ModalBody>
 
           <ModalFooter>
             <Button
               colorScheme="red"
               mr={3}
               spinnerPlacement="start"
-              isLoading={loading}
               _loading={{ opacity: 2 }}
               onClick={() => confirmModal()}
             >
@@ -54,4 +51,4 @@ const DeleteConfirmationModal: React.FC<deleteProps> = ({
     </>
   );
 };
-export default DeleteConfirmationModal;
+export default DeleteCommentModal;

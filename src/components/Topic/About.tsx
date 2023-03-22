@@ -40,56 +40,6 @@ const About: React.FC<AboutProps> = ({
 }) => {
     const [user] = useAuthState(auth); // will revisit how 'auth' state is passed
     const router = useRouter();
-    //const selectFileRef = useRef<HTMLInputElement>(null);
-    //const setCommunityStateValue = useSetRecoilState(communityState);
-
-    // April 24 - moved this logic to custom hook in tutorial build (useSelectFile)
-    //const [selectedFile, setSelectedFile] = useState<string>();
-
-    // Added last!
-    //   const [imageLoading, setImageLoading] = useState(false);
-
-    //   const onSelectImage = (event: React.ChangeEvent<HTMLInputElement>) => {
-    //     const reader = new FileReader();
-    //     if (event.target.files?.[0]) {
-    //       reader.readAsDataURL(event.target.files[0]);
-    //     }
-
-    //     reader.onload = (readerEvent) => {
-    //       if (readerEvent.target?.result) {
-    //         setSelectedFile(readerEvent.target?.result as string);
-    //       }
-    //     };
-    //   };
-
-    //   const updateImage = async () => {
-    //     if (!selectedFile) return;
-    //     setImageLoading(true);
-    //     try {
-    //       const imageRef = ref(storage, `communities/${topicData.id}/image`);
-    //       await uploadString(imageRef, selectedFile, "data_url");
-    //       const downloadURL = await getDownloadURL(imageRef);
-    //       await updateDoc(doc(firestore, "communities", topicData.id), {
-    //         imageURL: downloadURL,
-    //       });
-    //       console.log("HERE IS DOWNLOAD URL", downloadURL);
-
-    //       // April 24 - added state update
-    //       setCommunityStateValue((prev) => ({
-    //         ...prev,
-    //         currentCommunity: {
-    //           ...prev.currentCommunity,
-    //           imageURL: downloadURL,
-    //         },
-    //       }));
-    //     } catch (error: any) {
-    //       console.log("updateImage error", error.message);
-    //     }
-    //     // April 24 - removed reload
-    //     // window.location.reload();
-
-    //     setImageLoading(false);
-    //   };
 
     return (
         <Box pt={pt} position="sticky" top="14px">
@@ -121,7 +71,7 @@ const About: React.FC<AboutProps> = ({
                             <Flex width="100%" p={2} fontWeight={600} fontSize="10pt">
                                 <Flex direction="column" flexGrow={1}>
                                     <Text>
-                                        {topicData.ideas.length}
+                                        {topicData.ideas?.length}
                                     </Text>
                                     <Text> Ideas</Text>
                                 </Flex>

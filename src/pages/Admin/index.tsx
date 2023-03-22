@@ -26,68 +26,75 @@ import {
 //import { getData } from './data';
 import axios from 'axios';
 
-const TopicPage: React.FC = ({}) => {
-  const containerStyle = useMemo(() => ({ width: '100%', height: '100%' }), []);
-  const gridStyle = useMemo(() => ({ height: '100%', width: '100%' }), []);
-  const [rowData, setRowData] = useState<any[]>();
-  useEffect(() => {
-    try {
-      axios.get('http://localhost:8080/idea/analytics').then((res) => {
-        setRowData(res.data);
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  }, []);
-  const [columnDefs, setColumnDefs] = useState<ColDef[]>([
-    {
-      headerName: 'Department',
-      field: 'department_name',
-      chartDataType: 'category',
-    },
-    { headerName: 'Category', field: 'cate_name', chartDataType: 'category' },
-    {
-      headerName: 'Idea',
-      field: 'idea_title',
-      maxWidth: 160,
-      aggFunc: 'sum',
-      filter: 'agNumberColumnFilter',
-      chartDataType: 'series',
-    },
-    {
-      headerName: 'Topc',
-      field: 'topic_name',
-      maxWidth: 160,
-      filter: 'agSetColumnFilter',
-      chartDataType: 'category',
-    },
-  ]);
-  const defaultColDef = useMemo<ColDef>(() => {
-    return {
-      flex: 1,
-      editable: true,
-      sortable: true,
-      filter: 'agMultiColumnFilter',
-      floatingFilter: true,
-      resizable: true,
-    };
-  }, []);
-  const chartThemes = useMemo<string[]>(() => {
-    return ['ag-pastel-dark'];
-  }, []);
-  const chartThemeOverrides = useMemo<AgChartThemeOverrides>(() => {
-    return {
-      cartesian: {
-        axes: {
-          category: {
-            label: {
-              rotation: 0,
-            },
-          },
+const TopicPage: React.FC = ({ }) => {
+    const containerStyle = useMemo(() => ({ width: '100%', height: '100%' }), []);
+    const gridStyle = useMemo(() => ({ height: '100%', width: '100%' }), []);
+    const [rowData, setRowData] = useState<any[]>();
+    useEffect(() => {
+        try {
+            axios.get('http://localhost:8080/idea/analytics').then(res => {
+                setRowData(res.data);
+            })
+        } catch (error) {
+            console.log(error);
+        }
+    }, [])
+    const [columnDefs, setColumnDefs] = useState<ColDef[]>([
+        { headerName: 'Department', field: 'department_name', chartDataType: 'category' },
+        { headerName: 'Category', field: 'cate_name', chartDataType: 'category' },
+        {
+            headerName: 'Idea',
+            field: 'idea_title',
+            maxWidth: 160,
+            aggFunc: 'sum',
+            filter: 'agNumberColumnFilter',
+            chartDataType: 'series',
         },
-      },
-    };
-  }, []);
+        {
+            headerName: 'Topic',
+            field: 'topic_name',
+            maxWidth: 160,
+            filter: 'agSetColumnFilter',
+            chartDataType: 'category',
+        },
+    ]);
+    const defaultColDef = useMemo<ColDef>(() => {
+        return {
+            flex: 1,
+            editable: true,
+            sortable: true,
+            filter: 'agMultiColumnFilter',
+            floatingFilter: true,
+            resizable: true,
+        };
+    }, []);
+    const chartThemes = useMemo<string[]>(() => {
+        return ['ag-pastel-dark'];
+    }, []);
+    const chartThemeOverrides = useMemo<AgChartThemeOverrides>(() => {
+        return {
+            cartesian: {
+                axes: {
+                    category: {
+                        label: {
+                            rotation: 0
+                        },
+                    },
+                }
+            },
+            column: {
+                height: 400
+            },
+            bar: {
+                height: 250,
+                width: 400
+            },
+            pie: {
+                height: 399,
+                width: 400,
+            },
+        };
+    }, []);
 
   const onFirstDataRendered = useCallback((params: FirstDataRenderedEvent) => {
     createQuarterlySalesChart(params.api);
