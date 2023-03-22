@@ -32,7 +32,7 @@ const TopicPage: React.FC = ({ }) => {
   const [rowData, setRowData] = useState<any[]>();
   useEffect(() => {
     try {
-      axios.get('http://localhost:8080/idea/analytics').then(res => {
+      axios.get('https://backend-2tza.onrender.com/idea/analytics').then(res => {
         setRowData(res.data);
       })
     } catch (error) {

@@ -92,7 +92,7 @@ const UserList: React.FC<roleProps> = ({ UserData }) => {
       if (userRole) {
         {
           axios
-            .put('http://localhost:8080/client/update', {
+            .put('https://backend-2tza.onrender.com/client/update', {
               id: valueRoleModal?.id,
               email: valueRoleModal?.email,
               firstname: valueRoleModal?.firstname,
@@ -189,7 +189,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   //get topic data and pass it to cline
   //context.query.topicId as string => getting id from route
   try {
-    const response = await axios.get('http://localhost:8080/client');
+    const response = await axios.get('https://backend-2tza.onrender.com/client');
     console.log(response.data);
     return {
       props: {

@@ -32,7 +32,7 @@ const Login: React.FC<LoginProps> = () => {
     event.preventDefault();
     signInWithEmailAndPassword(loginForm.email, loginForm.password).then(
       res => {
-        axios.get('http://localhost:8080/client/' + res?.user.uid).then(
+        axios.get('https://backend-2tza.onrender.com/client/' + res?.user.uid).then(
           client => {
             console.log("log in client ==>", client);
             localStorage.setItem("currentClient", JSON.stringify(client.data));

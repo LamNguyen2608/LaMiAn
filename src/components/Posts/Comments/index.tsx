@@ -56,7 +56,7 @@ const Comments: React.FC<CommentsProps> = ({
         setCommentCreateLoading(true);
         try {
             console.log("anonymous ===========>", commentAnonymous);
-            axios.post('http://localhost:8080/idea/comment', {
+            axios.post('https://backend-2tza.onrender.com/idea/comment', {
                 "comment": comment,
                 "client_id": user.uid,
                 "idea_id": selectedIdea.id,

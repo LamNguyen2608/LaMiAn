@@ -70,7 +70,7 @@ const Category: React.FC<departmentProps> = ({ departmentData }) => {
     try {
       if (department) {
         axios
-          .post('http://localhost:8080/department/create', {
+          .post('https://backend-2tza.onrender.com/department/create', {
             name: department.name,
             department_info: department.department_info,
           })
@@ -106,7 +106,7 @@ const Category: React.FC<departmentProps> = ({ departmentData }) => {
       if (department) {
         {
           axios
-            .put('http://localhost:8080/department/update', {
+            .put('https://backend-2tza.onrender.com/department/update', {
               id: valueDepModal?.id,
               name: department.name,
               department_info: department.department_info,
@@ -154,7 +154,7 @@ const Category: React.FC<departmentProps> = ({ departmentData }) => {
     setLoading(true);
     try {
       axios
-        .delete('http://localhost:8080/department/delete/' + valueDepModal?.id)
+        .delete('https://backend-2tza.onrender.com/department/delete/' + valueDepModal?.id)
         .then((response) => {
           console.log('after deleteTopic ===>', response);
           window.location.reload();
@@ -265,7 +265,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   //get topic data and pass it to cline
   //context.query.topicId as string => getting id from route
   try {
-    const response = await axios.get('http://localhost:8080/department');
+    const response = await axios.get('https://backend-2tza.onrender.com/department');
     console.log(response.data);
     return {
       props: {

@@ -88,7 +88,7 @@ const userPage: React.FC<ProfilePageProps> = ({ clientData }) => {
       if (updateForm) {
         {
           axios
-            .put('http://localhost:8080/client/update', {
+            .put('https://backend-2tza.onrender.com/client/update', {
               id: clientData.id,
               firstname: updateForm?.firstname,
               lastname: updateForm?.lastname,
@@ -187,7 +187,7 @@ const userPage: React.FC<ProfilePageProps> = ({ clientData }) => {
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   try {
     const response = await axios.get(
-      ('http://localhost:8080/client/' + context.query.userId) as string
+      ('https://backend-2tza.onrender.com/client/' + context.query.userId) as string
     );
     console.log(response.data);
     return {

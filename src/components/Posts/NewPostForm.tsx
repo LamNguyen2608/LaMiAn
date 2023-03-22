@@ -85,7 +85,7 @@ const NewPostForm: React.FC<NewPostForm> = ({ user, updateIdea }) => {
           getDownloadURL(imageRef).then((url) => {
             newPost.attached_path = url as string;
             console.log("newPost===>", newPost);
-            axios.post('http://localhost:8080/idea/create', newPost)
+            axios.post('https://backend-2tza.onrender.com/idea/create', newPost)
               .then(response => {
                 console.log("after creating idea ===>", response);
                 setLoading(false);
@@ -95,7 +95,7 @@ const NewPostForm: React.FC<NewPostForm> = ({ user, updateIdea }) => {
         });
       } else {
         console.log("newPost===>", newPost);
-        axios.post('http://localhost:8080/idea/create', newPost)
+        axios.post('https://backend-2tza.onrender.com/idea/create', newPost)
           .then(response => {
             console.log("after creating idea ===>", response);
             setLoading(false);
@@ -132,7 +132,7 @@ const NewPostForm: React.FC<NewPostForm> = ({ user, updateIdea }) => {
           getDownloadURL(imageRef).then((url) => {
             updatePost.attached_path = url as string;
             console.log("updatePost===>", updatePost);
-            axios.put('http://localhost:8080/idea/update', updatePost)
+            axios.put('https://backend-2tza.onrender.com/idea/update', updatePost)
               .then(response => {
                 console.log("after creating idea ===>", response);
                 updatedIdea[ideaStateValue.selectedIdeaIndex] = response.data;
@@ -146,7 +146,7 @@ const NewPostForm: React.FC<NewPostForm> = ({ user, updateIdea }) => {
         })
       } else {
         console.log("updatePost===>", updatePost);
-        axios.put('http://localhost:8080/idea/update', updatePost)
+        axios.put('https://backend-2tza.onrender.com/idea/update', updatePost)
           .then(response => {
             console.log("after creating idea ===>", response);
             updatedIdea[ideaStateValue.selectedIdeaIndex] = response.data;

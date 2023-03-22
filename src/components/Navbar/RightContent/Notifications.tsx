@@ -43,7 +43,7 @@ const Notifications: React.FC<NotificationsProps> = ({ user }) => {
         if (user) {
             if (myNotis.length == 0) {
                 try {
-                    axios.get('http://localhost:8080/client/notification/' + user.uid)
+                    axios.get('https://backend-2tza.onrender.com/client/notification/' + user.uid)
                         .then(res => {
                             console.log("My notis ==>", res.data);
                             setMyNotis(res.data);

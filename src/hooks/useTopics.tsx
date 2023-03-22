@@ -20,7 +20,7 @@ const useTopics = () => {
         followTopic(topicId);
     };
     const followTopic = (topicId: number) => {
-        axios.post('http://localhost:8080/client/topic', {
+        axios.post('https://backend-2tza.onrender.com/client/topic', {
             client_id: user?.uid,
             topic_id: topicId
         }).then(res => {
@@ -32,7 +32,7 @@ const useTopics = () => {
     };
 
     const unfollowTopic = (topicId: number) => {
-        axios.delete('http://localhost:8080/client/topic/delete', {
+        axios.delete('https://backend-2tza.onrender.com/client/topic/delete', {
             data: {
                 "topic_id": topicId,
                 "client_id": user?.uid
@@ -48,7 +48,7 @@ const useTopics = () => {
     const getFollowedTopics = async () => {
         setLoading(true);
         try {
-            const response = await axios.get('http://localhost:8080/client/topic/' + user?.uid)
+            const response = await axios.get('https://backend-2tza.onrender.com/client/topic/' + user?.uid)
             setTopicStateValue((prev) => ({
                 ...prev,
                 followedTopics: response.data

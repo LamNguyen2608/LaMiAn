@@ -94,7 +94,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   //context.query.topicId as string => getting id from route
   try {
     const response = await axios.get(
-      ('http://localhost:8080/topic/' + context.query.topicId) as string
+      ('https://backend-2tza.onrender.com/topic/' + context.query.topicId) as string
     );
     console.log(response.data);
     return {

@@ -47,7 +47,7 @@ const TopicList: React.FC<topicProps> = ({ TopicData }) => {
     setLoading(true);
     try {
       axios
-        .delete('http://localhost:8080/topic/delete/' + valueTopicModal?.id)
+        .delete('https://backend-2tza.onrender.com/topic/delete/' + valueTopicModal?.id)
         .then((response) => {
           console.log('after deleteTopic ===>', response);
           window.location.reload();
@@ -148,7 +148,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   //get topic data and pass it to cline
   //context.query.topicId as string => getting id from route
   try {
-    const response = await axios.get('http://localhost:8080/topic');
+    const response = await axios.get('https://backend-2tza.onrender.com/topic');
     console.log(response.data);
     return {
       props: {

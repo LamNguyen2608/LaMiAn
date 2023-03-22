@@ -90,7 +90,7 @@ const TopicEdit: React.FC<detailsProps> = ({ TopicData }) => {
             updateTopic.imageURL = url as string;
             console.log('updateTopic===>', updateTopic);
             axios
-              .put('http://localhost:8080/topic/update', updateTopic)
+              .put('https://backend-2tza.onrender.com/topic/update', updateTopic)
               .then((response) => {
                 console.log('after creating idea ===>', response);
                 setLoading(false);
@@ -101,7 +101,7 @@ const TopicEdit: React.FC<detailsProps> = ({ TopicData }) => {
       } else {
         console.log('newPost===>', updateTopic);
         axios
-          .put('http://localhost:8080/topic/update', updateTopic)
+          .put('https://backend-2tza.onrender.com/topic/update', updateTopic)
           .then((response) => {
             console.log('after creating idea ===>', response);
             setLoading(false);
@@ -360,7 +360,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   //context.query.topicId as string => getting id from route
   try {
     const response = await axios.get(
-      ('http://localhost:8080/topic/' + context.query.topicId) as string
+      ('https://backend-2tza.onrender.com/topic/' + context.query.topicId) as string
     );
     console.log(response.data);
     return {

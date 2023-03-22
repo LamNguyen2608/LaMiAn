@@ -70,7 +70,7 @@ const Home: NextPage = () => {
     setLoading(true);
     console.log('Trending Post');
     try {
-      axios.get('http://localhost:8080/idea').then((res) => {
+      axios.get('https://backend-2tza.onrender.com/idea').then((res) => {
         console.log('Get trending ideas', res);
         setIdeaStateValue((prev) => ({
           ...prev,

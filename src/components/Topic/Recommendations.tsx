@@ -44,7 +44,7 @@ const Recommendations: React.FC<RecommendationsProps> = () => {
         setLoading(true);
         try {
             console.log("GET TOP FOLLOWERS TOPICS");
-            axios.get('http://localhost:8080/topic/top7followers').then(res => {
+            axios.get('https://backend-2tza.onrender.com/topic/top7followers').then(res => {
                 setTopics(res.data)
             });
         } catch (error) {

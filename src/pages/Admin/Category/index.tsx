@@ -62,7 +62,7 @@ const Category: React.FC<CategoryProps> = ({ CategoryData }) => {
     try {
       if (category) {
         axios
-          .post('http://localhost:8080/cate/create', {
+          .post('https://backend-2tza.onrender.com/cate/create', {
             name: category,
           })
           .then((response) => {
@@ -93,7 +93,7 @@ const Category: React.FC<CategoryProps> = ({ CategoryData }) => {
       if (category) {
         {
           axios
-            .put('http://localhost:8080/cate/update', {
+            .put('https://backend-2tza.onrender.com/cate/update', {
               id: valueCatModal?.id,
               name: category,
             })
@@ -131,7 +131,7 @@ const Category: React.FC<CategoryProps> = ({ CategoryData }) => {
     setLoading(true);
     try {
       axios
-        .delete('http://localhost:8080/cate/delete/' + valueCatModal?.id)
+        .delete('https://backend-2tza.onrender.com/cate/delete/' + valueCatModal?.id)
         .then((response) => {
           console.log('after deleteTopic ===>', response);
           window.location.reload();
@@ -241,7 +241,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   //get topic data and pass it to cline
   //context.query.topicId as string => getting id from route
   try {
-    const response = await axios.get('http://localhost:8080/cate');
+    const response = await axios.get('https://backend-2tza.onrender.com/cate');
     console.log(response.data);
     return {
       props: {

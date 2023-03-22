@@ -46,7 +46,7 @@ const UpdateUserInfo: React.FC<updateUserProps> = ({
 }) => {
   const [allDepartments, setAllDepartments] = useState<Department[]>([]);
   useEffect(() => {
-    axios.get('http://localhost:8080/department').then((response) => {
+    axios.get('https://backend-2tza.onrender.com/department').then((response) => {
       console.log('get all departments: ', response);
       setAllDepartments(response.data);
     });

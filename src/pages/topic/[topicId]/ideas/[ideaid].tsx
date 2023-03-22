@@ -31,7 +31,7 @@ const IdeaPage: React.FC<IdeaPageProps> = () => {
     // const fetchIdea = async (idea_id: string | string[]) => {
     //     console.log("FETCHING IDEA");
     //     try {
-    //         axios.get('http://localhost:8080/idea/' + idea_id).then(
+    //         axios.get('https://backend-2tza.onrender.com/idea/' + idea_id).then(
     //             res => {
     //                 console.log("Idea fetched ==>", res.data)
     //                 setIdeaStateValue((prev) => ({

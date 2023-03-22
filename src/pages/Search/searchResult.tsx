@@ -184,8 +184,8 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   //get topic data and pass it to cline
   //context.query.topicId as string => getting id from route
   try {
-    const responseIdea = await axios.get('http://localhost:8080/idea');
-    const responseTopic = await axios.get('http://localhost:8080/topic');
+    const responseIdea = await axios.get('https://backend-2tza.onrender.com/idea');
+    const responseTopic = await axios.get('https://backend-2tza.onrender.com/topic');
     console.log(responseIdea.data);
     return {
       props: {
