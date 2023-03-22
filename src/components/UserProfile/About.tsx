@@ -48,7 +48,8 @@ const About: React.FC<UserAboutProps> = ({
   const router = useRouter();
 
   return (
-    <Box pt={pt} position="sticky" top="14px">
+
+    <Box pt={pt} position="sticky" top="14px" width='100%'>
       <Flex
         justify="space-between"
         align="center"

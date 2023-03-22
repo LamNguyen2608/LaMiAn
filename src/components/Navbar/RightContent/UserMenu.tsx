@@ -131,6 +131,7 @@ const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
               _hover={{ bg: 'gray.200', color: 'brand.800' }}
               onClick={() => signOut(auth).then(res => {
                 localStorage.setItem("currentClient", "");
+                window.location.reload();
               })}
             >
               <Flex align="center">

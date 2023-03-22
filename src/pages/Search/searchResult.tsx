@@ -49,13 +49,14 @@ type SearchInputProps = {
 };
 const formTabs: SearchItem[] = [
   {
-    title: 'Ideas',
-    icon: RiFileTextLine,
-  },
-  {
     title: 'Topic',
     icon: RiPagesFill,
   },
+  {
+    title: 'Ideas',
+    icon: RiFileTextLine,
+  },
+
 ];
 export type SearchItem = {
   title: string;
@@ -69,7 +70,7 @@ const searchResult: React.FC<SearchInputProps> = ({ ideaData, topicData }) => {
   const [ideaValue, setIdeaValue] = useState<Idea[]>([]);
   const [searchValue, setSearchValue] = useRecoilState(searchState);
   const currentSearch = useRecoilValue(searchState);
-  const getUserPostVotes = async () => {};
+  const getUserPostVotes = async () => { };
 
   useEffect(() => {
     setSearchValue((prev) => ({
@@ -94,8 +95,8 @@ const searchResult: React.FC<SearchInputProps> = ({ ideaData, topicData }) => {
                     Searched Ideas
                   </Heading>
                   <>
-                    {currentSearch.idea.length != 0 &&
-                      currentSearch.currentSearch.length > 0 ? (
+                    {currentSearch.idea?.length != 0 &&
+                      currentSearch.currentSearch?.length > 0 ? (
                       <>
                         {currentSearch.idea.map((idea: Idea, index) => (
                           <IdeaItem idea={idea} index={index} />
@@ -121,15 +122,20 @@ const searchResult: React.FC<SearchInputProps> = ({ ideaData, topicData }) => {
                     Searched Topics
                   </Heading>
                   <>
-                    {currentSearch.topic.length != 0 &&
-                      currentSearch.currentSearch.length ? (
+                    {currentSearch.topic?.length != 0 &&
+                      currentSearch.currentSearch?.length ? (
                       <>
-                        {currentSearch.topic.map((topic: Topic, index) => (
+                        {currentSearch.topic?.map((topic: Topic, index) => (
                           <TopicItem topic={topic} index={index} />
                         ))}
                       </>
                     ) : (
-                      <>no result</>
+                      <>
+                        Please search an available topic
+                        {topicData.map((topic: Topic, index) => (
+                          <TopicItem topic={topic} index={index} />
+                        ))}
+                      </>
                     )}
                   </>
                 </>

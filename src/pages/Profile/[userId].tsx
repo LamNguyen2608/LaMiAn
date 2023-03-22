@@ -16,12 +16,13 @@ import { Client, clientState } from '@/atoms/clientAtom';
 import UserHeader from '@/components/UserProfile/UserHeader';
 import About from '@/components/UserProfile/About';
 import { ArrowForwardIcon, ArrowBackIcon } from '@chakra-ui/icons';
-import { Stack } from '@chakra-ui/react';
+import { Flex, Stack } from '@chakra-ui/react';
 import ReactPaginate from 'react-paginate';
 import { useAuthState, useUpdateProfile } from 'react-firebase-hooks/auth';
 import { auth } from '@/Firebase/clientApp';
 import { useRecoilState } from 'recoil';
 import UpdateUserInfo from '@/components/UserProfile/UpdateUserInfo';
+import update from '../topic/[topicId]/ideas/update';
 
 type ProfilePageProps = {
   clientData: Client;
@@ -58,15 +59,25 @@ const userPage: React.FC<ProfilePageProps> = ({ clientData }) => {
   const [displayUpdateUserModal, setDisplayUpdateUserModal] = useState(false);
   const [loading, setLoading] = useState(false);
   const [updateForm, setUpdateForm] = useState<Client>();
+  useEffect(() => {
+    if (clientData) {
+      setUpdateForm(clientData);
+    }
+
+  }, [])
   const onChange = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+    event: React.ChangeEvent<HTMLInputElement>
   ) => {
-    //update form state
+    const {
+      target: { name, value },
+    } = event;
     setUpdateForm((prev) => ({
       ...prev,
-      [event.target.name]: event.target.value,
+      [name]: value,
     }));
+    console.log('data:', updateForm);
   };
+
   const [user] = useAuthState(auth);
   const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -117,6 +128,9 @@ const userPage: React.FC<ProfilePageProps> = ({ clientData }) => {
       <UserHeader userData={clientData} />
       <PageContent>
         <>
+          <Flex display={{ base: 'flex', md: 'none' }} mb={5} align="center">
+            <About userData={clientData} showModal={showUpdateUserModal} />
+          </Flex>
           {ideaStateValue?.Ideas?.slice(itemOffset, endOffset).map(
             (item, index) => (
               <IdeaItem idea={item} index={index} />
@@ -160,7 +174,7 @@ const userPage: React.FC<ProfilePageProps> = ({ clientData }) => {
         </>
       </PageContent>
       <UpdateUserInfo
-        userData={clientData}
+        userData={updateForm}
         showModal={displayUpdateUserModal}
         hideModal={hideUpdateUserModal}
         onChange={onChange}

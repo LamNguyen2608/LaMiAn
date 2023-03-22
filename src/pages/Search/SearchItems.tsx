@@ -1,3 +1,5 @@
+import { searchState } from '@/atoms/searchAtom';
+import { selectedState } from '@/atoms/selectedTabAtom';
 import { Topic, TopTopic } from '@/atoms/topicAtom';
 import { auth } from '@/Firebase/clientApp';
 import useTopics from '@/hooks/useTopics';
@@ -27,6 +29,7 @@ import { BiLogOut, BiLogIn, BiUserPlus } from 'react-icons/bi';
 import { BsPersonCircle } from 'react-icons/bs';
 import { FaReddit } from 'react-icons/fa';
 import { ImProfile } from 'react-icons/im';
+import { useRecoilState } from 'recoil';
 import { SearchItem } from './searchResult';
 
 type SearchItemProps = {
@@ -40,6 +43,7 @@ const SearchItems: React.FC<SearchItemProps> = ({
   selected,
   setSelectedTab,
 }) => {
+
   return (
     <Flex
       justify="center"

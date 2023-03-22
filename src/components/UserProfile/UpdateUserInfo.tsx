@@ -30,11 +30,11 @@ type updateUserProps = {
   showModal: any;
   hideModal: any;
   onChange: (
-    event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+    event: React.ChangeEvent<HTMLInputElement>
   ) => void;
   loading: boolean;
   Update: (event: React.FormEvent<HTMLFormElement>) => void;
-  userData: Client;
+  userData?: Client;
 };
 const UpdateUserInfo: React.FC<updateUserProps> = ({
   showModal,
@@ -73,7 +73,7 @@ const UpdateUserInfo: React.FC<updateUserProps> = ({
                   <Input
                     name="firstname"
                     onChange={onChange}
-                    defaultValue={userData.firstname}
+                    defaultValue={userData?.firstname}
                     fontSize="14pt"
                     placeholder="Firstname"
                     borderRadius={4}
@@ -106,7 +106,7 @@ const UpdateUserInfo: React.FC<updateUserProps> = ({
                   <Input
                     name="lastname"
                     onChange={onChange}
-                    defaultValue={userData.lastname}
+                    defaultValue={userData?.lastname}
                     fontSize="14pt"
                     placeholder="Lastname"
                     ml={4}
@@ -140,7 +140,7 @@ const UpdateUserInfo: React.FC<updateUserProps> = ({
               <Input
                 name="age"
                 onChange={onChange}
-                defaultValue={userData.age}
+                defaultValue={userData?.age}
                 fontSize="14pt"
                 placeholder="Age"
                 width="40%"
