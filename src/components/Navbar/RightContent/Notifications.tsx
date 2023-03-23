@@ -99,21 +99,23 @@ const Notifications: React.FC<NotificationsProps> = ({ user }) => {
           {myNotis.length !== 0 ? (
             <>
               {myNotis.slice(0, 7).map((noti) => (
-                <MenuItem
-                  fontSize="10pt"
-                  fontWeight={700}
-                  _hover={{ bg: 'gray.200', color: 'brand.800' }}
-                  onClick={() => {
-                    setNotiModal(true);
-                    setSelectedNoti(noti);
-                  }}
-                >
-                  <Flex align="center" key={noti.noti_id}>
-                    {noti.client_noti_title
-                      ? noti.client_noti_title
-                      : 'You have a notification!'}
-                  </Flex>
-                </MenuItem>
+                <li key={noti.noti_id}>
+                  <MenuItem
+                    fontSize="10pt"
+                    fontWeight={700}
+                    _hover={{ bg: 'gray.200', color: 'brand.800' }}
+                    onClick={() => {
+                      setNotiModal(true);
+                      setSelectedNoti(noti);
+                    }}
+                  >
+                    <Flex align="center" key={noti.noti_id}>
+                      {noti.client_noti_title
+                        ? noti.client_noti_title
+                        : 'You have a notification!'}
+                    </Flex>
+                  </MenuItem>
+                </li>
               ))}
             </>
           ) : (
