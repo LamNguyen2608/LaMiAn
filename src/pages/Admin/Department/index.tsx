@@ -154,7 +154,10 @@ const Category: React.FC<departmentProps> = ({ departmentData }) => {
     setLoading(true);
     try {
       axios
-        .delete('https://backend-2tza.onrender.com/department/delete/' + valueDepModal?.id)
+        .delete(
+          'https://backend-2tza.onrender.com/department/delete/' +
+            valueDepModal?.id
+        )
         .then((response) => {
           console.log('after deleteTopic ===>', response);
           window.location.reload();
@@ -196,30 +199,32 @@ const Category: React.FC<departmentProps> = ({ departmentData }) => {
             </Thead>
             <Tbody>
               {listDepartment.map((item) => (
-                <Tr>
-                  <Td fontSize={14} fontWeight={900}>
-                    {item.name}
-                  </Td>
-                  <Td justifyItems="center">
-                    <Icon
-                      as={AiFillEdit}
-                      fontSize={35}
-                      color="brand.900"
-                      _hover={{ color: 'blue.300' }}
-                      ml="20px"
-                      onClick={() => showUpdateCatModal(item)}
-                    />
+                <li key={item.id}>
+                  <Tr>
+                    <Td fontSize={14} fontWeight={900}>
+                      <li key={item.id}>{item.name}</li>
+                    </Td>
+                    <Td justifyItems="center">
+                      <Icon
+                        as={AiFillEdit}
+                        fontSize={35}
+                        color="brand.900"
+                        _hover={{ color: 'blue.300' }}
+                        ml="20px"
+                        onClick={() => showUpdateCatModal(item)}
+                      />
 
-                    <Icon
-                      as={AiFillDelete}
-                      fontSize={35}
-                      color="brand.900"
-                      _hover={{ color: 'red' }}
-                      ml="20px"
-                      onClick={() => showDeleteModal(item)}
-                    />
-                  </Td>
-                </Tr>
+                      <Icon
+                        as={AiFillDelete}
+                        fontSize={35}
+                        color="brand.900"
+                        _hover={{ color: 'red' }}
+                        ml="20px"
+                        onClick={() => showDeleteModal(item)}
+                      />
+                    </Td>
+                  </Tr>
+                </li>
               ))}
             </Tbody>
           </Table>
@@ -265,7 +270,9 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   //get topic data and pass it to cline
   //context.query.topicId as string => getting id from route
   try {
-    const response = await axios.get('https://backend-2tza.onrender.com/department');
+    const response = await axios.get(
+      'https://backend-2tza.onrender.com/department'
+    );
     console.log(response.data);
     return {
       props: {

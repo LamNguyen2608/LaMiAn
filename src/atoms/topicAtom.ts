@@ -43,7 +43,7 @@ interface TopicState {
   // visitedCommunities: {
   //   [key: string]: Topic;
   // };
-  currentTopic: Topic | null;
+  currentTopic: Topic | undefined;
 }
 
 // export const defaultTopic: Topic = {
@@ -57,7 +57,7 @@ export const defaultTopicState: TopicState = {
   followedTopics: [],
   initTopicsFetched: false,
   // visitedCommunities: {},
-  currentTopic: null,
+  currentTopic: undefined,
 };
 
 export const TopicState = atom<TopicState>({

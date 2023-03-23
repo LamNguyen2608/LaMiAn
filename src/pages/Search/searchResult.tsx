@@ -56,21 +56,20 @@ const formTabs: SearchItem[] = [
     title: 'Ideas',
     icon: RiFileTextLine,
   },
-
 ];
 export type SearchItem = {
   title: string;
   icon: typeof Icon.arguments;
 };
 
-const searchResult: React.FC<SearchInputProps> = ({ ideaData, topicData }) => {
+const SearchResult: React.FC<SearchInputProps> = ({ ideaData, topicData }) => {
   const [selectTab, setSelectTab] = useState(formTabs[0].title);
   const [user, loadingUser] = useAuthState(auth);
   const [loading, setLoading] = useState(false);
   const [ideaValue, setIdeaValue] = useState<Idea[]>([]);
   const [searchValue, setSearchValue] = useRecoilState(searchState);
   const currentSearch = useRecoilValue(searchState);
-  const getUserPostVotes = async () => { };
+  const getUserPostVotes = async () => {};
 
   useEffect(() => {
     setSearchValue((prev) => ({
@@ -96,17 +95,21 @@ const searchResult: React.FC<SearchInputProps> = ({ ideaData, topicData }) => {
                   </Heading>
                   <>
                     {currentSearch.idea?.length != 0 &&
-                      currentSearch.currentSearch?.length > 0 ? (
+                    currentSearch.currentSearch?.length > 0 ? (
                       <>
                         {currentSearch.idea.map((idea: Idea, index) => (
-                          <IdeaItem idea={idea} index={index} />
+                          <li key={idea.id}>
+                            <IdeaItem idea={idea} index={index} />
+                          </li>
                         ))}
                       </>
                     ) : (
                       <>
                         Please search an available idea
                         {ideaData.map((idea: Idea, index) => (
-                          <IdeaItem idea={idea} index={index} />
+                          <li key={idea.id}>
+                            <IdeaItem idea={idea} index={index} />
+                          </li>
                         ))}
                       </>
                     )}
@@ -123,17 +126,21 @@ const searchResult: React.FC<SearchInputProps> = ({ ideaData, topicData }) => {
                   </Heading>
                   <>
                     {currentSearch.topic?.length != 0 &&
-                      currentSearch.currentSearch?.length ? (
+                    currentSearch.currentSearch?.length ? (
                       <>
                         {currentSearch.topic?.map((topic: Topic, index) => (
-                          <TopicItem topic={topic} index={index} />
+                          <li key={topic.id}>
+                            <TopicItem topic={topic} index={index} />
+                          </li>
                         ))}
                       </>
                     ) : (
                       <>
                         Please search an available topic
                         {topicData.map((topic: Topic, index) => (
-                          <TopicItem topic={topic} index={index} />
+                          <li key={topic.id}>
+                            <TopicItem topic={topic} index={index} />
+                          </li>
                         ))}
                       </>
                     )}
@@ -184,8 +191,12 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   //get topic data and pass it to cline
   //context.query.topicId as string => getting id from route
   try {
-    const responseIdea = await axios.get('https://backend-2tza.onrender.com/idea');
-    const responseTopic = await axios.get('https://backend-2tza.onrender.com/topic');
+    const responseIdea = await axios.get(
+      'https://backend-2tza.onrender.com/idea'
+    );
+    const responseTopic = await axios.get(
+      'https://backend-2tza.onrender.com/topic'
+    );
     console.log(responseIdea.data);
     return {
       props: {
@@ -198,4 +209,4 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     return error;
   }
 }
-export default searchResult;
+export default SearchResult;

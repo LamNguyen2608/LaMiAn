@@ -89,7 +89,7 @@ const Home: NextPage = () => {
     //setLoading(false);
   };
 
-  const getUserPostVotes = async () => { };
+  const getUserPostVotes = async () => {};
 
   useEffect(() => {
     getTrendingPosts();
@@ -107,7 +107,9 @@ const Home: NextPage = () => {
           </Heading>
           {ideaStateValue.Ideas.slice(itemOffset, endOffset).map(
             (idea: Idea, index) => (
-              <IdeaItem idea={idea} index={index} />
+              <li key={idea.id}>
+                <IdeaItem idea={idea} index={index} />
+              </li>
             )
           )}
         </Stack>

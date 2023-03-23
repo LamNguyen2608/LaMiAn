@@ -29,7 +29,7 @@ type ProfilePageProps = {
   showModal: any;
 };
 
-const userPage: React.FC<ProfilePageProps> = ({ clientData }) => {
+const UserPage: React.FC<ProfilePageProps> = ({ clientData }) => {
   const { ideaStateValue, setIdeaStateValue } = useIdeas();
   useEffect(() => {
     setIdeaStateValue((prev) => ({
@@ -63,11 +63,8 @@ const userPage: React.FC<ProfilePageProps> = ({ clientData }) => {
     if (clientData) {
       setUpdateForm(clientData);
     }
-
-  }, [])
-  const onChange = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  }, []);
+  const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const {
       target: { name, value },
     } = event;
@@ -133,7 +130,9 @@ const userPage: React.FC<ProfilePageProps> = ({ clientData }) => {
           </Flex>
           {ideaStateValue?.Ideas?.slice(itemOffset, endOffset).map(
             (item, index) => (
-              <IdeaItem idea={item} index={index} />
+              <li key={item.id}>
+                <IdeaItem idea={item} index={index} />
+              </li>
             )
           )}
           {ideaStateValue.Ideas?.length > 0 ? (
@@ -187,7 +186,8 @@ const userPage: React.FC<ProfilePageProps> = ({ clientData }) => {
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   try {
     const response = await axios.get(
-      ('https://backend-2tza.onrender.com/client/' + context.query.userId) as string
+      ('https://backend-2tza.onrender.com/client/' +
+        context.query.userId) as string
     );
     console.log(response.data);
     return {
@@ -200,4 +200,4 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     return error;
   }
 }
-export default userPage;
+export default UserPage;
