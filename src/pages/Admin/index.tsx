@@ -12,17 +12,17 @@ import React, {
   useEffect,
 } from 'react';
 import { render } from 'react-dom';
-import { AgGridReact } from 'ag-grid-react';
-import 'ag-grid-enterprise';
-import 'ag-grid-community/styles/ag-grid.css';
-import 'ag-grid-community/styles/ag-theme-alpine.css';
-//import './style.css';
-import {
-  AgChartThemeOverrides,
-  ColDef,
-  FirstDataRenderedEvent,
-  GridApi,
-} from 'ag-grid-community';
+// import { AgGridReact } from 'ag-grid-react';
+// import 'ag-grid-enterprise';
+// import 'ag-grid-community/styles/ag-grid.css';
+// import 'ag-grid-community/styles/ag-theme-alpine.css';
+// //import './style.css';
+// import {
+//   AgChartThemeOverrides,
+//   ColDef,
+//   FirstDataRenderedEvent,
+//   GridApi,
+// } from 'ag-grid-community';
 
 import axios from 'axios';
 
@@ -39,76 +39,76 @@ const TopicPage: React.FC = ({ }) => {
       console.log(error);
     }
   }, [])
-  const [columnDefs, setColumnDefs] = useState<ColDef[]>([
-    { headerName: 'Department', field: 'department_name', chartDataType: 'category' },
-    { headerName: 'Category', field: 'cate_name', chartDataType: 'category' },
-    {
-      headerName: 'Idea',
-      field: 'idea_title',
-      maxWidth: 160,
-      aggFunc: 'sum',
-      filter: 'agNumberColumnFilter',
-      chartDataType: 'series',
-    },
-    {
-      headerName: 'Topic',
-      field: 'topic_name',
-      maxWidth: 160,
-      filter: 'agSetColumnFilter',
-      chartDataType: 'category',
-    },
-  ]);
-  const defaultColDef = useMemo<ColDef>(() => {
-    return {
-      flex: 1,
-      editable: true,
-      sortable: true,
-      filter: 'agMultiColumnFilter',
-      floatingFilter: true,
-      resizable: true,
-    };
-  }, []);
-  const chartThemes = useMemo<string[]>(() => {
-    return ['ag-pastel-dark'];
-  }, []);
-  const chartThemeOverrides = useMemo<AgChartThemeOverrides>(() => {
-    return {
-      cartesian: {
-        axes: {
-          category: {
-            label: {
-              rotation: 0
-            },
-          },
-        }
-      },
-      column: {
-        height: 400
-      },
-      bar: {
-        height: 250,
-        width: 400
-      },
-      pie: {
-        height: 399,
-        width: 400,
-      },
-    };
-  }, []);
+  // const [columnDefs, setColumnDefs] = useState<ColDef[]>([
+  //   { headerName: 'Department', field: 'department_name', chartDataType: 'category' },
+  //   { headerName: 'Category', field: 'cate_name', chartDataType: 'category' },
+  //   {
+  //     headerName: 'Idea',
+  //     field: 'idea_title',
+  //     maxWidth: 160,
+  //     aggFunc: 'sum',
+  //     filter: 'agNumberColumnFilter',
+  //     chartDataType: 'series',
+  //   },
+  //   {
+  //     headerName: 'Topic',
+  //     field: 'topic_name',
+  //     maxWidth: 160,
+  //     filter: 'agSetColumnFilter',
+  //     chartDataType: 'category',
+  //   },
+  // ]);
+  // const defaultColDef = useMemo<ColDef>(() => {
+  //   return {
+  //     flex: 1,
+  //     editable: true,
+  //     sortable: true,
+  //     filter: 'agMultiColumnFilter',
+  //     floatingFilter: true,
+  //     resizable: true,
+  //   };
+  // }, []);
+  // const chartThemes = useMemo<string[]>(() => {
+  //   return ['ag-pastel-dark'];
+  // }, []);
+  // const chartThemeOverrides = useMemo<AgChartThemeOverrides>(() => {
+  //   return {
+  //     cartesian: {
+  //       axes: {
+  //         category: {
+  //           label: {
+  //             rotation: 0
+  //           },
+  //         },
+  //       }
+  //     },
+  //     column: {
+  //       height: 400
+  //     },
+  //     bar: {
+  //       height: 250,
+  //       width: 400
+  //     },
+  //     pie: {
+  //       height: 399,
+  //       width: 400,
+  //     },
+  //   };
+  // }, []);
 
-  const onFirstDataRendered = useCallback((params: FirstDataRenderedEvent) => {
-    createQuarterlySalesChart(params.api);
-    createSalesByRefChart(params.api);
-    createHandsetSalesChart(params.api);
-  }, []);
+  // const onFirstDataRendered = useCallback((params: FirstDataRenderedEvent) => {
+  //   createQuarterlySalesChart(params.api);
+  //   createSalesByRefChart(params.api);
+  //   createHandsetSalesChart(params.api);
+  // }, []);
 
   return (
     <AdminPageContent>
       <>
-        <div id="barChart" className="ag-theme-alpine-dark"></div>
+        {/* <div id="barChart" className="ag-theme-alpine-dark"></div> */}
       </>
       <>
-        <div style={gridStyle} className="ag-theme-alpine-dark">
+        {/* <div style={gridStyle} className="ag-theme-alpine-dark">
           <AgGridReact
             rowData={rowData}
             columnDefs={columnDefs}
@@ -118,13 +118,13 @@ const TopicPage: React.FC = ({ }) => {
             chartThemeOverrides={chartThemeOverrides}
             onFirstDataRendered={onFirstDataRendered}
           ></AgGridReact>
-        </div>
+        </div> */}
       </>
       <>
-        <div id="columnChart" className="ag-theme-alpine-dark"></div>
+        {/* <div id="columnChart" className="ag-theme-alpine-dark"></div> */}
       </>
       <>
-        <div id="pieChart" className="ag-theme-alpine-dark"></div>
+        {/* <div id="pieChart" className="ag-theme-alpine-dark"></div> */}
       </>
       <>
         <AdminButtonFunc />
@@ -132,85 +132,85 @@ const TopicPage: React.FC = ({ }) => {
     </AdminPageContent>
   );
 };
-function createQuarterlySalesChart(gridApi: GridApi) {
-  gridApi.createCrossFilterChart({
-    chartType: 'column',
-    cellRange: {
-      columns: ['topic_name', 'idea_title'],
-    },
-    aggFunc: 'count',
-    chartThemeOverrides: {
-      common: {
-        title: {
-          enabled: true,
-          text: 'Number of Ideas by Topic',
-        },
-        legend: {
-          enabled: false,
-        },
-        axes: {
-          category: {
-            label: {
-              enabled: false,
-              rotation: 0,
-            },
-          },
-        },
-      },
-    },
-    chartContainer: document.querySelector('#columnChart') as any,
-  });
-}
+// function createQuarterlySalesChart(gridApi: GridApi) {
+//   gridApi.createCrossFilterChart({
+//     chartType: 'column',
+//     cellRange: {
+//       columns: ['topic_name', 'idea_title'],
+//     },
+//     aggFunc: 'count',
+//     chartThemeOverrides: {
+//       common: {
+//         title: {
+//           enabled: true,
+//           text: 'Number of Ideas by Topic',
+//         },
+//         legend: {
+//           enabled: false,
+//         },
+//         axes: {
+//           category: {
+//             label: {
+//               enabled: false,
+//               rotation: 0,
+//             },
+//           },
+//         },
+//       },
+//     },
+//     chartContainer: document.querySelector('#columnChart') as any,
+//   });
+// }
 
-function createSalesByRefChart(gridApi: GridApi) {
-  gridApi.createCrossFilterChart({
-    chartType: 'pie',
-    cellRange: {
-      columns: ['department_name', 'idea_title'],
-    },
-    aggFunc: 'count',
-    chartThemeOverrides: {
-      common: {
-        title: {
-          enabled: true,
-          text: 'Number of Ideas by Department',
-        },
-      },
-      pie: {
-        series: {
-          title: {
-            enabled: false,
-          },
-          calloutLabel: {
-            enabled: false,
-          },
-          //strokes: []
-        },
-      },
-    },
-    chartContainer: document.querySelector('#pieChart') as any,
-  });
-}
+// function createSalesByRefChart(gridApi: GridApi) {
+//   gridApi.createCrossFilterChart({
+//     chartType: 'pie',
+//     cellRange: {
+//       columns: ['department_name', 'idea_title'],
+//     },
+//     aggFunc: 'count',
+//     chartThemeOverrides: {
+//       common: {
+//         title: {
+//           enabled: true,
+//           text: 'Number of Ideas by Department',
+//         },
+//       },
+//       pie: {
+//         series: {
+//           title: {
+//             enabled: false,
+//           },
+//           calloutLabel: {
+//             enabled: false,
+//           },
+//           //strokes: []
+//         },
+//       },
+//     },
+//     chartContainer: document.querySelector('#pieChart') as any,
+//   });
+// }
 
-function createHandsetSalesChart(gridApi: GridApi) {
-  gridApi.createCrossFilterChart({
-    chartType: 'bar',
-    cellRange: {
-      columns: ['cate_name', 'idea_title'],
-    },
-    aggFunc: 'count',
-    chartThemeOverrides: {
-      common: {
-        title: {
-          enabled: true,
-          text: 'Number of Ideas by Category',
-        },
-        legend: {
-          enabled: false,
-        },
-      },
-    },
-    chartContainer: document.querySelector('#barChart') as any,
-  });
-}
+// function createHandsetSalesChart(gridApi: GridApi) {
+//   gridApi.createCrossFilterChart({
+//     chartType: 'bar',
+//     cellRange: {
+//       columns: ['cate_name', 'idea_title'],
+//     },
+//     aggFunc: 'count',
+//     chartThemeOverrides: {
+//       common: {
+//         title: {
+//           enabled: true,
+//           text: 'Number of Ideas by Category',
+//         },
+//         legend: {
+//           enabled: false,
+//         },
+//       },
+//     },
+//     chartContainer: document.querySelector('#barChart') as any,
+//   });
+// }
 export default TopicPage;
