@@ -21,43 +21,10 @@ import safeJsonStringify from 'safe-json-stringify';
 
 type SearchInputProps = {};
 
-const SearchInput: React.FC<SearchInputProps> = ({ }) => {
+const SearchInput: React.FC<SearchInputProps> = ({}) => {
   const [value, setValue] = useState('');
   const [search, setSearch] = useRecoilState(searchState);
   const { ideaStateValue } = useIdeas();
-
-  const getIdea = async () => {
-    console.log('Idea');
-    try {
-      axios.get('http://localhost:8080/idea').then((res) => {
-        console.log('Get ideas', res);
-        setSearch((prev) => ({
-          ...prev,
-          allIdea: res.data,
-        }));
-      });
-    } catch (error) {
-      console.log('Get trending ideas error', error);
-    }
-  };
-  const getTopic = async () => {
-    console.log('Idea');
-    try {
-      axios.get('http://localhost:8080/topic').then((res) => {
-        console.log('Get ideas', res);
-        setSearch((prev) => ({
-          ...prev,
-          allTopic: res.data,
-        }));
-      });
-    } catch (error) {
-      console.log('Get trending ideas error', error);
-    }
-  };
-  useEffect(() => {
-    getIdea();
-    getTopic();
-  }, [ideaStateValue]);
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const {
       target: { name, value },
@@ -88,7 +55,7 @@ const SearchInput: React.FC<SearchInputProps> = ({ }) => {
     >
       <InputGroup>
         <InputLeftElement
-          children={<SearchIcon color="grey" mb={1.5} />}
+          // children={<SearchIcon color="grey" mb={1.5} />}
           cursor="pointer"
         />
         <Input

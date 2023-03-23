@@ -51,7 +51,7 @@ const CreateTopicForm: React.FC = () => {
             newTopic.imageURL = url as string;
             console.log('newPost===>', newTopic);
             axios
-              .post('http://localhost:8080/topic/create', newTopic)
+              .post('https://backend-2tza.onrender.com/topic/create', newTopic)
               .then((response) => {
                 console.log('after creating topic ===>', response);
                 setLoading(false);
@@ -62,7 +62,7 @@ const CreateTopicForm: React.FC = () => {
       } else {
         console.log('newTopic===>', newTopic);
         axios
-          .post('http://localhost:8080/topic/create', newTopic)
+          .post('https://backend-2tza.onrender.com/topic/create', newTopic)
           .then((response) => {
             console.log('after creating topic ===>', response);
             setLoading(false);

@@ -18,7 +18,7 @@ const CategorySelection: React.FC<CategoryProps> = ({ setSelectedTab, selectedCa
   const [loadingCat, setLoadingCat] = useState(true);
 
   useEffect(() => {
-    axios.get('http://localhost:8080/cate').then(response => {
+    axios.get('https://backend-2tza.onrender.com/cate').then(response => {
       console.log("Get all categories ===>", response.data);
       let listCategories = response.data.map((item: { id: number; name: string; }) => ({
         value: item.id.toString(),

@@ -47,7 +47,7 @@ const useIdeas = () => {
         try {
             if (existingVoteIndex === -1) {
                 updatedIdeaVotes = [...updatedIdeaVotes, newReaction]
-                axios.post('http://localhost:8080/idea/reaction', {
+                axios.post('https://backend-2tza.onrender.com/idea/reaction', {
                     "reaction": newReaction.reaction,
                     "client_id": user.uid,
                     "idea_id": idea.id
@@ -63,7 +63,7 @@ const useIdeas = () => {
             } else {
                 console.log("Update VOTE!!! ==>", newReaction);
 
-                axios.put('http://localhost:8080/idea/reaction/update', {
+                axios.put('https://backend-2tza.onrender.com/idea/reaction/update', {
                     "reaction": newReaction.reaction,
                     "client_id": user.uid,
                     "idea_id": idea.id
@@ -93,7 +93,7 @@ const useIdeas = () => {
     const onDeleteIdea = async (index: number, topicId: string) => {
         let deletedIdea = [...ideaStateValue.Ideas];
         try {
-            axios.delete('http://localhost:8080/idea/delete/' + deletedIdea.splice(index, 1)[0].id).then(res => {
+            axios.delete('https://backend-2tza.onrender.com/idea/delete/' + deletedIdea.splice(index, 1)[0].id).then(res => {
                 setIdeaStateValue((prev) => ({
                     ...prev,
                     Ideas: deletedIdea
@@ -109,7 +109,7 @@ const useIdeas = () => {
     const getMyReactions = async () => {
         setLoading(true);
         try {
-            const response = await axios.get('http://localhost:8080/client/reaction/' + user?.uid)
+            const response = await axios.get('https://backend-2tza.onrender.com/client/reaction/' + user?.uid)
             setIdeaStateValue((prev) => ({
                 ...prev,
                 IdeaVotes: response.data
@@ -124,7 +124,7 @@ const useIdeas = () => {
     async function onEditComment(comment: Comment, editComment: string, index: number) {
         let updateComment = JSON.parse(JSON.stringify(ideaStateValue.Ideas));
 
-        axios.put('http://localhost:8080/idea/comment/update', {
+        axios.put('https://backend-2tza.onrender.com/idea/comment/update', {
             id: comment.id,
             comment: editComment,
             isAnonymous: comment.isAnonymous
@@ -141,7 +141,7 @@ const useIdeas = () => {
     async function onDeleteComment(comment: Comment, index: number) {
         let updateComment = JSON.parse(JSON.stringify(ideaStateValue.Ideas));
 
-        axios.delete('http://localhost:8080/idea/comment/delete/' + comment.id)
+        axios.delete('https://backend-2tza.onrender.com/idea/comment/delete/' + comment.id)
             .then(res => {
                 updateComment[ideaStateValue.selectedIdeaIndex].comments.splice(index, 1);
                 setIdeaStateValue((prev) => ({

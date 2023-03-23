@@ -5,22 +5,19 @@ import useIdeas from '@/hooks/useIdeas';
 import React from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 
-type updateProps = {
+type updateProps = {};
 
+const Update: React.FC<updateProps> = () => {
+  const [user, loadingUser] = useAuthState(auth);
+  const { ideaStateValue, updateIdea } = useIdeas();
+  console.log('Update idea ======>', updateIdea);
+  return (
+    <PageContent>
+      <>
+        <NewPostForm user={user} updateIdea={ideaStateValue.selectedIdea} />
+      </>
+      <></>
+    </PageContent>
+  );
 };
-
-const update: React.FC<updateProps> = () => {
-    const [user, loadingUser] = useAuthState(auth);
-    const { ideaStateValue, updateIdea } = useIdeas();
-    console.log("Update idea ======>", updateIdea);
-    return (
-        <PageContent>
-            <>
-                <NewPostForm user={user} updateIdea={ideaStateValue.selectedIdea} />
-            </>
-            <></>
-        </PageContent>
-
-    )
-}
-export default update;
+export default Update;

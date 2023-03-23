@@ -16,6 +16,7 @@ import {
 import UploadUserPhoto from './UploadUserPhoto';
 import { updateProfile, User } from 'firebase/auth';
 import { useAuthState } from 'react-firebase-hooks/auth';
+import { useDragControls } from 'framer-motion';
 
 type HeaderProps = {
   userData: Client;
@@ -145,12 +146,27 @@ const UserHeader: React.FC<HeaderProps> = ({ userData }) => {
             )}
             <Flex padding="10px 16px">
               <Flex direction="column" mr={6}>
-                <Text fontWeight={800} fontSize="20pt">
-                  {user?.displayName || user?.email}
-                </Text>
-                <Text fontWeight={500} color="brand.900" fontSize="9pt">
-                  {userData.ideas.length} ideas{' '}
-                </Text>
+                {userData.firstname && userData.lastname ? (<>
+                  <Text fontWeight={800} fontSize="20pt">
+                    {userData.firstname} {userData.lastname}
+                  </Text>
+                </>) : (<> <Text fontWeight={800} fontSize="20pt">
+                  {user?.displayName || user?.email?.split('@')[0]}
+                </Text></>)}
+
+                {userData?.ideas?.length > 0 ? (
+                  <>
+                    <Text fontWeight={500} color="brand.900" fontSize="9pt">
+                      {userData?.ideas?.length} ideas{' '}
+                    </Text>
+                  </>
+                ) : (
+                  <>
+                    <Text fontWeight={500} color="brand.900" fontSize="9pt">
+                      0 ideas{' '}
+                    </Text>
+                  </>
+                )}
               </Flex>
             </Flex>
           </Flex>

@@ -20,7 +20,7 @@ import useIdeas from '@/hooks/useIdeas';
 
 type NewPostForm = {
   user: User;
-  updateIdea?: Idea
+  updateIdea: Idea;
 };
 
 const formTabs: TabItem[] = [
@@ -38,8 +38,8 @@ const formTabs: TabItem[] = [
   },
   {
     title: 'Terms & Condition',
-    icon: FaPollH
-  }
+    icon: FaPollH,
+  },
 ];
 export type TabItem = {
   title: string;
@@ -52,28 +52,35 @@ const NewPostForm: React.FC<NewPostForm> = ({ user, updateIdea }) => {
     title: '',
     body: '',
   });
-  const [selectedFile, setSelectedFile] = useState<string>("");
-  let test = updateIdea && updateIdea.idea_cate.map((cate) => ({
-    value: cate.cate_id.id as unknown as string,
-    label: cate.cate_id.name
-  }))
-  const [selectedCategory, setSelectedCategory] = useState<{ value: string; label: string }[]>(test ? test : []);
+  const [selectedFile, setSelectedFile] = useState<string>('');
+  let test =
+    updateIdea &&
+    updateIdea.idea_cate.map((cate) => ({
+      value: cate.cate_id.id as unknown as string,
+      label: cate.cate_id.name,
+    }));
+  const [selectedCategory, setSelectedCategory] = useState<
+    { value: string; label: string }[]
+  >(test ? test : []);
   const [agree, setAgree] = useState(false);
   const [anonymous, isAnonymous] = useState(false);
   const [loading, setLoading] = useState(false);
   const { ideaStateValue, setIdeaStateValue } = useIdeas();
   const handleCreatePost = async () => {
     setLoading(true);
-    console.log("first", selectedCategory.map(item => item.value))
+    console.log(
+      'first',
+      selectedCategory.map((item) => item.value)
+    );
     const { topicId } = router.query;
     const newPost = {
       name: textInputs.title,
       body: textInputs.body,
-      attached_path: "",
+      attached_path: '',
       client_id: user?.uid,
       topic_id: parseInt(topicId as string),
       isAnonymous: anonymous,
-      categories: selectedCategory.map(item => item.value)
+      categories: selectedCategory.map((item) => item.value),
     };
 
     try {
@@ -84,20 +91,22 @@ const NewPostForm: React.FC<NewPostForm> = ({ user, updateIdea }) => {
           console.log('result of uploading image ====>', result);
           getDownloadURL(imageRef).then((url) => {
             newPost.attached_path = url as string;
-            console.log("newPost===>", newPost);
-            axios.post('http://localhost:8080/idea/create', newPost)
-              .then(response => {
-                console.log("after creating idea ===>", response);
+            console.log('newPost===>', newPost);
+            axios
+              .post('https://backend-2tza.onrender.com/idea/create', newPost)
+              .then((response) => {
+                console.log('after creating idea ===>', response);
                 setLoading(false);
                 router.back();
               });
           });
         });
       } else {
-        console.log("newPost===>", newPost);
-        axios.post('http://localhost:8080/idea/create', newPost)
-          .then(response => {
-            console.log("after creating idea ===>", response);
+        console.log('newPost===>', newPost);
+        axios
+          .post('https://backend-2tza.onrender.com/idea/create', newPost)
+          .then((response) => {
+            console.log('after creating idea ===>', response);
             setLoading(false);
             router.back();
           });
@@ -119,48 +128,49 @@ const NewPostForm: React.FC<NewPostForm> = ({ user, updateIdea }) => {
       client_id: user?.uid,
       topic_id: parseInt(topicId as string),
       isAnonymous: anonymous,
-      categories: selectedCategory.map(item => parseInt(item.value))
+      categories: selectedCategory.map((item) => parseInt(item.value)),
     };
 
     try {
       //image URL
       let updatedIdea = JSON.parse(JSON.stringify(ideaStateValue.Ideas));
-      if (selectedFile && !selectedFile.startsWith("http")) {
+      if (selectedFile && !selectedFile.startsWith('http')) {
         const imageRef = ref(storage, `Ideas/` + uuid());
         uploadString(imageRef, selectedFile, 'data_url').then((result) => {
-          console.log("result of uploading image ====>", result);
+          console.log('result of uploading image ====>', result);
           getDownloadURL(imageRef).then((url) => {
             updatePost.attached_path = url as string;
-            console.log("updatePost===>", updatePost);
-            axios.put('http://localhost:8080/idea/update', updatePost)
-              .then(response => {
-                console.log("after creating idea ===>", response);
+            console.log('updatePost===>', updatePost);
+            axios
+              .put('https://backend-2tza.onrender.com/idea/update', updatePost)
+              .then((response) => {
+                console.log('after creating idea ===>', response);
                 updatedIdea[ideaStateValue.selectedIdeaIndex] = response.data;
                 setIdeaStateValue((prev) => ({
                   ...prev,
-                  Ideas: updatedIdea
+                  Ideas: updatedIdea,
                 }));
               });
           });
-
-        })
+        });
       } else {
-        console.log("updatePost===>", updatePost);
-        axios.put('http://localhost:8080/idea/update', updatePost)
-          .then(response => {
-            console.log("after creating idea ===>", response);
+        console.log('updatePost===>', updatePost);
+        axios
+          .put('https://backend-2tza.onrender.com/idea/update', updatePost)
+          .then((response) => {
+            console.log('after creating idea ===>', response);
             updatedIdea[ideaStateValue.selectedIdeaIndex] = response.data;
             setIdeaStateValue((prev) => ({
               ...prev,
-              Ideas: updatedIdea
+              Ideas: updatedIdea,
             }));
           });
       }
     } catch (error: any) {
-      console.log("handleCreatePost error check", error.message)
+      console.log('handleCreatePost error check', error.message);
       setLoading(false);
       //router.back();
-    };
+    }
     setLoading(false);
     router.back();
   };
@@ -193,18 +203,18 @@ const NewPostForm: React.FC<NewPostForm> = ({ user, updateIdea }) => {
   };
   const anonymousHandler = () => {
     isAnonymous(!anonymous);
-  }
+  };
 
   useEffect(() => {
     if (updateIdea) {
       setTextInputs({
         title: updateIdea.name,
-        body: updateIdea.body
-      })
-      setSelectedFile(updateIdea.attached_path ? updateIdea.attached_path : "");
+        body: updateIdea.body,
+      });
+      setSelectedFile(updateIdea.attached_path ? updateIdea.attached_path : '');
       isAnonymous(updateIdea.isAnonymous);
     }
-  }, [])
+  }, []);
   return (
     <Flex direction="column" bg="white" borderRadius={4} mt={2}>
       <Flex width="100%">
@@ -223,7 +233,8 @@ const NewPostForm: React.FC<NewPostForm> = ({ user, updateIdea }) => {
             textInputs={textInputs}
             onChange={onTextChange}
             loading={loading}
-            setSelectedTab={setSelectTab} />
+            setSelectedTab={setSelectTab}
+          />
         )}
         {selectTab === 'File Upload' && (
           <ImageUpload
@@ -250,7 +261,8 @@ const NewPostForm: React.FC<NewPostForm> = ({ user, updateIdea }) => {
             loading={loading}
             title_input={textInputs.title}
             isUpdate={updateIdea ? true : false}
-            handleUpdatePost={handleUpdatePost} />
+            handleUpdatePost={handleUpdatePost}
+          />
         )}
       </Flex>
     </Flex>

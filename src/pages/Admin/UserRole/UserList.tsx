@@ -92,7 +92,7 @@ const UserList: React.FC<roleProps> = ({ UserData }) => {
       if (userRole) {
         {
           axios
-            .put('http://localhost:8080/client/update', {
+            .put('https://backend-2tza.onrender.com/client/update', {
               id: valueRoleModal?.id,
               email: valueRoleModal?.email,
               firstname: valueRoleModal?.firstname,
@@ -151,24 +151,26 @@ const UserList: React.FC<roleProps> = ({ UserData }) => {
             </Thead>
             <Tbody>
               {userList.map((item) => (
-                <Tr>
-                  <Td fontWeight={900}>{item.firstname}</Td>
-                  <Td>{item.lastname}</Td>
-                  <Td>{item.email}</Td>
-                  <Td>{item.age}</Td>
-                  <Td>{item.pronoun}</Td>
-                  <Td>{item.role}</Td>
-                  <Td justifyItems="center">
-                    <Icon
-                      as={AiFillEdit}
-                      fontSize={40}
-                      color="gray.400"
-                      _hover={{ color: 'blue.300' }}
-                      ml="20px"
-                      onClick={() => showUpdateRole(item)}
-                    />
-                  </Td>
-                </Tr>
+                <li key={item.id}>
+                  <Tr>
+                    <Td fontWeight={900}>{item.firstname}</Td>
+                    <Td>{item.lastname}</Td>
+                    <Td>{item.email}</Td>
+                    <Td>{item.age}</Td>
+                    <Td>{item.pronoun}</Td>
+                    <Td>{item.role}</Td>
+                    <Td justifyItems="center">
+                      <Icon
+                        as={AiFillEdit}
+                        fontSize={40}
+                        color="gray.400"
+                        _hover={{ color: 'blue.300' }}
+                        ml="20px"
+                        onClick={() => showUpdateRole(item)}
+                      />
+                    </Td>
+                  </Tr>
+                </li>
               ))}
             </Tbody>
           </Table>
@@ -189,7 +191,9 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   //get topic data and pass it to cline
   //context.query.topicId as string => getting id from route
   try {
-    const response = await axios.get('http://localhost:8080/client');
+    const response = await axios.get(
+      'https://backend-2tza.onrender.com/client'
+    );
     console.log(response.data);
     return {
       props: {

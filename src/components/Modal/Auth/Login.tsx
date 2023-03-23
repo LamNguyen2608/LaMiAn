@@ -4,6 +4,7 @@ import { ideaState } from "@/atoms/ideaAtom";
 import IdeaItem from "@/components/Posts/IdeaItem";
 import { auth } from "@/Firebase/clientApp";
 import { FIREBASE_ERROR } from "@/Firebase/error";
+import useClient from "@/hooks/useClient";
 import { border, Button, Flex, Input, Text } from "@chakra-ui/react";
 import axios from "axios";
 import React, { useState } from "react";
@@ -24,14 +25,14 @@ const Login: React.FC<LoginProps> = () => {
     loading,
     error,
   ] = useSignInWithEmailAndPassword(auth);
-  const [clientStateValue, setClientStateValue] = useRecoilState(clientState);
+  const { clientStateValue, setClientStateValue, resetUserInfo } = useClient();
 
   //Firebase 
   const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     signInWithEmailAndPassword(loginForm.email, loginForm.password).then(
       res => {
-        axios.get('http://localhost:8080/client/' + res?.user.uid).then(
+        axios.get('https://backend-2tza.onrender.com/client/' + res?.user.uid).then(
           client => {
             console.log("log in client ==>", client);
             localStorage.setItem("currentClient", JSON.stringify(client.data));

@@ -53,8 +53,8 @@ const Home: NextPage = () => {
   const itemsPerPage = 3;
   const endOffset = itemOffset + itemsPerPage;
   console.log(`Loading items from ${itemOffset} to ${endOffset}`);
-  const currentItems = ideaStateValue.Ideas.slice(itemOffset, endOffset);
-  const pageCount = Math.ceil(ideaStateValue.Ideas.length / itemsPerPage);
+  // const currentItems = ideaStateValue.Ideas.slice(itemOffset, endOffset);
+  const pageCount = Math.ceil(ideaStateValue.Ideas?.length / itemsPerPage);
 
   // Invoke when user click to request another page.
   const handlePageClick = (event: any) => {
@@ -70,7 +70,7 @@ const Home: NextPage = () => {
     setLoading(true);
     console.log('Trending Post');
     try {
-      axios.get('http://localhost:8080/idea').then((res) => {
+      axios.get('https://backend-2tza.onrender.com/idea').then((res) => {
         console.log('Get trending ideas', res);
         setIdeaStateValue((prev) => ({
           ...prev,
@@ -89,43 +89,11 @@ const Home: NextPage = () => {
     //setLoading(false);
   };
 
-  const getUserPostVotes = async () => { };
+  const getUserPostVotes = async () => {};
 
   useEffect(() => {
     getTrendingPosts();
   }, []);
-
-  // useEffect(() => {
-  //   /**
-  //    * initSnippetsFetched ensures that user snippets have been retrieved;
-  //    * the value is set to true when snippets are first retrieved inside
-  //    * of getSnippets in useCommunityData
-  //    */
-  //   if (!communityStateValue.initSnippetsFetched) return;
-
-  //   if (user) {
-  //     getUserHomePosts();
-  //   }
-  // }, [user, communityStateValue.initSnippetsFetched]);
-
-  // useEffect(() => {
-  //   if (!user && !loadingUser) {
-  //     getNoUserHomePosts();
-  //   }
-  // }, [user, loadingUser]);
-
-  // useEffect(() => {
-  //   if (!user?.uid || !postStateValue.posts.length) return;
-  //   getUserPostVotes();
-
-  //   // Clear postVotes on dismount
-  //   return () => {
-  //     setPostStateValue((prev) => ({
-  //       ...prev,
-  //       postVotes: [],
-  //     }));
-  //   };
-  // }, [postStateValue.posts, user?.uid]);
 
   return (
     <PageContentLayout>
@@ -137,9 +105,13 @@ const Home: NextPage = () => {
           >
             Top Trending Ideas
           </Heading>
-          {currentItems.map((idea: Idea, index) => (
-            <IdeaItem idea={idea} index={index} />
-          ))}
+          {ideaStateValue.Ideas.slice(itemOffset, endOffset).map(
+            (idea: Idea, index) => (
+              <li key={idea.id}>
+                <IdeaItem idea={idea} index={index} />
+              </li>
+            )
+          )}
         </Stack>
         <Stack
           width="70%"

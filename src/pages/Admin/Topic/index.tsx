@@ -47,7 +47,10 @@ const TopicList: React.FC<topicProps> = ({ TopicData }) => {
     setLoading(true);
     try {
       axios
-        .delete('http://localhost:8080/topic/delete/' + valueTopicModal?.id)
+        .delete(
+          'https://backend-2tza.onrender.com/topic/delete/' +
+            valueTopicModal?.id
+        )
         .then((response) => {
           console.log('after deleteTopic ===>', response);
           window.location.reload();
@@ -92,44 +95,60 @@ const TopicList: React.FC<topicProps> = ({ TopicData }) => {
             </Thead>
             <Tbody>
               {topicList.map((item) => (
-                <Tr>
-                  <Td fontWeight={900}>{item.name}</Td>
-                  <Td>{item.modifyDate}</Td>
-                  <Td>{item.topic_closure_date?.split('T').join(' ')}</Td>
-                  <Td>{item.final_closure_date?.split('T').join(' ')}</Td>
-                  <Td>Open</Td>
-                  <Td justifyItems="center">
-                    <Icon
-                      as={AiFillInfoCircle}
-                      fontSize={40}
-                      color="gray.400"
-                      _hover={{ color: 'yellow' }}
-                      onClick={(e) =>
-                        router.push('/Admin/Topic/' + item.id + '/TopicDetails')
-                      }
-                    />
+                <li key={item.id}>
+                  <Tr>
+                    <Td fontWeight={900}>
+                      <li key={item.id}>{item.name}</li>
+                    </Td>
+                    <Td>
+                      <li key={item.id}>{item.modifyDate}</li>
+                    </Td>
+                    <Td>
+                      <li key={item.id}>
+                        {item.topic_closure_date?.split('T').join(' ')}
+                      </li>
+                    </Td>
+                    <Td>
+                      <li key={item.id}>
+                        {item.final_closure_date?.split('T').join(' ')}
+                      </li>
+                    </Td>
+                    <Td>Open</Td>
+                    <Td justifyItems="center">
+                      <Icon
+                        as={AiFillInfoCircle}
+                        fontSize={40}
+                        color="gray.400"
+                        _hover={{ color: 'yellow' }}
+                        onClick={(e) =>
+                          router.push(
+                            '/Admin/Topic/' + item.id + '/TopicDetails'
+                          )
+                        }
+                      />
 
-                    <Icon
-                      as={AiFillEdit}
-                      fontSize={40}
-                      color="gray.400"
-                      _hover={{ color: 'blue.300' }}
-                      ml="20px"
-                      onClick={(e) =>
-                        router.push('/Admin/Topic/' + item.id + '/TopicEdit')
-                      }
-                    />
+                      <Icon
+                        as={AiFillEdit}
+                        fontSize={40}
+                        color="gray.400"
+                        _hover={{ color: 'blue.300' }}
+                        ml="20px"
+                        onClick={(e) =>
+                          router.push('/Admin/Topic/' + item.id + '/TopicEdit')
+                        }
+                      />
 
-                    <Icon
-                      as={AiFillDelete}
-                      fontSize={40}
-                      color="gray.400"
-                      _hover={{ color: 'red' }}
-                      ml="20px"
-                      onClick={() => showDeleteModal(item)}
-                    />
-                  </Td>
-                </Tr>
+                      <Icon
+                        as={AiFillDelete}
+                        fontSize={40}
+                        color="gray.400"
+                        _hover={{ color: 'red' }}
+                        ml="20px"
+                        onClick={() => showDeleteModal(item)}
+                      />
+                    </Td>
+                  </Tr>
+                </li>
               ))}
             </Tbody>
           </Table>
@@ -148,7 +167,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   //get topic data and pass it to cline
   //context.query.topicId as string => getting id from route
   try {
-    const response = await axios.get('http://localhost:8080/topic');
+    const response = await axios.get('https://backend-2tza.onrender.com/topic');
     console.log(response.data);
     return {
       props: {

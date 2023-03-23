@@ -30,8 +30,11 @@ type UserMenuProps = {
 
 const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
   const setAuthModalState = useSetRecoilState(authModalState);
+  const logOut = () => {
+    signOut(auth);
+    router.push('/');
+  };
   const { clientStateValue, resetUserInfo } = useClient();
-
   return (
     <Menu>
       <MenuButton onClick={() => resetUserInfo()}>
@@ -90,7 +93,7 @@ const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
               )}
 
               <Text fontSize={12} fontWeight={700}>
-                {user?.displayName || user.email}
+                {user?.displayName || user?.email?.split('@')[0]}
               </Text>
             </Flex>
             <MenuDivider />
@@ -128,6 +131,7 @@ const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
               _hover={{ bg: 'gray.200', color: 'brand.800' }}
               onClick={() => signOut(auth).then(res => {
                 localStorage.setItem("currentClient", "");
+                window.location.reload();
               })}
             >
               <Flex align="center">

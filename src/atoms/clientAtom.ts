@@ -1,5 +1,5 @@
-import { atom } from "recoil";
-import { Idea } from "./ideaAtom";
+import { atom } from 'recoil';
+import { Idea } from './ideaAtom';
 
 export type Client = {
   id: string;
@@ -31,14 +31,14 @@ export type Client = {
   }[];
 };
 export interface ClientState {
-  currentClient: Client | undefined;
+  currentClient: Client | null;
 }
 
 const defaultClientState: ClientState = {
-  currentClient: undefined,
+  currentClient: null,
 };
 
 export const clientState = atom<ClientState>({
-  key: "ClientState",
+  key: 'ClientState',
   default: defaultClientState,
 });

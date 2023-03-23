@@ -59,9 +59,13 @@ const TopicPage: React.FC<TopicPageProps> = ({ topicData }) => {
           {/* {new Date(topicData.topic_closure_date).getTime() > new Date().getTime()
                         ? (<CreatePostForm />) : null} */}
           <CreatePostForm />
-          {ideaStateValue.Ideas.slice(itemOffset, endOffset).map((item, index) => (
-            <IdeaItem idea={item} index={index} />
-          ))}
+          {ideaStateValue.Ideas.slice(itemOffset, endOffset).map(
+            (item, index) => (
+              <li key={item.id}>
+                <IdeaItem idea={item} index={index} />
+              </li>
+            )
+          )}
           <Stack
             width="70%"
             justify="space-evenly"

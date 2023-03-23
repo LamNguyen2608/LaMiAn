@@ -44,16 +44,17 @@ import TopicItem from '@/components/Topic/TopicItem';
 // import PersonalHome from "../components/Community/PersonalHome";
 
 type SearchInputProps = {
-  SearchData: Idea[];
+  ideaData: Idea[];
+  topicData: Topic[];
 };
 const formTabs: SearchItem[] = [
   {
-    title: 'Ideas',
-    icon: RiFileTextLine,
-  },
-  {
     title: 'Topic',
     icon: RiPagesFill,
+  },
+  {
+    title: 'Ideas',
+    icon: RiFileTextLine,
   },
 ];
 export type SearchItem = {
@@ -61,18 +62,21 @@ export type SearchItem = {
   icon: typeof Icon.arguments;
 };
 
-const searchResult: React.FC<SearchInputProps> = ({ SearchData }) => {
+const SearchResult: React.FC<SearchInputProps> = ({ ideaData, topicData }) => {
   const [selectTab, setSelectTab] = useState(formTabs[0].title);
   const [user, loadingUser] = useAuthState(auth);
   const [loading, setLoading] = useState(false);
-  const [ideaStateValue, setIdeaStateValue] = useState<Idea[]>([]);
+  const [ideaValue, setIdeaValue] = useState<Idea[]>([]);
+  const [searchValue, setSearchValue] = useRecoilState(searchState);
   const currentSearch = useRecoilValue(searchState);
-
-
-  const getUserPostVotes = async () => { };
+  const getUserPostVotes = async () => {};
 
   useEffect(() => {
-    setIdeaStateValue(SearchData);
+    setSearchValue((prev) => ({
+      ...prev,
+      allIdea: ideaData,
+      allTopic: topicData,
+    }));
   }, []);
 
   return (
@@ -90,15 +94,24 @@ const searchResult: React.FC<SearchInputProps> = ({ SearchData }) => {
                     Searched Ideas
                   </Heading>
                   <>
-                    {currentSearch.idea.length != 0 &&
-                      currentSearch.currentSearch.length > 0 ? (
+                    {currentSearch.idea?.length != 0 &&
+                    currentSearch.currentSearch?.length > 0 ? (
                       <>
                         {currentSearch.idea.map((idea: Idea, index) => (
-                          <IdeaItem idea={idea} index={index} />
+                          <li key={idea.id}>
+                            <IdeaItem idea={idea} index={index} />
+                          </li>
                         ))}
                       </>
                     ) : (
-                      <>no result</>
+                      <>
+                        Please search an available idea
+                        {ideaData.map((idea: Idea, index) => (
+                          <li key={idea.id}>
+                            <IdeaItem idea={idea} index={index} />
+                          </li>
+                        ))}
+                      </>
                     )}
                   </>
                 </>
@@ -112,15 +125,24 @@ const searchResult: React.FC<SearchInputProps> = ({ SearchData }) => {
                     Searched Topics
                   </Heading>
                   <>
-                    {currentSearch.topic.length != 0 &&
-                      currentSearch.currentSearch.length ? (
+                    {currentSearch.topic?.length != 0 &&
+                    currentSearch.currentSearch?.length ? (
                       <>
-                        {currentSearch.topic.map((topic: Topic, index) => (
-                          <TopicItem topic={topic} index={index} />
+                        {currentSearch.topic?.map((topic: Topic, index) => (
+                          <li key={topic.id}>
+                            <TopicItem topic={topic} index={index} />
+                          </li>
                         ))}
                       </>
                     ) : (
-                      <>no result</>
+                      <>
+                        Please search an available topic
+                        {topicData.map((topic: Topic, index) => (
+                          <li key={topic.id}>
+                            <TopicItem topic={topic} index={index} />
+                          </li>
+                        ))}
+                      </>
                     )}
                   </>
                 </>
@@ -165,5 +187,26 @@ const searchResult: React.FC<SearchInputProps> = ({ SearchData }) => {
     </>
   );
 };
-
-export default searchResult;
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+  //get topic data and pass it to cline
+  //context.query.topicId as string => getting id from route
+  try {
+    const responseIdea = await axios.get(
+      'https://backend-2tza.onrender.com/idea'
+    );
+    const responseTopic = await axios.get(
+      'https://backend-2tza.onrender.com/topic'
+    );
+    console.log(responseIdea.data);
+    return {
+      props: {
+        ideaData: JSON.parse(safeJsonStringify([...responseIdea.data])),
+        topicData: JSON.parse(safeJsonStringify([...responseTopic.data])),
+      },
+    };
+  } catch (error) {
+    console.log(error);
+    return error;
+  }
+}
+export default SearchResult;

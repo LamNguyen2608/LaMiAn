@@ -1,6 +1,6 @@
-import { atom } from 'recoil';
-import { Idea } from './ideaAtom';
-import { Topic } from './topicAtom';
+import { atom } from "recoil";
+import { Idea } from "./ideaAtom";
+import { Topic } from "./topicAtom";
 
 export interface searchState {
   currentSearch: string;
@@ -8,17 +8,19 @@ export interface searchState {
   topic: Topic[];
   allIdea: Idea[];
   allTopic: Topic[];
+  viewTopic: string;
 }
 
 const defaultSearchState: searchState = {
-  currentSearch: '',
+  currentSearch: "",
   idea: [],
   topic: [],
   allIdea: [],
   allTopic: [],
+  viewTopic: "",
 };
 
 export const searchState = atom<searchState>({
-  key: 'searchState',
+  key: "searchState",
   default: defaultSearchState,
 });

@@ -33,10 +33,12 @@ const SignUp: React.FC = () => {
     useCreateUserWithEmailAndPassword(auth);
 
   useEffect(() => {
-    axios.get('http://localhost:8080/department').then((response) => {
-      console.log('get all departments: ', response);
-      setAllDepartments(response.data);
-    });
+    axios
+      .get('https://backend-2tza.onrender.com/department')
+      .then((response) => {
+        console.log('get all departments: ', response);
+        setAllDepartments(response.data);
+      });
   }, []);
 
   const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -54,7 +56,7 @@ const SignUp: React.FC = () => {
         if (user) {
           console.log('====>', user.user.uid);
           axios
-            .post('http://localhost:8080/client/signup', {
+            .post('https://backend-2tza.onrender.com/client/signup', {
               id: user.user.uid,
               firstname: signUpForm.firstname,
               lastname: signUpForm.lastname,
@@ -230,7 +232,9 @@ const SignUp: React.FC = () => {
         color="gray.500"
       >
         {allDepartments.map((item) => (
-          <option value={item.id}>{item.name}</option>
+          <option value={item.id} key={item.id}>
+            {item.name}
+          </option>
         ))}
       </Select>
       <Input
