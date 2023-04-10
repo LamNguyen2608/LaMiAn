@@ -44,35 +44,40 @@ import TopicItem from '@/components/Topic/TopicItem';
 // import PersonalHome from "../components/Community/PersonalHome";
 
 type SearchInputProps = {
-  SearchData: Idea[];
+  ideaData: Idea[];
+  topicData: Topic[];
 };
 const formTabs: SearchItem[] = [
-  {
-    title: 'Ideas',
-    icon: RiFileTextLine,
-  },
   {
     title: 'Topic',
     icon: RiPagesFill,
   },
+  {
+    title: 'Ideas',
+    icon: RiFileTextLine,
+  },
+
 ];
 export type SearchItem = {
   title: string;
   icon: typeof Icon.arguments;
 };
 
-const searchResult: React.FC<SearchInputProps> = ({ SearchData }) => {
+const searchResult: React.FC<SearchInputProps> = ({ ideaData, topicData }) => {
   const [selectTab, setSelectTab] = useState(formTabs[0].title);
   const [user, loadingUser] = useAuthState(auth);
   const [loading, setLoading] = useState(false);
-  const [ideaStateValue, setIdeaStateValue] = useState<Idea[]>([]);
+  const [ideaValue, setIdeaValue] = useState<Idea[]>([]);
+  const [searchValue, setSearchValue] = useRecoilState(searchState);
   const currentSearch = useRecoilValue(searchState);
-
-
   const getUserPostVotes = async () => { };
 
   useEffect(() => {
-    setIdeaStateValue(SearchData);
+    setSearchValue((prev) => ({
+      ...prev,
+      allIdea: ideaData,
+      allTopic: topicData,
+    }));
   }, []);
 
   return (
@@ -90,15 +95,20 @@ const searchResult: React.FC<SearchInputProps> = ({ SearchData }) => {
                     Searched Ideas
                   </Heading>
                   <>
-                    {currentSearch.idea.length != 0 &&
-                      currentSearch.currentSearch.length > 0 ? (
+                    {currentSearch.idea?.length != 0 &&
+                      currentSearch.currentSearch?.length > 0 ? (
                       <>
                         {currentSearch.idea.map((idea: Idea, index) => (
                           <IdeaItem idea={idea} index={index} />
                         ))}
                       </>
                     ) : (
-                      <>no result</>
+                      <>
+                        Please search an available idea
+                        {ideaData.map((idea: Idea, index) => (
+                          <IdeaItem idea={idea} index={index} />
+                        ))}
+                      </>
                     )}
                   </>
                 </>
@@ -112,15 +122,20 @@ const searchResult: React.FC<SearchInputProps> = ({ SearchData }) => {
                     Searched Topics
                   </Heading>
                   <>
-                    {currentSearch.topic.length != 0 &&
-                      currentSearch.currentSearch.length ? (
+                    {currentSearch.topic?.length != 0 &&
+                      currentSearch.currentSearch?.length ? (
                       <>
-                        {currentSearch.topic.map((topic: Topic, index) => (
+                        {currentSearch.topic?.map((topic: Topic, index) => (
                           <TopicItem topic={topic} index={index} />
                         ))}
                       </>
                     ) : (
-                      <>no result</>
+                      <>
+                        Please search an available topic
+                        {topicData.map((topic: Topic, index) => (
+                          <TopicItem topic={topic} index={index} />
+                        ))}
+                      </>
                     )}
                   </>
                 </>
@@ -165,5 +180,22 @@ const searchResult: React.FC<SearchInputProps> = ({ SearchData }) => {
     </>
   );
 };
-
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+  //get topic data and pass it to cline
+  //context.query.topicId as string => getting id from route
+  try {
+    const responseIdea = await axios.get('http://localhost:8080/idea');
+    const responseTopic = await axios.get('http://localhost:8080/topic');
+    console.log(responseIdea.data);
+    return {
+      props: {
+        ideaData: JSON.parse(safeJsonStringify([...responseIdea.data])),
+        topicData: JSON.parse(safeJsonStringify([...responseTopic.data])),
+      },
+    };
+  } catch (error) {
+    console.log(error);
+    return error;
+  }
+}
 export default searchResult;

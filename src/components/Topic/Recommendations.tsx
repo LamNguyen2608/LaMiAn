@@ -1,4 +1,6 @@
+import { authModalState } from "@/atoms/authModalAtom";
 import { Topic, TopTopic } from "@/atoms/topicAtom";
+import { auth } from "@/Firebase/clientApp";
 import useTopics from "@/hooks/useTopics";
 import {
     Box,
@@ -14,8 +16,11 @@ import {
 import axios from "axios";
 import { collection, getDocs, limit, orderBy, query } from "firebase/firestore";
 import Link from "next/link";
+import router from "next/router";
 import React, { useEffect, useState } from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
 import { FaReddit } from "react-icons/fa";
+import { useRecoilState, useSetRecoilState } from "recoil";
 
 
 type RecommendationsProps = {
@@ -28,7 +33,13 @@ const Recommendations: React.FC<RecommendationsProps> = () => {
     const [topics, setTopics] = useState<TopTopic[]>([]);
     const [loading, setLoading] = useState(false);
     const { topicStateValue, onFollowOrUnfollowTopic } = useTopics();
-
+    const setAuthModalState = useSetRecoilState(authModalState);
+    const [user] = useAuthState(auth)
+    const handleUser = () => {
+        if (!user) {
+            setAuthModalState({ open: true, view: 'login' })
+        }
+    }
     const getCommunityRecommendations = async () => {
         setLoading(true);
         try {
@@ -46,6 +57,10 @@ const Recommendations: React.FC<RecommendationsProps> = () => {
         getCommunityRecommendations();
     }, []);
 
+
+    const allTopic = () => {
+        router.push('/Search/searchResult');
+    }
     return (
         <Flex
             direction="column"
@@ -140,6 +155,7 @@ const Recommendations: React.FC<RecommendationsProps> = () => {
                                             onClick={(event) => {
                                                 event.stopPropagation();
                                                 onFollowOrUnfollowTopic(item.topic_id, isJoined);
+                                                handleUser();
                                             }}
                                             variant={isJoined ? "secondary" : "primary"}
                                         >
@@ -151,7 +167,8 @@ const Recommendations: React.FC<RecommendationsProps> = () => {
                             );
                         })}
                         <Box p="10px 20px">
-                            <Button height="30px" width="100%">
+                            <Button height="30px" width="100%"
+                                onClick={() => allTopic()}>
                                 View All
                             </Button>
                         </Box>

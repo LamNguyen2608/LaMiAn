@@ -83,7 +83,7 @@ const Comments: React.FC<CommentsProps> = ({
         if (selectedIdea) {
             setComments(selectedIdea.comments)
         }
-    }, [selectedIdea]);
+    }, [ideaStateValue]);
 
     return (
         <Box bg="white" p={2} borderRadius="0px 0px 4px 4px">

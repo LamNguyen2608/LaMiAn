@@ -48,7 +48,8 @@ const About: React.FC<UserAboutProps> = ({
   const router = useRouter();
 
   return (
-    <Box pt={pt} position="sticky" top="14px">
+
+    <Box pt={pt} position="sticky" top="14px" width='100%'>
       <Flex
         justify="space-between"
         align="center"
@@ -81,7 +82,7 @@ const About: React.FC<UserAboutProps> = ({
             <Stack spacing={2}>
               <Flex width="100%" p={2} fontWeight={600} fontSize="10pt">
                 <Flex direction="column" flexGrow={1}>
-                  <Text>{userData.ideas.length}</Text>
+                  <Text>{userData.ideas?.length}</Text>
                   <Text> Total of created ideas</Text>
                 </Flex>
               </Flex>
@@ -94,8 +95,16 @@ const About: React.FC<UserAboutProps> = ({
                 fontSize="10pt"
               >
                 <Icon as={FaUserAstronaut} mr={2} fontSize={18} />
-                {user?.displayName && (
-                  <Text>User Name: {user?.displayName}</Text>
+                {user?.displayName ? (
+                  <Text>
+                    User Name: {user?.displayName || user?.email?.split('@')[0]}
+                  </Text>
+                ) : (
+                  <>
+                    <Text>
+                      User Name: {userData?.firstname} {userData?.lastname}
+                    </Text>
+                  </>
                 )}
               </Flex>
               <Flex
@@ -116,7 +125,13 @@ const About: React.FC<UserAboutProps> = ({
                 fontSize="10pt"
               >
                 <Icon as={FaBirthdayCake} mr={2} fontSize={18} />
-                <Text>User Age: {userData.age}</Text>
+                {userData.age ? (
+                  <Text>User Age: {userData?.age}</Text>
+                ) : (
+                  <>
+                    <Text>User Age: None</Text>
+                  </>
+                )}
               </Flex>
               <Flex
                 align="center"
@@ -126,7 +141,13 @@ const About: React.FC<UserAboutProps> = ({
                 fontSize="10pt"
               >
                 <Icon as={BsGenderAmbiguous} mr={2} fontSize={18} />
-                <Text>User Pronoun: {userData.pronoun}</Text>
+                {userData.pronoun ? (
+                  <Text>User Pronoun: {userData?.pronoun}</Text>
+                ) : (
+                  <>
+                    <Text>User Pronoun: None</Text>
+                  </>
+                )}
               </Flex>
               <Flex
                 align="center"
@@ -136,7 +157,13 @@ const About: React.FC<UserAboutProps> = ({
                 fontSize="10pt"
               >
                 <Icon as={TbTournament} mr={2} fontSize={18} />
-                <Text>Department: {userData.department.name}</Text>
+                {userData?.department?.name ? (
+                  <Text>User Department: {userData?.department?.name}</Text>
+                ) : (
+                  <>
+                    <Text>User Department: None</Text>
+                  </>
+                )}
               </Flex>
             </Stack>
           </>

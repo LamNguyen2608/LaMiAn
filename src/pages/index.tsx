@@ -53,8 +53,8 @@ const Home: NextPage = () => {
   const itemsPerPage = 3;
   const endOffset = itemOffset + itemsPerPage;
   console.log(`Loading items from ${itemOffset} to ${endOffset}`);
-  const currentItems = ideaStateValue.Ideas.slice(itemOffset, endOffset);
-  const pageCount = Math.ceil(ideaStateValue.Ideas.length / itemsPerPage);
+  // const currentItems = ideaStateValue.Ideas.slice(itemOffset, endOffset);
+  const pageCount = Math.ceil(ideaStateValue.Ideas?.length / itemsPerPage);
 
   // Invoke when user click to request another page.
   const handlePageClick = (event: any) => {
@@ -95,38 +95,6 @@ const Home: NextPage = () => {
     getTrendingPosts();
   }, []);
 
-  // useEffect(() => {
-  //   /**
-  //    * initSnippetsFetched ensures that user snippets have been retrieved;
-  //    * the value is set to true when snippets are first retrieved inside
-  //    * of getSnippets in useCommunityData
-  //    */
-  //   if (!communityStateValue.initSnippetsFetched) return;
-
-  //   if (user) {
-  //     getUserHomePosts();
-  //   }
-  // }, [user, communityStateValue.initSnippetsFetched]);
-
-  // useEffect(() => {
-  //   if (!user && !loadingUser) {
-  //     getNoUserHomePosts();
-  //   }
-  // }, [user, loadingUser]);
-
-  // useEffect(() => {
-  //   if (!user?.uid || !postStateValue.posts.length) return;
-  //   getUserPostVotes();
-
-  //   // Clear postVotes on dismount
-  //   return () => {
-  //     setPostStateValue((prev) => ({
-  //       ...prev,
-  //       postVotes: [],
-  //     }));
-  //   };
-  // }, [postStateValue.posts, user?.uid]);
-
   return (
     <PageContentLayout>
       <>
@@ -137,9 +105,11 @@ const Home: NextPage = () => {
           >
             Top Trending Ideas
           </Heading>
-          {currentItems.map((idea: Idea, index) => (
-            <IdeaItem idea={idea} index={index} />
-          ))}
+          {ideaStateValue.Ideas.slice(itemOffset, endOffset).map(
+            (idea: Idea, index) => (
+              <IdeaItem idea={idea} index={index} />
+            )
+          )}
         </Stack>
         <Stack
           width="70%"

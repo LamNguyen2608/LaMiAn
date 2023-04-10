@@ -76,6 +76,7 @@ const TopicEdit: React.FC<detailsProps> = ({ TopicData }) => {
       imageURL: topicForm?.imageURL,
       topic_closure_date: topicForm?.topic_closure_date,
       final_closure_date: topicForm?.final_closure_date,
+      isDeleted: TopicData.isDeleted,
     };
 
     try {
