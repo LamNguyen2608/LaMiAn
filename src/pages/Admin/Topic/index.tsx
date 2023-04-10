@@ -16,7 +16,7 @@ import {
 } from '@chakra-ui/react';
 import DeleteConfirmationModal from '@/components/Modal/DeleteConfirmation';
 import router from 'next/router';
-import { AiFillDelete, AiFillEdit, AiFillInfoCircle } from 'react-icons/ai';
+import { AiFillDelete, AiFillEdit, AiFillInfoCircle, AiOutlineDownload } from 'react-icons/ai';
 import { IoMdArrowRoundBack } from 'react-icons/io';
 import { GetServerSidePropsContext } from 'next';
 import axios from 'axios';
@@ -128,6 +128,17 @@ const TopicList: React.FC<topicProps> = ({ TopicData }) => {
                       ml="20px"
                       onClick={() => showDeleteModal(item)}
                     />
+                    <a href={'http://localhost:8080/topic/export/' + item.id}>
+                      <Icon
+                        as={AiOutlineDownload}
+                        fontSize={40}
+                        color="gray.400"
+                        _hover={{ color: 'red' }}
+                        ml="20px"
+
+                      />
+                    </a>
+
                   </Td>
                 </Tr>
               ))}
