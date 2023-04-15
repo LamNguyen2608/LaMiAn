@@ -86,11 +86,11 @@ const TopicPage: React.FC = ({ }) => {
         height: 400
       },
       bar: {
-        height: 250,
+        height: 400,
         width: 400
       },
       pie: {
-        height: 399,
+        height: 300,
         width: 400,
       },
     };
