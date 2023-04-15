@@ -22,13 +22,17 @@ import { MdCategory } from 'react-icons/md';
 import { RiPagesFill } from 'react-icons/ri';
 import CreateCategory from '../../pages/Admin/Category/CreateCategory';
 
-const AdminButtonFunc: React.FC = () => {
+type buttonProps = {
+  isAdmin: boolean
+}
+
+const AdminButtonFunc: React.FC<buttonProps> = ({ isAdmin }) => {
   return (
     <>
       <Flex align="center" height="100%" p="5px 0px" justify="center" direction="column" bg="#222629">
-        <Flex align="center" p="5px 0px" direction="row">
+        <Flex align="center" p="5px 0px" direction="row" >
           <Box
-            // display={{ base: "none", sm: "none", md:"block" }}
+            display={isAdmin ? "block" : "none"}
             alignItems="center"
             as="button"
             color="white"
@@ -76,7 +80,7 @@ const AdminButtonFunc: React.FC = () => {
           </Box>
         </Flex>
 
-        <Flex align="center" p="5px 0px" direction="row">
+        <Flex align="center" p="5px 0px" direction="row" display={isAdmin ? "block" : "none"}>
           <Box
             // display={{ base: "none", sm: "none", md:"block" }}
             alignItems="center"
