@@ -1,6 +1,5 @@
 import { Button, Flex, Image, Input, Stack } from "@chakra-ui/react";
-import React, { useRef, useState } from "react";
-import FileViewer from 'react-file-viewer';
+import React, { useRef } from "react";
 
 type ImageUploadProps = {
     selectedFile?: string;
@@ -10,19 +9,13 @@ type ImageUploadProps = {
 };
 
 const ImageUpload: React.FC<ImageUploadProps> = ({ selectedFile, onSelectImage, setSelectedFile, setSelectedTab }) => {
-    const [fileData, setFileData] = useState<any>(null);
-    const [fileType, setFileType] = useState("");
+
     const selectedFileRef = useRef<HTMLInputElement>(null);
     return (
         <Flex direction="column" justify="center" align="center" width="100%">
             {selectedFile ? (
                 <>
-                    {fileType.startsWith('image') ? (<Image src={selectedFile} maxWidth="80%" maxHeight="80%" />) : (
-                        <FileViewer
-                            fileType={fileData.type}
-                            filePath={URL.createObjectURL(fileData)}
-                        />
-                    )}
+                    <Image src={selectedFile} maxWidth="80%" maxHeight="80%" />
                     <Flex direction="row" align="center">
                         <Button
                             mt={4}
@@ -66,12 +59,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ selectedFile, onSelectImage, 
                             <Input
                                 ref={selectedFileRef}
                                 type="file" hidden
-                                onChange={e => {
-                                    onSelectImage(e);
-                                    const fileUpload = e.target.files?.[0];
-                                    setFileType(fileUpload?.type);
-                                    setFileData(fileUpload);
-                                }} />
+                                onChange={onSelectImage} />
                             <img src={selectedFile} />
                         </Flex>
                         <Flex justify="flex-end">

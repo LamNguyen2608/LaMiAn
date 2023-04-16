@@ -76,8 +76,8 @@ const About: React.FC<AboutProps> = ({
                                     <Text> Ideas</Text>
                                 </Flex>
                                 <Flex direction="column" flexGrow={1}>
-                                    <Text>1</Text>
-                                    <Text>Online</Text>
+                                    <Text>{topicData.id}</Text>
+                                    <Text>Followers</Text>
                                 </Flex>
                             </Flex>
                             <Divider />
