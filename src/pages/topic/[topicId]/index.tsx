@@ -15,7 +15,7 @@ import About from '@/components/Topic/About';
 import useTopics from '@/hooks/useTopics';
 import ReactPaginate from 'react-paginate';
 import { ArrowBackIcon, ArrowForwardIcon } from '@chakra-ui/icons';
-import { Box, Flex, Stack } from '@chakra-ui/react';
+import { Box, Flex, Heading, Stack } from '@chakra-ui/react';
 
 type TopicPageProps = {
   topicData: Topic;
@@ -23,6 +23,7 @@ type TopicPageProps = {
 
 const TopicPage: React.FC<TopicPageProps> = ({ topicData }) => {
   const { topicStateValue, setTopicStateValue } = useTopics();
+  const [topIdeas, setTopIdeas] = useState<any[]>([]);
   console.log('===>', topicData.ideas);
   const { ideaStateValue, setIdeaStateValue } = useIdeas();
   useEffect(() => {
@@ -34,6 +35,16 @@ const TopicPage: React.FC<TopicPageProps> = ({ topicData }) => {
       ...prev,
       currentTopic: topicData,
     }));
+    const reactionCounts = ideaStateValue.Ideas.map(idea => ({
+      id: idea.id,
+      count: idea.reactions.length,
+    }));
+    console.log("reactionCounts", reactionCounts)
+    const maxCount = Math.max(...reactionCounts.map(item => item.count), 0);
+    console.log("maxCount", maxCount)
+    const filteredCounts = reactionCounts.filter((item) => item.count === maxCount);
+    console.log("filterCounts", filteredCounts)
+    setTopIdeas(filteredCounts);
   }, []);
   const [itemOffset, setItemOffset] = useState(0);
   const itemsPerPage = 5;
@@ -53,6 +64,7 @@ const TopicPage: React.FC<TopicPageProps> = ({ topicData }) => {
     setItemOffset(newOffset);
     window.scrollTo(0, 0);
   };
+
   return (
     <>
       <Header topicData={topicData} />

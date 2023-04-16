@@ -52,7 +52,35 @@ type TopicItemProps = {
   // onSelectPost: () => {};
 };
 
+
 const IdeaItem: React.FC<TopicItemProps> = ({ topic, index }) => {
+  function Status() {
+    if (new Date(topic.topic_closure_date).getTime() > new Date().getTime())
+      return (
+        <>
+          <Text color="green" fontSize="10px">
+            Status: Open
+          </Text>
+        </>
+      );
+    if (new Date(topic.topic_closure_date).getTime() < new Date().getTime() && new Date().getTime() < new Date(topic.final_closure_date).getTime())
+      return (
+        <>
+          <Text color="#FFC300" fontSize="10px">
+            Status: Closed for creating new ideas
+          </Text>
+        </>
+      );
+    if (new Date().getTime() > new Date(topic.final_closure_date).getTime())
+      return (
+        <>
+          <Text color="red" fontSize="10px">
+            Status: Final Close
+          </Text>
+        </>
+      );
+  };
+
   const { ideaStateValue, setIdeaStateValue } = useIdeas();
   const router = useRouter();
   const [user, loadingUser] = useAuthState(auth);
@@ -77,9 +105,7 @@ const IdeaItem: React.FC<TopicItemProps> = ({ topic, index }) => {
             <b> "Admin" </b>
             {moment(new Date(topic.modifyDate)).fromNow()}
           </Text>
-          <Text color="green" fontSize="10px">
-            Status: {' Open'}
-          </Text>
+          {Status()}
         </Stack>
         <Text fontSize="12pt" fontWeight={600}>
           {topic.name}

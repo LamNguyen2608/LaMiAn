@@ -59,7 +59,7 @@ const Notifications: React.FC<NotificationsProps> = ({ user }) => {
     }
     useEffect(() => {
         getUserNotification();
-    })
+    }, [])
     return (
         <><Menu>
             <MenuButton onClick={() => getUserNotification()}>

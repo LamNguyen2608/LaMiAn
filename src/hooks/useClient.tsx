@@ -14,7 +14,7 @@ const useClient = () => {
 
     const resetUserInfo = () => {
         if (!clientStateValue.currentClient) {
-            if (localStorage.getItem("currentClient") && localStorage.getItem("currentClient") !== "") {
+            if (localStorage.getItem("currentClient") !== "") {
                 setClientStateValue({
                     currentClient: JSON.parse(localStorage.getItem("currentClient"))
                 })
