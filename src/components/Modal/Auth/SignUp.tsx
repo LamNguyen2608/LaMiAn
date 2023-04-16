@@ -65,6 +65,7 @@ const SignUp: React.FC = () => {
             })
             .then((client) => {
               console.log('after create client ===>', client);
+              localStorage.setItem("currentClient", JSON.stringify(client.data));
               setClientStateValue({
                 currentClient: client.data,
               });

@@ -1,6 +1,6 @@
 import { Badge, Flex, Icon, Image, Spinner, Stack, Text } from '@chakra-ui/react';
 import { TriangleDownIcon, TriangleUpIcon, ChatIcon, StarIcon } from '@chakra-ui/icons'
-import { RiShareForwardLine } from 'react-icons/ri'
+import { AiOutlineEye } from 'react-icons/ai'
 import React, { useState } from 'react';
 import moment from 'moment';
 import { Idea, myVote } from '@/atoms/ideaAtom';
@@ -181,8 +181,8 @@ const IdeaItem: React.FC<IdeaItemProps> = ({
                         borderRadius={4}
                         _hover={{ bg: "gray.200" }}
                         cursor="pointer">
-                        <RiShareForwardLine width={3} color="gray.300" />
-                        <Text marginLeft={2} fontSize="9pt">Share</Text>
+                        <AiOutlineEye width={3} color="gray.300" />
+                        <Text marginLeft={2} fontSize="9pt">{idea.reactions.length} Views</Text>
                     </Flex>
                     <Flex
                         align="center"

@@ -109,7 +109,9 @@ const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
               </Flex>
             </MenuItem>
             <MenuDivider />
-            {clientStateValue.currentClient?.role == 'ROLE_ADMIN' ? (
+            {clientStateValue.currentClient?.role == 'ROLE_USER' ? (
+              <MenuDivider />
+            ) : (
               <><MenuItem
                 fontSize="10pt"
                 fontWeight={700}
@@ -118,12 +120,11 @@ const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
               >
                 <Flex align="center">
                   <Icon fontSize={30} mr={2} as={BiData} />
-                  Admin Page
+                  Dashboard
                 </Flex>
               </MenuItem>
                 <MenuDivider /></>
-            ) : (
-              <MenuDivider />
+
             )}
             <MenuItem
               fontSize="10pt"
