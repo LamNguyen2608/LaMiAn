@@ -50,8 +50,10 @@ const TopicPage: React.FC<TopicPageProps> = ({ topicData }) => {
   const itemsPerPage = 5;
   const endOffset = itemOffset + itemsPerPage;
   console.log(`Loading items from ${itemOffset} to ${endOffset}`);
-  const pageCount = Math.ceil(ideaStateValue.Ideas.length / itemsPerPage);
-
+  let pageCount = 0;
+  if (ideaStateValue.Ideas != null) {
+    pageCount = Math.ceil(ideaStateValue.Ideas.length / itemsPerPage);
+  }
   // Invoke when user click to request another page.
   const handlePageClick = (event: any) => {
     const newOffset =
@@ -68,30 +70,20 @@ const TopicPage: React.FC<TopicPageProps> = ({ topicData }) => {
       <Header topicData={topicData} />
       <PageContent>
         <>
-          {new Date(topicData.topic_closure_date).getTime() > new Date().getTime()
-            ? (<CreatePostForm />) : null}
-          <Heading
-            bgGradient="linear(to-l, brand.100, brand.200)"
-            bgClip="text"
-          >
-            Most Popular Ideas
-          </Heading>
-          {topIdeas.map(idea => {
-            let index = ideaStateValue.Ideas.findIndex((item) => item.id === idea.id);
-            console.log("index top ideas", idea)
-            return (
-              <IdeaItem idea={ideaStateValue.Ideas[index]} index={index} />
-            )
-          })}
-          <Heading
-            bgGradient="linear(to-l, brand.100, brand.200)"
-            bgClip="text"
-          >
-            Recent Ideas
-          </Heading>
-          {ideaStateValue.Ideas.slice(itemOffset, endOffset).map((item, index) => (
-            <IdeaItem idea={item} index={index} />
-          ))}
+          {new Date(topicData.topic_closure_date).getTime() >
+          new Date().getTime() ? (
+            <CreatePostForm />
+          ) : null}
+          {/* <CreatePostForm /> */}
+          {ideaStateValue.Ideas != null ? (
+            <>
+              {ideaStateValue.Ideas.slice(itemOffset, endOffset).map(
+                (item, index) => (
+                  <IdeaItem idea={item} index={index} />
+                )
+              )}
+            </>
+          ) : null}
           <Stack
             width="70%"
             justify="space-evenly"

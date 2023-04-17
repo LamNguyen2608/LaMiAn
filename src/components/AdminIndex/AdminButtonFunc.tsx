@@ -30,7 +30,7 @@ const AdminButtonFunc: React.FC<buttonProps> = ({ isAdmin }) => {
   return (
     <>
       <Flex align="center" height="100%" p="5px 0px" justify="center" direction="column" bg="#222629">
-        <Flex align="center" p="5px 0px" direction="row" >
+        <Flex align="center" p="5px 0px" direction="row">
           <Box
             display={isAdmin ? "block" : "none"}
             alignItems="center"

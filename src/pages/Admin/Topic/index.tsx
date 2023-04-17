@@ -125,47 +125,39 @@ const TopicList: React.FC<topicProps> = ({ TopicData }) => {
                         }
                       />
 
+                    <Icon
+                      as={AiFillDelete}
+                      fontSize={40}
+                      color="gray.400"
+                      _hover={{ color: 'red' }}
+                      ml="20px"
+                      onClick={() => showDeleteModal(item)}
+                    />
+                    <a href={'http://localhost:8080/topic/export/' + item.id}>
                       <Icon
-                        as={AiFillDelete}
+                        as={AiOutlineDownload}
                         fontSize={40}
                         color="gray.400"
                         _hover={{ color: 'red' }}
                         ml="20px"
-                        onClick={() => showDeleteModal(item)}
                       />
-                      <a href={'http://localhost:8080/topic/export/' + item.id}>
-                        <Icon
-                          as={AiOutlineDownload}
-                          fontSize={40}
-                          color="gray.400"
-                          _hover={{ color: 'red' }}
-                          ml="20px"
+                    </a>
 
-                        />
-                      </a>
-
-                    </Td>
-                  </Tr>
-                ))}
-              </Tbody>
-            </Table>
-          </TableContainer>
-        </Flex>
-        <DeleteConfirmationModal
-          showModal={displayConfirmationModal}
-          confirmModal={submitDelete}
-          hideModal={hideConfirmationModal}
-          loading={loading}
-        />
-      </>
-    );
-  else
-    return (
-      <div>
-        <h1>401 Unauthorized</h1>
-        <p>You are not authorized to access this page.</p>
-      </div>
-    )
+                  </Td>
+                </Tr>
+              ))}
+            </Tbody>
+          </Table>
+        </TableContainer>
+      </Flex>
+      <DeleteConfirmationModal
+        showModal={displayConfirmationModal}
+        confirmModal={submitDelete}
+        hideModal={hideConfirmationModal}
+        loading={loading}
+      />
+    </>
+  );
 };
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   //get topic data and pass it to cline
