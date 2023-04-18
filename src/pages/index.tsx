@@ -50,7 +50,7 @@ const Home: NextPage = () => {
   // } = usePosts();
   // const communityStateValue = useRecoilValue(communityState);
   const [itemOffset, setItemOffset] = useState(0);
-  const itemsPerPage = 3;
+  const itemsPerPage = 5;
   const endOffset = itemOffset + itemsPerPage;
   console.log(`Loading items from ${itemOffset} to ${endOffset}`);
   // const currentItems = ideaStateValue.Ideas.slice(itemOffset, endOffset);
@@ -89,7 +89,7 @@ const Home: NextPage = () => {
     //setLoading(false);
   };
 
-  const getUserPostVotes = async () => { };
+  const getUserPostVotes = async () => {};
 
   useEffect(() => {
     getTrendingPosts();

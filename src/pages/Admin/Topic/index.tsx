@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import {
   Box,
+  Button,
   Flex,
   Icon,
   Link,
@@ -16,7 +17,12 @@ import {
 } from '@chakra-ui/react';
 import DeleteConfirmationModal from '@/components/Modal/DeleteConfirmation';
 import router from 'next/router';
-import { AiFillDelete, AiFillEdit, AiFillInfoCircle, AiOutlineDownload } from 'react-icons/ai';
+import {
+  AiFillDelete,
+  AiFillEdit,
+  AiFillInfoCircle,
+  AiOutlineDownload,
+} from 'react-icons/ai';
 import { IoMdArrowRoundBack } from 'react-icons/io';
 import { GetServerSidePropsContext } from 'next';
 import axios from 'axios';
@@ -62,7 +68,7 @@ const TopicList: React.FC<topicProps> = ({ TopicData }) => {
       setLoading(false);
     }
   };
-  console.log("current client admin ==>", clientStateValue.currentClient);
+  console.log('current client admin ==>', clientStateValue.currentClient);
   if (clientStateValue.currentClient?.role == 'ROLE_ADMIN')
     return (
       <>
@@ -83,6 +89,16 @@ const TopicList: React.FC<topicProps> = ({ TopicData }) => {
           </Text>
         </Flex>
         <Flex direction="column">
+          <Button
+            height="50px"
+            width="140px"
+            variant="primary"
+            margin={5}
+            type="submit"
+            onClick={() => router.push('/Admin/Topic/CreateTopicForm')}
+          >
+            Create new topic
+          </Button>
           <TableContainer>
             <Table variant="striped" colorScheme="pink">
               <Thead>
@@ -110,7 +126,9 @@ const TopicList: React.FC<topicProps> = ({ TopicData }) => {
                         color="gray.400"
                         _hover={{ color: 'yellow' }}
                         onClick={(e) =>
-                          router.push('/Admin/Topic/' + item.id + '/TopicDetails')
+                          router.push(
+                            '/Admin/Topic/' + item.id + '/TopicDetails'
+                          )
                         }
                       />
 
@@ -125,39 +143,38 @@ const TopicList: React.FC<topicProps> = ({ TopicData }) => {
                         }
                       />
 
-                    <Icon
-                      as={AiFillDelete}
-                      fontSize={40}
-                      color="gray.400"
-                      _hover={{ color: 'red' }}
-                      ml="20px"
-                      onClick={() => showDeleteModal(item)}
-                    />
-                    <a href={'http://localhost:8080/topic/export/' + item.id}>
                       <Icon
-                        as={AiOutlineDownload}
+                        as={AiFillDelete}
                         fontSize={40}
                         color="gray.400"
                         _hover={{ color: 'red' }}
                         ml="20px"
+                        onClick={() => showDeleteModal(item)}
                       />
-                    </a>
-
-                  </Td>
-                </Tr>
-              ))}
-            </Tbody>
-          </Table>
-        </TableContainer>
-      </Flex>
-      <DeleteConfirmationModal
-        showModal={displayConfirmationModal}
-        confirmModal={submitDelete}
-        hideModal={hideConfirmationModal}
-        loading={loading}
-      />
-    </>
-  );
+                      <a href={'http://localhost:8080/topic/export/' + item.id}>
+                        <Icon
+                          as={AiOutlineDownload}
+                          fontSize={40}
+                          color="gray.400"
+                          _hover={{ color: 'red' }}
+                          ml="20px"
+                        />
+                      </a>
+                    </Td>
+                  </Tr>
+                ))}
+              </Tbody>
+            </Table>
+          </TableContainer>
+        </Flex>
+        <DeleteConfirmationModal
+          showModal={displayConfirmationModal}
+          confirmModal={submitDelete}
+          hideModal={hideConfirmationModal}
+          loading={loading}
+        />
+      </>
+    );
 };
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   //get topic data and pass it to cline

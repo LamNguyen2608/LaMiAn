@@ -165,7 +165,7 @@ const NewPostForm: React.FC<NewPostForm> = ({ user, updateIdea }) => {
               updatePost.attached_path = url as string;
               console.log('newPost===>', updatePost);
               axios
-                .post('http://localhost:8080/idea/create', updatePost)
+                .put('http://localhost:8080/idea/update', updatePost)
                 .then((response) => {
                   console.log('after creating idea ===>', response);
                   updatedIdea[ideaStateValue.selectedIdeaIndex] = response.data;

@@ -55,7 +55,7 @@ const CreateTopicForm: React.FC = () => {
               .then((response) => {
                 console.log('after creating topic ===>', response);
                 setLoading(false);
-                router.push('/Admin/Topic/TopicList');
+                router.push('/Admin/Topic');
               });
           });
         });
@@ -66,7 +66,7 @@ const CreateTopicForm: React.FC = () => {
           .then((response) => {
             console.log('after creating topic ===>', response);
             setLoading(false);
-            router.push('/Admin/Topic/TopicList');
+            router.push('/Admin/Topic');
           });
       }
     } catch (error: any) {
