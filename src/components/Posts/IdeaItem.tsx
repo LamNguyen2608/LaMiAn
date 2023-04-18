@@ -21,7 +21,7 @@ import useIdeas from '@/hooks/useIdeas';
 import { useRouter } from 'next/router';
 import { auth } from '@/Firebase/clientApp';
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { AiOutlineDelete, AiOutlineEdit } from 'react-icons/ai';
+import { AiOutlineDelete, AiOutlineEdit, AiOutlineEye } from 'react-icons/ai';
 import DeleteConfirmationModal from '../Modal/DeleteConfirmation';
 import DeleteIdeaModal from '../Modal/DeleteIdeaModal';
 
@@ -266,9 +266,9 @@ const IdeaItem: React.FC<IdeaItemProps> = ({ idea, index }) => {
             _hover={{ bg: 'gray.200' }}
             cursor="pointer"
           >
-            <RiShareForwardLine width={3} color="gray.300" />
+            <AiOutlineEye width={3} color="gray.300" />
             <Text marginLeft={2} fontSize="9pt">
-              Share
+              {idea.reactions.length} Views
             </Text>
           </Flex>
           <Flex
