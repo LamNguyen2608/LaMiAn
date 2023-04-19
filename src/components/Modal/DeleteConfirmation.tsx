@@ -34,7 +34,7 @@ const DeleteConfirmationModal: React.FC<deleteProps> = ({
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Delete Confirmation</ModalHeader>
-          <ModalBody pb={6}>Are you sure you want to delete this comment?</ModalBody>
+          <ModalBody pb={6}>Are you sure you want to delete this topic?</ModalBody>
           <ModalFooter>
             <Button
               colorScheme="red"

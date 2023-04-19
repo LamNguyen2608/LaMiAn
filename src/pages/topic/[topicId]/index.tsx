@@ -35,17 +35,15 @@ const TopicPage: React.FC<TopicPageProps> = ({ topicData }) => {
       ...prev,
       currentTopic: topicData,
     }));
-    const reactionCounts = ideaStateValue.Ideas.map((idea) => ({
+    const reactionCounts = topicData.ideas.map(idea => ({
       id: idea.id,
       count: idea.reactions.length,
     }));
-    console.log('reactionCounts', reactionCounts);
-    const maxCount = Math.max(...reactionCounts.map((item) => item.count), 0);
-    console.log('maxCount', maxCount);
-    const filteredCounts = reactionCounts.filter(
-      (item) => item.count === maxCount
-    );
-    console.log('filterCounts', filteredCounts);
+    console.log("reactionCounts", reactionCounts)
+    const maxCount = Math.max(...reactionCounts.map(item => item.count), 0);
+    console.log("maxCount", maxCount)
+    const filteredCounts = reactionCounts.filter((item) => item.count === maxCount);
+    console.log("filterCounts", filteredCounts)
     setTopIdeas(filteredCounts);
   }, []);
   const [itemOffset, setItemOffset] = useState(0);
@@ -70,37 +68,35 @@ const TopicPage: React.FC<TopicPageProps> = ({ topicData }) => {
       <Header topicData={topicData} />
       <PageContent>
         <>
-          {new Date(topicData.topic_closure_date).getTime() >
-          new Date().getTime() ? (
-            <CreatePostForm />
-          ) : null}
-          <Heading
-            bgGradient="linear(to-l, brand.100, brand.200)"
-            bgClip="text"
-          >
-            Most Popular Ideas
-          </Heading>
-          {topIdeas.length > 0 &&
-            topIdeas.map((idea) => {
-              let index = ideaStateValue.Ideas.findIndex(
-                (item) => item.id === idea.id
-              );
-              console.log('index top ideas', idea);
+          {new Date(topicData.topic_closure_date).getTime() > new Date().getTime()
+            ? (<CreatePostForm />) : null}
+          {topIdeas.length > 0 && (
+            <Heading
+              bgGradient="linear(to-l, brand.100, brand.200)"
+              bgClip="text"
+            >
+              Most Popular Ideas
+            </Heading>
+          )}
+          {console.log('topIdeas', topIdeas)}
+          {topIdeas.length > 0 && topIdeas.map(idea => {
+            let index = ideaStateValue.Ideas.findIndex((item) => item.id === idea.id);
+            console.log("index top ideas", idea)
+            if (index != -1) {
               return (
                 <IdeaItem idea={ideaStateValue.Ideas[index]} index={index} />
-              );
-            })}
+              )
+            }
+          })}
           <Heading
             bgGradient="linear(to-l, brand.100, brand.200)"
             bgClip="text"
           >
             Recent Ideas
           </Heading>
-          {ideaStateValue.Ideas.slice(itemOffset, endOffset).map(
-            (item, index) => (
-              <IdeaItem idea={item} index={index} />
-            )
-          )}
+          {ideaStateValue.Ideas.slice(itemOffset, endOffset).map((item, index) => (
+            <IdeaItem idea={item} index={index} />
+          ))}
           <Stack
             width="70%"
             justify="space-evenly"

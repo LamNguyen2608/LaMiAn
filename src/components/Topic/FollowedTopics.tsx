@@ -21,32 +21,6 @@ type FollowTopicsProps = {
 
 };
 
-const dummyData: TopTopic[] = [
-    {
-        id: 1,
-        name: "test 1",
-        numOfFollowers: 123,
-        topic_closure_date: "2023-03-09",
-        final_closure_date: "2023-03-10",
-        imgURL: "https://firebasestorage.googleapis.com/v0/b/enterpriseprojectdemo.appspot.com/o/Ideas%2F0226f7d6-4538-04a3-5cb1-15a516eec596?alt=media&token=3ac89c2c-8d5a-4629-9f38-c700effc085d"
-    },
-    {
-        id: 2,
-        name: "test 2",
-        numOfFollowers: 123,
-        topic_closure_date: "2023-03-09",
-        final_closure_date: "2023-03-10",
-        imgURL: "https://firebasestorage.googleapis.com/v0/b/enterpriseprojectdemo.appspot.com/o/Ideas%2F0226f7d6-4538-04a3-5cb1-15a516eec596?alt=media&token=3ac89c2c-8d5a-4629-9f38-c700effc085d"
-    },
-    {
-        id: 3,
-        name: "test 3",
-        numOfFollowers: 123,
-        topic_closure_date: "2023-03-09",
-        final_closure_date: "2023-03-10",
-        imgURL: "https://firebasestorage.googleapis.com/v0/b/enterpriseprojectdemo.appspot.com/o/Ideas%2F0226f7d6-4538-04a3-5cb1-15a516eec596?alt=media&token=3ac89c2c-8d5a-4629-9f38-c700effc085d"
-    }
-]
 
 
 const FollowTopics: React.FC<FollowTopicsProps> = () => {

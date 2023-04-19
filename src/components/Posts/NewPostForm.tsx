@@ -173,6 +173,7 @@ const NewPostForm: React.FC<NewPostForm> = ({ user, updateIdea }) => {
                     ...prev,
                     Ideas: updatedIdea,
                   }));
+                  window.location.replace("http://localhost:3000/topic/" + topicId);
                 });
             });
           });
@@ -192,6 +193,7 @@ const NewPostForm: React.FC<NewPostForm> = ({ user, updateIdea }) => {
                     ...prev,
                     Ideas: updatedIdea,
                   }));
+                  window.location.replace("http://localhost:3000/topic/" + topicId);
                 });
             });
           });
@@ -207,6 +209,7 @@ const NewPostForm: React.FC<NewPostForm> = ({ user, updateIdea }) => {
               ...prev,
               Ideas: updatedIdea,
             }));
+            window.location.replace("http://localhost:3000/topic/" + topicId);
           });
       }
     } catch (error: any) {
@@ -215,7 +218,8 @@ const NewPostForm: React.FC<NewPostForm> = ({ user, updateIdea }) => {
       //router.back();
     }
     setLoading(false);
-    router.back();
+    //router.back();
+    //window.location.replace("http://localhost:3000/topic/" + topicId);
   };
 
   const onSelectImage = (event: React.ChangeEvent<HTMLInputElement>) => {
